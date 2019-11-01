@@ -19,10 +19,12 @@ class DailyTask {
   DailyTask({
     this.title,
     this.counter,
+    this.icon,
   });
 
   String title;
   int counter;
+  Icon icon;
 }
 
 class MyHomePage extends StatefulWidget {
@@ -36,9 +38,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<DailyTask> _dailyTasks = <DailyTask>[
-    DailyTask(title: 'Title 0', counter: 0),
-    DailyTask(title: 'Title 1', counter: 0),
-    DailyTask(title: 'Title 2', counter: 0),
+    DailyTask(title: 'Title 0', counter: 0, icon: Icon(Icons.hot_tub)),
+    DailyTask(title: 'Title 1', counter: 0, icon: Icon(Icons.hot_tub)),
+    DailyTask(title: 'Title 2', counter: 0, icon: Icon(Icons.hot_tub)),
   ];
 
   void _addDailyTask() {
@@ -58,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return Card(
           child: ListTile(
             title: Text(currentTask.title),
+            leading: currentTask.icon,
             trailing: IconButton(
               icon: Icon(Icons.more_vert),
               tooltip: 'Edit',
