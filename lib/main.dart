@@ -38,7 +38,10 @@ class _MyHomePageState extends State<MyHomePage> {
       () {
         int currentIndex = _dailyTasks.length;
         _dailyTasks.add(
-          DailyTask(title: 'Title $currentIndex', counter: 0),
+          DailyTask(
+              title: 'Title $currentIndex',
+              counter: 0,
+              icon: Icon(Icons.hot_tub),),
         );
       },
     );
