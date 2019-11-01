@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:daily_task_app/daily_task.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -13,18 +15,6 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(title: 'Daily Tasks'),
     );
   }
-}
-
-class DailyTask {
-  DailyTask({
-    this.title,
-    this.counter,
-    this.icon,
-  });
-
-  String title;
-  int counter;
-  Icon icon;
 }
 
 class MyHomePage extends StatefulWidget {
