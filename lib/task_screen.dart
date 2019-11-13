@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:daily_task_app/daily_task.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
@@ -63,57 +64,6 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
       body: ListView(
         children: _getCells(_dailyTasks),
-        /*children: const <Widget>[
-          Card(
-            child: ListTile(
-              title: Text('One-line ListTile'),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: FlutterLogo(),
-              title: Text('One-line with leading widget'),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              title: Text('One-line with trailing widget'),
-              trailing: Icon(Icons.more_vert),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: FlutterLogo(),
-              title: Text('One-line with both widgets'),
-              trailing: Icon(Icons.more_vert),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              title: Text('One-line dense ListTile'),
-              dense: true,
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: FlutterLogo(size: 56.0),
-              title: Text('Two-line ListTile'),
-              subtitle: Text('Here is a second line'),
-              trailing: Icon(Icons.more_vert),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: FlutterLogo(size: 72.0),
-              title: Text('Three-line ListTile'),
-              subtitle: Text(
-                'A sufficiently long subtitle warrants three lines.',
-              ),
-              trailing: Icon(Icons.more_vert),
-              isThreeLine: true,
-            ),
-          ),
-        ],*/
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addDailyTask,
@@ -121,5 +71,20 @@ class _TaskScreenState extends State<TaskScreen> {
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> _read() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    const String key = 'my_int_key';
+    final int value = prefs.getInt(key) ?? 0;
+    print('read: $value');
+  }
+
+  Future<void> _save() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    const String key = 'my_int_key';
+    const int value = 42;
+    prefs.setInt(key, value);
+    print('saved $value');
   }
 }
