@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:daily_task_app/task_screen.dart';
 
 void main() {
-  return runApp(DailyTaskApp());}
+  return runApp(DailyTaskApp());
+}
 
 class DailyTaskApp extends StatelessWidget {
   @override
