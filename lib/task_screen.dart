@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:daily_task_app/daily_task.dart';
@@ -9,7 +10,9 @@ class TaskScreen extends StatefulWidget {
   final String appBarTitle;
 
   @override
-  _TaskScreenState createState() => _TaskScreenState();
+  _TaskScreenState createState() {
+    return _TaskScreenState();
+  }
 }
 
 class _TaskScreenState extends State<TaskScreen> {
@@ -20,6 +23,11 @@ class _TaskScreenState extends State<TaskScreen> {
   ];
 
   void _addDailyTask() {
+    _save();
+    _saveDailyTask(_dailyTasks[0]);
+    _read();
+    _readDailyTask('asds');
+
     setState(
       () {
         int currentIndex = _dailyTasks.length;
@@ -77,7 +85,7 @@ class _TaskScreenState extends State<TaskScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     const String key = 'my_int_key';
     final int value = prefs.getInt(key) ?? 0;
-    print('read: $value');
+    print('Read: $value');
   }
 
   Future<void> _save() async {
@@ -85,6 +93,21 @@ class _TaskScreenState extends State<TaskScreen> {
     const String key = 'my_int_key';
     const int value = 42;
     prefs.setInt(key, value);
-    print('saved $value');
+    print('Saved $value');
+  }
+
+  Future<void> _saveDailyTask(DailyTask task) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map<String, dynamic> taskAsMap = task.toJson();
+    String taskAsJson = jsonEncode(taskAsMap);
+    prefs.setString('asds', taskAsJson);
+  }
+
+  Future<void> _readDailyTask(String key) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String taskAsString = prefs.getString(key);
+    Map<String, dynamic> taskAsMap = jsonDecode(taskAsString);
+    DailyTask task = DailyTask.fromJson(taskAsMap);
+    _dailyTasks.add(task);
   }
 }

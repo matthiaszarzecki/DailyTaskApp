@@ -10,17 +10,27 @@ class DailyTask {
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         counter = json['counter'],
-        icon = json['icon'];
+        icon = _iconFromKey(json['icon']);
 
-  String title;
-  int counter;
-  Icon icon;
+  final String title;
+  final int counter;
+  final Icon icon;
+
+  static Icon _iconFromKey(String key) {
+    return Icon(Icons.hot_tub);
+  }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'title': title,
       'counter': counter,
-      'icon': icon,
+      'icon': 'icon',
     };
+  }
+
+  @override
+  String toString() {
+    String info = 'DailyTask: $title, $counter, Icon: $icon';
+    return info;
   }
 }
