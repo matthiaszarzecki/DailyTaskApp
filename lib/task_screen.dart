@@ -23,9 +23,7 @@ class _TaskScreenState extends State<TaskScreen> {
   ];
 
   void _addDailyTask() {
-    _save();
     _saveDailyTask(_dailyTasks[0]);
-    _read();
     _readDailyTask('asds');
 
     setState(
@@ -81,21 +79,7 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  Future<void> _read() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    const String key = 'my_int_key';
-    final int value = prefs.getInt(key) ?? 0;
-    print('Read: $value');
-  }
-
-  Future<void> _save() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    const String key = 'my_int_key';
-    const int value = 42;
-    prefs.setInt(key, value);
-    print('Saved $value');
-  }
-
+  // TODO(matthiaszarzecki): Extract these into own class
   Future<void> _saveDailyTask(DailyTask task) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> taskAsMap = task.toJson();

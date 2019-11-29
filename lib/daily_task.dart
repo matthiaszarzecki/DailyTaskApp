@@ -7,6 +7,7 @@ class DailyTask {
     this.icon,
   });
 
+  // TODO(matthiaszarzecki): Add last-modified-variable
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         counter = json['counter'],
@@ -16,6 +17,7 @@ class DailyTask {
   final int counter;
   final Icon icon;
 
+  // TODO(matthiaszarzecki): Figure out Icon-Saving
   static Icon _iconFromKey(String key) {
     return Icon(Icons.hot_tub);
   }
