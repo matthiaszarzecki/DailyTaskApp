@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:daily_task_app/daily_task.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:daily_task_app/data_store.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
@@ -23,8 +22,8 @@ class _TaskScreenState extends State<TaskScreen> {
   ];
 
   void _addDailyTask() {
-    _saveDailyTask(_dailyTasks[0]);
-    _readDailyTask('asds');
+    DataStore.saveDailyTask(_dailyTasks[0]);
+    DataStore.readDailyTask('asds');
 
     setState(
       () {
@@ -77,21 +76,5 @@ class _TaskScreenState extends State<TaskScreen> {
         child: Icon(Icons.add),
       ),
     );
-  }
-
-  // TODO(matthiaszarzecki): Extract these into own class
-  Future<void> _saveDailyTask(DailyTask task) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, dynamic> taskAsMap = task.toJson();
-    String taskAsJson = jsonEncode(taskAsMap);
-    prefs.setString('asds', taskAsJson);
-  }
-
-  Future<void> _readDailyTask(String key) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String taskAsString = prefs.getString(key);
-    Map<String, dynamic> taskAsMap = jsonDecode(taskAsString);
-    DailyTask task = DailyTask.fromJson(taskAsMap);
-    _dailyTasks.add(task);
   }
 }
