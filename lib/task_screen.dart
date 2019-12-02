@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
@@ -15,10 +16,28 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.appBarTitle),
+      ),
+      body: ListView(
+        children: _getCells(_dailyTasks),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addDailyTask,
+        tooltip: 'Add Daily Task',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  // TODO(matthiaszarzecki): Read out all saved tasks on startup
   final List<DailyTask> _dailyTasks = <DailyTask>[
-    DailyTask(title: 'Title 0', counter: 0, icon: Icon(Icons.hot_tub)),
-    DailyTask(title: 'Title 1', counter: 0, icon: Icon(Icons.hot_tub)),
-    DailyTask(title: 'Title 2', counter: 0, icon: Icon(Icons.hot_tub)),
+    DailyTask(title: 'Title 0', counter: 0, icon: Icon(MdiIcons.sword)),
+    DailyTask(title: 'Title 1', counter: 0, icon: Icon(MdiIcons.swordCross)),
+    DailyTask(title: 'Title 2', counter: 0, icon: Icon(MdiIcons.shipWheel)),
   ];
 
   void _addDailyTask() {
@@ -32,7 +51,7 @@ class _TaskScreenState extends State<TaskScreen> {
           DailyTask(
             title: 'Title $currentIndex',
             counter: 0,
-            icon: Icon(Icons.hot_tub),
+            icon: Icon(MdiIcons.unity),
           ),
         );
       },
@@ -59,22 +78,5 @@ class _TaskScreenState extends State<TaskScreen> {
         );
       },
     ).toList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.appBarTitle),
-      ),
-      body: ListView(
-        children: _getCells(_dailyTasks),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addDailyTask,
-        tooltip: 'Add Daily Task',
-        child: Icon(Icons.add),
-      ),
-    );
   }
 }
