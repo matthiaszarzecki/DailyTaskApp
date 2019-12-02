@@ -12,8 +12,8 @@ class DailyTask {
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         counter = json['counter'],
-        icon = _iconFromKey(json['icon']),
-        lastModified = _dateFromString(json['lastModified']);
+        icon = Icon(MdiIcons.sword),//_iconFromKey(json['icon']),
+        lastModified = DateTime.now();//_dateFromString(json['lastModified']);
 
   final String title;
   final int counter;

@@ -34,26 +34,33 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   // TODO(matthiaszarzecki): Read out all saved tasks on startup
-  final List<DailyTask> _dailyTasks = <DailyTask>[
-    DailyTask(title: 'Title 0', counter: 0, icon: Icon(MdiIcons.sword)),
-    DailyTask(title: 'Title 1', counter: 0, icon: Icon(MdiIcons.swordCross)),
-    DailyTask(title: 'Title 2', counter: 0, icon: Icon(MdiIcons.shipWheel)),
-  ];
+  List<DailyTask> _dailyTasks = <DailyTask>[];
+
+  @override
+  void initState() {
+    getAllSavedTasks();
+    super.initState();
+  }
+
+  Future<void> getAllSavedTasks() async {
+    _dailyTasks = await DataStore.getAllDailyTasks();
+    setState(
+      () {},
+    );
+  }
 
   void _addDailyTask() {
-    DataStore.saveDailyTask(_dailyTasks[0]);
-    DataStore.readDailyTask('asds');
-
+    //DataStore.readDailyTask('single_task 01');
+    int currentIndex = _dailyTasks.length;
+    DailyTask newTask = DailyTask(
+      title: 'Title $currentIndex',
+      counter: 0,
+      icon: Icon(MdiIcons.unity),
+    );
     setState(
       () {
-        int currentIndex = _dailyTasks.length;
-        _dailyTasks.add(
-          DailyTask(
-            title: 'Title $currentIndex',
-            counter: 0,
-            icon: Icon(MdiIcons.unity),
-          ),
-        );
+        _dailyTasks.add(newTask);
+        DataStore.saveDailyTask(newTask);
       },
     );
   }
