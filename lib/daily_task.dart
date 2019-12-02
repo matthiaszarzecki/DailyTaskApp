@@ -9,6 +9,7 @@ class DailyTask {
     this.lastModified,
   });
 
+  // TODO(matthiaszarzecki): Fix This
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         counter = json['counter'],
