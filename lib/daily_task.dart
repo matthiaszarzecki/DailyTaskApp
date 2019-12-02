@@ -1,32 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DailyTask {
   DailyTask({
     this.title,
     this.counter,
     this.icon,
+    this.lastModified,
   });
 
-  // TODO(matthiaszarzecki): Add last-modified-variable
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         counter = json['counter'],
-        icon = _iconFromKey(json['icon']);
+        icon = _iconFromKey(json['icon']),
+        lastModified = _dateFromString(json['lastModified']);
 
   final String title;
   final int counter;
   final Icon icon;
+  final DateTime lastModified;
 
-  // TODO(matthiaszarzecki): Figure out Icon-Saving
   static Icon _iconFromKey(String key) {
-    return Icon(Icons.hot_tub);
+    return Icon(MdiIcons.fromString(key));
+  }
+
+  static DateTime _dateFromString(String key) {
+    return DateTime.parse(key);
   }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'title': title,
       'counter': counter,
-      'icon': 'icon',
+      'icon': icon.toString(),
+      'lastModified': DateTime.now().toIso8601String(),
     };
   }
 
