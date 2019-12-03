@@ -31,11 +31,13 @@ class DataStore {
     return tasks;
   }
 
+  /// Gets the number of saved Tasks in the preferences
   static int _getLength(SharedPreferences prefs) {
     int index = prefs.getInt(keyLength);
     return index ?? 0;
   }
 
+  // Sets alls saved tasks (and the number of tasks) to null
   static Future<void> removeAllSavedTasks() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     int length = _getLength(prefs);
