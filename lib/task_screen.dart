@@ -21,6 +21,16 @@ class _TaskScreenState extends State<TaskScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.appBarTitle),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              setState(
+                () {DataStore.removeAllSavedTasks();},
+              );
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: _getCells(_dailyTasks),
@@ -55,7 +65,7 @@ class _TaskScreenState extends State<TaskScreen> {
     DailyTask newTask = DailyTask(
       title: 'Title $currentIndex',
       counter: 0,
-      icon: Icon(MdiIcons.unity),
+      icon: 'unity',
     );
     setState(
       () {
@@ -68,10 +78,11 @@ class _TaskScreenState extends State<TaskScreen> {
   List<Widget> _getCells(List<DailyTask> tasks) {
     return tasks.map(
       (DailyTask currentTask) {
+        print('icon: ${currentTask.icon}');
         return Card(
           child: ListTile(
             title: Text(currentTask.title),
-            leading: currentTask.icon,
+            leading: Icon(MdiIcons.fromString(currentTask.icon)),
             trailing: IconButton(
               icon: Icon(Icons.more_vert),
               tooltip: 'Edit',

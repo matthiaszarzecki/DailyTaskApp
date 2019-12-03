@@ -9,16 +9,15 @@ class DailyTask {
     this.lastModified,
   });
 
-  // TODO(matthiaszarzecki): Fix This
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         counter = json['counter'],
-        icon = Icon(MdiIcons.sword),//_iconFromKey(json['icon']),
-        lastModified = DateTime.now();//_dateFromString(json['lastModified']);
+        icon = json['icon'],
+        lastModified = _dateFromString(json['lastModified']);
 
   final String title;
   final int counter;
-  final Icon icon;
+  final String icon;
   final DateTime lastModified;
 
   static Icon _iconFromKey(String key) {
