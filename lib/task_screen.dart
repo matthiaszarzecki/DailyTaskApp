@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
@@ -26,7 +25,10 @@ class _TaskScreenState extends State<TaskScreen> {
             icon: Icon(Icons.close),
             onPressed: () {
               setState(
-                () {DataStore.removeAllSavedTasks();},
+                () {
+                  _dailyTasks = <DailyTask>[];
+                  DataStore.removeAllSavedTasks();
+                },
               );
             },
           ),
@@ -43,7 +45,6 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  // TODO(matthiaszarzecki): Read out all saved tasks on startup
   List<DailyTask> _dailyTasks = <DailyTask>[];
 
   @override
@@ -65,7 +66,7 @@ class _TaskScreenState extends State<TaskScreen> {
     DailyTask newTask = DailyTask(
       title: 'Title $currentIndex',
       counter: 0,
-      icon: 'unity',
+      iconString: 'unity',
     );
     setState(
       () {
@@ -78,11 +79,10 @@ class _TaskScreenState extends State<TaskScreen> {
   List<Widget> _getCells(List<DailyTask> tasks) {
     return tasks.map(
       (DailyTask currentTask) {
-        print('icon: ${currentTask.icon}');
         return Card(
           child: ListTile(
             title: Text(currentTask.title),
-            leading: Icon(MdiIcons.fromString(currentTask.icon)),
+            leading: currentTask.getIcon(),
             trailing: IconButton(
               icon: Icon(Icons.more_vert),
               tooltip: 'Edit',
