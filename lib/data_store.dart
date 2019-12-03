@@ -15,7 +15,6 @@ class DataStore {
     int length = _getLength(prefs);
     prefs.setInt(keyLength, length + 1);
     prefs.setString('$prefixSingleTask$length', taskAsJson);
-    print('Saved: $prefixSingleTask$length');
   }
 
   // Gets all tasks from the preferences
@@ -23,10 +22,8 @@ class DataStore {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     List<DailyTask> tasks = <DailyTask>[];
     int length = _getLength(prefs);
-    print('length: $length');
     for (int index = 0; index < length; index++) {
       String taskAsString = prefs.getString('$prefixSingleTask$index');
-      print(taskAsString);
       Map<String, dynamic> taskAsMap = jsonDecode(taskAsString);
       DailyTask task = DailyTask.fromJson(taskAsMap);
       tasks.add(task);

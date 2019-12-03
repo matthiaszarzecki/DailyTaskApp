@@ -39,6 +39,6 @@ class DailyTask {
 
   @override
   String toString() {
-    return 'DailyTask: $title, $counter, Icon: $iconString, lastModifed: $lastModified';
+    return 'DailyTask: $title, $counter, icon: $iconString, lastModifed: $lastModified';
   }
 }

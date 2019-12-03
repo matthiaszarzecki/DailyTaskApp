@@ -61,7 +61,6 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _addDailyTask() {
-    //DataStore.readDailyTask('single_task 01');
     int currentIndex = _dailyTasks.length;
     DailyTask newTask = DailyTask(
       title: 'Title $currentIndex',
@@ -82,7 +81,8 @@ class _TaskScreenState extends State<TaskScreen> {
         return Card(
           child: ListTile(
             title: Text(currentTask.title),
-            leading: currentTask.getIcon(),
+            // TODO(matthiaszarzecki): Make this work with the getIcon-function
+            leading: Icon(Icons.add),
             trailing: IconButton(
               icon: Icon(Icons.more_vert),
               tooltip: 'Edit',
