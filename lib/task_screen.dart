@@ -14,6 +14,8 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
+// TODO(mz): add new screen to show details of tasks
+
 class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,7 @@ class _TaskScreenState extends State<TaskScreen> {
   void _addDailyTask() {
     int currentIndex = _dailyTasks.length;
     DailyTask newTask = DailyTask(
-      title: 'Title $currentIndex',
+      title: 'Task $currentIndex',
       counter: 0,
       iconString: 'unity',
     );
@@ -81,8 +83,7 @@ class _TaskScreenState extends State<TaskScreen> {
         return Card(
           child: ListTile(
             title: Text(currentTask.title),
-            // TODO(matthiaszarzecki): Make this work with the getIcon-function
-            leading: Icon(Icons.add),
+            leading: currentTask.getIcon(),
             trailing: IconButton(
               icon: Icon(Icons.more_vert),
               tooltip: 'Edit',

@@ -21,7 +21,7 @@ class DailyTask {
   final DateTime lastModified;
 
   Icon getIcon() {
-    return Icon(MdiIcons.fromString(iconString));
+    return Icon(MdiIcons.fromString(iconString)) ?? Icon(Icons.hourglass_full);
   }
 
   static DateTime _dateFromString(String key) {
@@ -32,7 +32,7 @@ class DailyTask {
     return <String, dynamic>{
       'title': title,
       'counter': counter,
-      'icon': iconString,
+      'iconString': iconString,
       'lastModified': DateTime.now().toIso8601String(),
     };
   }
