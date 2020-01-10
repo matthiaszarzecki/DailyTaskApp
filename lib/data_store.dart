@@ -24,8 +24,8 @@ class DataStore {
     int length = _getLength(prefs);
     for (int index = 0; index < length; index++) {
       String taskAsString = prefs.getString('$prefixSingleTask$index');
-      Map<String, dynamic> taskAsMap = jsonDecode(taskAsString);
-      DailyTask task = DailyTask.fromJson(taskAsMap);
+      Map<String, dynamic> taskAsJson = jsonDecode(taskAsString);
+      DailyTask task = DailyTask.fromJson(taskAsJson);
       tasks.add(task);
     }
     return tasks;

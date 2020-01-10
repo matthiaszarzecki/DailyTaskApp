@@ -88,14 +88,42 @@ class _TaskScreenState extends State<TaskScreen> {
               icon: Icon(Icons.more_vert),
               tooltip: 'Edit',
               onPressed: () {
-                setState(
-                  () {},
+                Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                    builder: (_) {
+                      return TaskDetailScreen();
+                    },
+                  ),
                 );
+                /*setState(
+                  () {},
+                );*/
               },
             ),
           ),
         );
       },
     ).toList();
+  }
+}
+
+class TaskDetailScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Second Route'),
+        backgroundColor: Colors.red,
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Go back!'),
+        ),
+      ),
+    );
   }
 }
