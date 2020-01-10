@@ -14,8 +14,6 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
-// TODO(mz): add new screen to show details of tasks
-
 class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
@@ -108,6 +106,7 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 }
 
+// TODO(mz): Have new screen show details of task
 class TaskDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
