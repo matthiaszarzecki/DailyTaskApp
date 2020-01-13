@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
+import 'package:daily_task_app/task_detail_screen.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
@@ -90,7 +91,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   context,
                   MaterialPageRoute<dynamic>(
                     builder: (_) {
-                      return TaskDetailScreen();
+                      return TaskDetailScreen(task: currentTask);
                     },
                   ),
                 );
@@ -103,26 +104,5 @@ class _TaskScreenState extends State<TaskScreen> {
         );
       },
     ).toList();
-  }
-}
-
-// TODO(mz): Have new screen show details of task
-class TaskDetailScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Second Route'),
-        backgroundColor: Colors.red,
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
-        ),
-      ),
-    );
   }
 }
