@@ -12,7 +12,6 @@ class TaskDetailScreen extends StatefulWidget {
   }
 }
 
-// TODO(mz): Have new screen show details of task
 class _TaskDetailScreenState extends State<TaskDetailScreen> {
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         title: Text(widget.task.title),
       ),
       body: Center(
-        child: Text(widget.task.title),
+        child: Column(
+          children: <Widget>[
+            widget.task.getIcon(),
+            Text('Counter: ${widget.task.counter}'),
+            Text('Last Modified: ${widget.task.lastModified}'),
+          ],
+        ),
       ),
     );
   }
