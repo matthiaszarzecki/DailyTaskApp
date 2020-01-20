@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
-import 'package:daily_task_app/task_detail_screen.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
@@ -39,7 +38,7 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
       body: ListView(
         controller: _scrollController,
-        reverse: false,  // Reverses list
+        reverse: false, // Reverses list
         children: _getCells(_dailyTasks),
       ),
       floatingActionButton: FloatingActionButton(
@@ -51,7 +50,6 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   List<DailyTask> _dailyTasks = <DailyTask>[];
-  // TODO(MZ): Mirror each task in this array
   List<bool> _cellStates = <bool>[];
   final ScrollController _scrollController = ScrollController();
 
@@ -78,6 +76,7 @@ class _TaskScreenState extends State<TaskScreen> {
     DailyTask newTask = DailyTask(
       title: 'Task $currentIndex',
       counter: 0,
+      // TODO(MZ): Add random icon
       iconString: 'unity',
     );
     setState(
@@ -104,31 +103,28 @@ class _TaskScreenState extends State<TaskScreen> {
         return Container(
           height: cellIsOpen ? 300 : 64, //If true, set bigger cell
           child: Card(
-            child: ListTile(
-              title: Text(currentTask.title),
-              leading: currentTask.getIcon(),
-              trailing: IconButton(
-                icon: cellIsOpen
-                    ? Icon(Icons.arrow_drop_up)
-                    : Icon(Icons.arrow_drop_down),
-                tooltip: 'Edit',
-                onPressed: () {
-                  /*Navigator.push<dynamic>(
-                  context,
-                  MaterialPageRoute<dynamic>(
-                    builder: (_) {
-                      return TaskDetailScreen(task: currentTask);
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Text(currentTask.title),
+                  leading: currentTask.getIcon(),
+                  trailing: IconButton(
+                    icon: cellIsOpen
+                        ? Icon(Icons.arrow_drop_up)
+                        : Icon(Icons.arrow_drop_down),
+                    tooltip: 'Edit',
+                    onPressed: () {
+                      setState(
+                        () {
+                          // Open Cell
+                          _cellStates[index] = !cellIsOpen;
+                        },
+                      );
                     },
                   ),
-                  );*/
-                  setState(
-                    () {
-                      // Open Cell
-                      _cellStates[index] = !cellIsOpen;
-                    },
-                  );
-                },
-              ),
+                ),
+              ],
             ),
           ),
         );
