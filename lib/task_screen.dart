@@ -27,7 +27,9 @@ class _TaskScreenState extends State<TaskScreen> {
             onPressed: () {
               setState(
                 () {
+                  // Empty Arrays
                   _dailyTasks = <DailyTask>[];
+                  _cellStates = <bool>[];
                   DataStore.removeAllSavedTasks();
                 },
               );
@@ -36,6 +38,8 @@ class _TaskScreenState extends State<TaskScreen> {
         ],
       ),
       body: ListView(
+        controller: _scrollController,
+        reverse: false,  // Reverses list
         children: _getCells(_dailyTasks),
       ),
       floatingActionButton: FloatingActionButton(
@@ -47,6 +51,9 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   List<DailyTask> _dailyTasks = <DailyTask>[];
+  // TODO(MZ): Mirror each task in this array
+  List<bool> _cellStates = <bool>[];
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -56,6 +63,11 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Future<void> getAllSavedTasks() async {
     _dailyTasks = await DataStore.getAllDailyTasks();
+    _cellStates = List<bool>.filled(
+      _dailyTasks.length,
+      false,
+      growable: true,
+    );
     setState(
       () {},
     );
@@ -71,7 +83,15 @@ class _TaskScreenState extends State<TaskScreen> {
     setState(
       () {
         _dailyTasks.add(newTask);
+        _cellStates.add(false);
         DataStore.saveDailyTask(newTask);
+
+        // TODO(MZ): Figure out scrolling to newest entry
+        _scrollController.animateTo(
+          0.0,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 300),
+        );
       },
     );
   }
@@ -79,26 +99,36 @@ class _TaskScreenState extends State<TaskScreen> {
   List<Widget> _getCells(List<DailyTask> tasks) {
     return tasks.map(
       (DailyTask currentTask) {
-        return Card(
-          child: ListTile(
-            title: Text(currentTask.title),
-            leading: currentTask.getIcon(),
-            trailing: IconButton(
-              icon: Icon(Icons.more_vert),
-              tooltip: 'Edit',
-              onPressed: () {
-                Navigator.push<dynamic>(
+        int index = tasks.indexOf(currentTask);
+        bool cellIsOpen = _cellStates[index];
+        return Container(
+          height: cellIsOpen ? 300 : 64, //If true, set bigger cell
+          child: Card(
+            child: ListTile(
+              title: Text(currentTask.title),
+              leading: currentTask.getIcon(),
+              trailing: IconButton(
+                icon: cellIsOpen
+                    ? Icon(Icons.arrow_drop_up)
+                    : Icon(Icons.arrow_drop_down),
+                tooltip: 'Edit',
+                onPressed: () {
+                  /*Navigator.push<dynamic>(
                   context,
                   MaterialPageRoute<dynamic>(
                     builder: (_) {
                       return TaskDetailScreen(task: currentTask);
                     },
                   ),
-                );
-                /*setState(
-                  () {},
-                );*/
-              },
+                  );*/
+                  setState(
+                    () {
+                      // Open Cell
+                      _cellStates[index] = !cellIsOpen;
+                    },
+                  );
+                },
+              ),
             ),
           ),
         );
