@@ -132,3 +132,26 @@ class _TaskScreenState extends State<TaskScreen> {
     ).toList();
   }
 }
+
+List<Widget> _getChildren(DailyTask currentTask, bool cellIsOpen) {
+  return <Widget>[
+    ListTile(
+      title: Text(currentTask.title),
+      leading: currentTask.getIcon(),
+      trailing: IconButton(
+        icon: cellIsOpen
+            ? Icon(Icons.arrow_drop_up)
+            : Icon(Icons.arrow_drop_down),
+        tooltip: 'Edit',
+        onPressed: () {
+          widget.setState(
+            () {
+              // Open Cell
+              _cellStates[index] = !cellIsOpen;
+            },
+          );
+        },
+      ),
+    ),
+  ];
+}
