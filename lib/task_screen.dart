@@ -105,26 +105,18 @@ class _TaskScreenState extends State<TaskScreen> {
           child: Card(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  title: Text(currentTask.title),
-                  leading: currentTask.getIcon(),
-                  trailing: IconButton(
-                    icon: cellIsOpen
-                        ? Icon(Icons.arrow_drop_up)
-                        : Icon(Icons.arrow_drop_down),
-                    tooltip: 'Edit',
-                    onPressed: () {
-                      setState(
-                        () {
-                          // Open Cell
-                          _cellStates[index] = !cellIsOpen;
-                        },
-                      );
+              children: _getChildren(
+                currentTask,
+                cellIsOpen,
+                () {
+                  setState(
+                    () {
+                      // Open Cell
+                      _cellStates[index] = !cellIsOpen;
                     },
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
           ),
         );
@@ -133,24 +125,21 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 }
 
-List<Widget> _getChildren(DailyTask currentTask, bool cellIsOpen) {
+Icon _buildCellIcon(bool cellIsOpen) {
+  return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
+}
+
+// Should this have state?
+List<Widget> _getChildren(
+    DailyTask currentTask, bool cellIsOpen, Function setState) {
   return <Widget>[
     ListTile(
       title: Text(currentTask.title),
       leading: currentTask.getIcon(),
       trailing: IconButton(
-        icon: cellIsOpen
-            ? Icon(Icons.arrow_drop_up)
-            : Icon(Icons.arrow_drop_down),
+        icon: _buildCellIcon(cellIsOpen),
         tooltip: 'Edit',
-        onPressed: () {
-          widget.setState(
-            () {
-              // Open Cell
-              _cellStates[index] = !cellIsOpen;
-            },
-          );
-        },
+        onPressed: setState(),
       ),
     ),
   ];
