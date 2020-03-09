@@ -116,47 +116,53 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   Container _buildCell(bool cellIsOpen, DailyTask currentTask, int index) {
-    if (cellIsOpen) {
-      return Container(
-        height: 300, //If true, set bigger cell
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _getStandardCellRow(
-              currentTask,
-              cellIsOpen,
-              () {
-                setState(
-                  () {
-                    _openCellAtIndex(index);
-                  },
-                );
-              },
-            ),
+    return cellIsOpen
+        ? _buildLargeCell(cellIsOpen, currentTask, index)
+        : _buildSmallCell(cellIsOpen, currentTask, index);
+  }
+
+  Container _buildSmallCell(bool cellIsOpen, DailyTask currentTask, int index) {
+    return Container(
+      height: 64, //If true, set bigger cell
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: _getStandardCellRow(
+            currentTask,
+            cellIsOpen,
+            () {
+              setState(
+                () {
+                  _openCellAtIndex(index);
+                },
+              );
+            },
           ),
         ),
-      );
-    } else {
-      return Container(
-        height: 64, //If true, set bigger cell
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _getStandardCellRow(
-              currentTask,
-              cellIsOpen,
-              () {
-                setState(
-                  () {
-                    _openCellAtIndex(index);
-                  },
-                );
-              },
-            ),
+      ),
+    );
+  }
+
+  Container _buildLargeCell(bool cellIsOpen, DailyTask currentTask, int index) {
+    return Container(
+      height: 300, //If true, set bigger cell
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: _getStandardCellRow(
+            currentTask,
+            cellIsOpen,
+            () {
+              setState(
+                () {
+                  _openCellAtIndex(index);
+                },
+              );
+            },
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   void _openCellAtIndex(int index) {
