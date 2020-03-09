@@ -143,6 +143,7 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
+  // TODO(MZ): Add Button
   Container _buildLargeCell(bool cellIsOpen, DailyTask currentTask, int index) {
     return Container(
       height: 300, //If true, set bigger cell
