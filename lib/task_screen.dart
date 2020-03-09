@@ -121,8 +121,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 () {
                   setState(
                     () {
-                      // Open Cell
-                      _cellStates[index] = !cellIsOpen;
+                      _openCellAtIndex(index);
                     },
                   );
                 },
@@ -134,11 +133,15 @@ class _TaskScreenState extends State<TaskScreen> {
     ).toList();
   }
 
+  void _openCellAtIndex(int index) {
+    _cellStates[index] = !_cellStates[index];
+  }
+
   Icon _buildCellIcon(bool cellIsOpen) {
     return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
   }
 
-  // Should this have state?
+  // TODO(MZ): Should this have state?
   List<Widget> _getCellContent(
     DailyTask currentTask,
     bool cellIsOpen,
