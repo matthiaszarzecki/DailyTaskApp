@@ -12,8 +12,8 @@ dependencies:
 
   cupertino_icons: 0.1.2
   dart_random_choice: 0.0.2
-  shared_preferences: 0.5.4+3
   material_design_icons_flutter: 3.4.4595
+  shared_preferences: 0.5.4+3
 
 dev_dependencies:
   flutter_test:

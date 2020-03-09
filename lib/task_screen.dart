@@ -110,27 +110,53 @@ class _TaskScreenState extends State<TaskScreen> {
       (DailyTask currentTask) {
         int index = tasks.indexOf(currentTask);
         bool cellIsOpen = _cellStates[index];
-        return Container(
-          height: cellIsOpen ? 300 : 64, //If true, set bigger cell
-          child: Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: _getCellContent(
-                currentTask,
-                cellIsOpen,
-                () {
-                  setState(
-                    () {
-                      _openCellAtIndex(index);
-                    },
-                  );
-                },
-              ),
-            ),
-          ),
-        );
+        return _buildCell(cellIsOpen, currentTask, index);
       },
     ).toList();
+  }
+
+  Container _buildCell(bool cellIsOpen, DailyTask currentTask, int index) {
+    if (cellIsOpen) {
+      return Container(
+        height: 300, //If true, set bigger cell
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: _getStandardCellRow(
+              currentTask,
+              cellIsOpen,
+              () {
+                setState(
+                  () {
+                    _openCellAtIndex(index);
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        height: 64, //If true, set bigger cell
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: _getStandardCellRow(
+              currentTask,
+              cellIsOpen,
+              () {
+                setState(
+                  () {
+                    _openCellAtIndex(index);
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   void _openCellAtIndex(int index) {
@@ -141,8 +167,7 @@ class _TaskScreenState extends State<TaskScreen> {
     return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
   }
 
-  // TODO(MZ): Should this have state?
-  List<Widget> _getCellContent(
+  List<Widget> _getStandardCellRow(
     DailyTask currentTask,
     bool cellIsOpen,
     Function setState,
