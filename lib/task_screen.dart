@@ -1,3 +1,4 @@
+import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:flutter/material.dart';
 
 import 'package:daily_task_app/daily_task.dart';
@@ -15,6 +16,16 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+  List<DailyTask> _dailyTasks = <DailyTask>[];
+  List<bool> _cellStates = <bool>[];
+  final ScrollController _scrollController = ScrollController();
+  final List<String> iconStrings = <String>[
+    'unity',
+    'adobe',
+    'airplane-off',
+    'battery-70',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +41,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   _dailyTasks = <DailyTask>[];
                   _cellStates = <bool>[];
                   DataStore.removeAllSavedTasks();
+                  print('Deleted all tasks');
                 },
               );
             },
@@ -48,10 +60,6 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
     );
   }
-
-  List<DailyTask> _dailyTasks = <DailyTask>[];
-  List<bool> _cellStates = <bool>[];
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -76,8 +84,7 @@ class _TaskScreenState extends State<TaskScreen> {
     DailyTask newTask = DailyTask(
       title: 'Task $currentIndex',
       counter: 0,
-      // TODO(MZ): Add random icon
-      iconString: 'unity',
+      iconString: _getRandomIconString(),
     );
     setState(
       () {
@@ -91,10 +98,13 @@ class _TaskScreenState extends State<TaskScreen> {
           curve: Curves.easeOut,
           duration: const Duration(milliseconds: 300),
         );
+
+        print('Added new task: ${newTask.title}');
       },
     );
   }
 
+  // Builds the cells. Is called on screen-load and cell-addition
   List<Widget> _getCells(List<DailyTask> tasks) {
     return tasks.map(
       (DailyTask currentTask) {
@@ -105,7 +115,7 @@ class _TaskScreenState extends State<TaskScreen> {
           child: Card(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: _getChildren(
+              children: _getCellContent(
                 currentTask,
                 cellIsOpen,
                 () {
@@ -123,24 +133,31 @@ class _TaskScreenState extends State<TaskScreen> {
       },
     ).toList();
   }
-}
 
-Icon _buildCellIcon(bool cellIsOpen) {
-  return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
-}
+  Icon _buildCellIcon(bool cellIsOpen) {
+    return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
+  }
 
-// Should this have state?
-List<Widget> _getChildren(
-    DailyTask currentTask, bool cellIsOpen, Function setState) {
-  return <Widget>[
-    ListTile(
-      title: Text(currentTask.title),
-      leading: currentTask.getIcon(),
-      trailing: IconButton(
-        icon: _buildCellIcon(cellIsOpen),
-        tooltip: 'Edit',
-        onPressed: setState(),
+  // Should this have state?
+  List<Widget> _getCellContent(
+    DailyTask currentTask,
+    bool cellIsOpen,
+    Function setState,
+  ) {
+    return <Widget>[
+      ListTile(
+        title: Text(currentTask.title),
+        leading: currentTask.getIcon(),
+        trailing: IconButton(
+          icon: _buildCellIcon(cellIsOpen),
+          tooltip: 'Edit',
+          onPressed: setState,
+        ),
       ),
-    ),
-  ];
+    ];
+  }
+
+  String _getRandomIconString() {
+    return randomChoice(iconStrings);
+  }
 }
