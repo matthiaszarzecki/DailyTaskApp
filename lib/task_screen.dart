@@ -211,11 +211,37 @@ class _TaskScreenState extends State<TaskScreen> {
         children: <Widget>[
           FlatButton(
             child: const Text('BUY TICKETS'),
-            onPressed: () {/* ... */},
+            onPressed: () {},
           ),
           FlatButton(
             child: const Text('LISTEN'),
-            onPressed: () {/* ... */},
+            onPressed: () {},
+          ),
+        ],
+      ),
+      TextField(
+        obscureText: true,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Password',
+        ),
+      ),
+      ButtonBar(
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.volume_up),
+            tooltip: 'Increase volume by 10',
+            onPressed: () {
+              setState(() {});
+            },
+          ),
+          FlatButton(
+            child: const Text('asddsa TICKETS'),
+            onPressed: () {},
+          ),
+          FlatButton(
+            child: const Text('LISTEN'),
+            onPressed: () {},
           ),
         ],
       ),
