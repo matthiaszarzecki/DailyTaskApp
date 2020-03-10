@@ -217,6 +217,10 @@ class _TaskScreenState extends State<TaskScreen> {
             child: const Text('LISTEN'),
             onPressed: () {},
           ),
+          OutlineButton(
+            onPressed: () {},
+            child: Icon(Icons.volume_up),
+          ),
         ],
       ),
       TextField(
@@ -234,6 +238,12 @@ class _TaskScreenState extends State<TaskScreen> {
             onPressed: () {
               setState(() {});
             },
+          ),
+          OutlineButton(
+            onPressed: () {},
+            child: Text(
+              "Outline Button",
+            ),
           ),
           FlatButton(
             child: const Text('asddsa TICKETS'),
