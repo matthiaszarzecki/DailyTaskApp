@@ -143,16 +143,16 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  // TODO(MZ): Add Button
   Container _buildLargeCell(bool cellIsOpen, DailyTask currentTask, int index) {
     return Container(
       height: 300, //If true, set bigger cell
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: _getStandardCellRow(
+          children: _getExpandewdCellRow(
             currentTask,
             cellIsOpen,
+            // TODO(MZ): Simplify this
             () {
               setState(
                 () {
@@ -188,6 +188,36 @@ class _TaskScreenState extends State<TaskScreen> {
           tooltip: 'Edit',
           onPressed: setState,
         ),
+      ),
+    ];
+  }
+
+  List<Widget> _getExpandewdCellRow(
+    DailyTask currentTask,
+    bool cellIsOpen,
+    Function setState,
+  ) {
+    return <Widget>[
+      ListTile(
+        title: Text(currentTask.title),
+        leading: currentTask.getIcon(),
+        trailing: IconButton(
+          icon: _buildCellIcon(cellIsOpen),
+          tooltip: 'Edit',
+          onPressed: setState,
+        ),
+      ),
+      ButtonBar(
+        children: <Widget>[
+          FlatButton(
+            child: const Text('BUY TICKETS'),
+            onPressed: () {/* ... */},
+          ),
+          FlatButton(
+            child: const Text('LISTEN'),
+            onPressed: () {/* ... */},
+          ),
+        ],
       ),
     ];
   }
