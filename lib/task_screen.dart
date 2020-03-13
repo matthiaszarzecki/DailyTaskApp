@@ -174,6 +174,8 @@ class _TaskScreenState extends State<TaskScreen> {
     return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
   }
 
+  // TODO(MZ): Allow Changing of icons
+      // TODO(MZ): Close all other cells when opening one
   List<Widget> _getStandardCellRow(
     DailyTask currentTask,
     bool cellIsOpen,
@@ -209,34 +211,29 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
       ButtonBar(
         children: <Widget>[
-          FlatButton(
-            child: const Text('DAILY'),
+          OutlineButton(
             onPressed: () {},
+            child: currentTask.getIcon(),
           ),
           OutlineButton(
             onPressed: () {},
-            child: Icon(Icons.volume_up),
-          ),
-          IconButton(
-            icon: Icon(Icons.volume_up),
-            tooltip: 'Increase volume by 10',
-            onPressed: () {},
+            child: const Text('Daily'),
           ),
           OutlineButton(
             onPressed: () {},
-            child: const Text('Outline Button'),
+            child: const Text('+1'),
           ),
         ],
       ),
       TextField(
         obscureText: true,
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelText: currentTask.title,
         ),
       ),
-      // TODO(MZ): Allow Changing of icons
-      const Text('This is a text'),
+      const Text('Current Streak: 13 Days'),
+      const Text('Record Streak: 24 Days'),
       ButtonBar(
         children: <Widget>[
           FlatButton(
