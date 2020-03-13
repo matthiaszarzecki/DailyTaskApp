@@ -175,7 +175,7 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   // TODO(MZ): Allow Changing of icons
-      // TODO(MZ): Close all other cells when opening one
+  // TODO(MZ): Close all other cells when opening one
   List<Widget> _getStandardCellRow(
     DailyTask currentTask,
     bool cellIsOpen,
@@ -232,8 +232,14 @@ class _TaskScreenState extends State<TaskScreen> {
           labelText: currentTask.title,
         ),
       ),
-      const Text('Current Streak: 13 Days'),
-      const Text('Record Streak: 24 Days'),
+      const Text(
+        'Current Streak: 13 Days',
+        textAlign: TextAlign.right,
+      ),
+      const Text(
+        'Record Streak: 24 Days',
+        textAlign: TextAlign.left,
+      ),
       ButtonBar(
         children: <Widget>[
           FlatButton(
