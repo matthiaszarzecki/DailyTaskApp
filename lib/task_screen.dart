@@ -210,16 +210,21 @@ class _TaskScreenState extends State<TaskScreen> {
       ButtonBar(
         children: <Widget>[
           FlatButton(
-            child: const Text('BUY TICKETS'),
-            onPressed: () {},
-          ),
-          FlatButton(
-            child: const Text('LISTEN'),
+            child: const Text('DAILY'),
             onPressed: () {},
           ),
           OutlineButton(
             onPressed: () {},
             child: Icon(Icons.volume_up),
+          ),
+          IconButton(
+            icon: Icon(Icons.volume_up),
+            tooltip: 'Increase volume by 10',
+            onPressed: () {},
+          ),
+          OutlineButton(
+            onPressed: () {},
+            child: const Text('Outline Button'),
           ),
         ],
       ),
@@ -227,30 +232,15 @@ class _TaskScreenState extends State<TaskScreen> {
         obscureText: true,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          labelText: 'Password',
+          labelText: currentTask.title,
         ),
       ),
+      // TODO(MZ): Allow Changing of icons
+      const Text('This is a text'),
       ButtonBar(
         children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.volume_up),
-            tooltip: 'Increase volume by 10',
-            onPressed: () {
-              setState(() {});
-            },
-          ),
-          OutlineButton(
-            onPressed: () {},
-            child: Text(
-              "Outline Button",
-            ),
-          ),
           FlatButton(
-            child: const Text('asddsa TICKETS'),
-            onPressed: () {},
-          ),
-          FlatButton(
-            child: const Text('LISTEN'),
+            child: const Text('DELETE TASK'),
             onPressed: () {},
           ),
         ],
