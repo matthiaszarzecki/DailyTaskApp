@@ -212,7 +212,9 @@ class _TaskScreenState extends State<TaskScreen> {
       ButtonBar(
         children: <Widget>[
           OutlineButton(
-            onPressed: () {},
+            onPressed: () {
+              _getNewIcon();
+            },
             child: currentTask.getIcon(),
           ),
           OutlineButton(
@@ -244,7 +246,10 @@ class _TaskScreenState extends State<TaskScreen> {
         children: <Widget>[
           FlatButton(
             child: const Text('DELETE TASK'),
-            onPressed: () {},
+            color: Colors.redAccent,
+            onPressed: () {
+              _deleteTask();
+            },
           ),
         ],
       ),
@@ -253,5 +258,13 @@ class _TaskScreenState extends State<TaskScreen> {
 
   String _getRandomIconString() {
     return randomChoice(iconStrings);
+  }
+
+  void _deleteTask() {
+    // TODO(MZ): Delete Task
+  }
+
+  void _getNewIcon() {
+    // TODO(MZ): Assign random icon
   }
 }
