@@ -47,8 +47,10 @@ class DataStore {
     prefs.setInt(keyLength, null);
   }
 
-  static Future<void> removeSingleTask() async {
+  static Future<void> removeSingleTask(DailyTask task, int index) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
     int length = _getLength(prefs);
     for (int index = 0; index < length; index++) {
       prefs.setString('$prefixSingleTask$index', null);
@@ -56,7 +58,7 @@ class DataStore {
     prefs.setInt(keyLength, null);
 
     // remove specified task from task-array
-    // Save ALL tasks again, overwriting the old task-slot
+    // Save ALL tasks after again, overwriting the old task-slot
   }
 
   static Future<void> updateSingleTask(DailyTask task, int index) async {
