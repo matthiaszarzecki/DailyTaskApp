@@ -17,7 +17,7 @@ class DailyTask {
 
   final String title;
   final int counter;
-  final String iconString;
+  String iconString;
   final DateTime lastModified;
 
   Icon getIcon() {

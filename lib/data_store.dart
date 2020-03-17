@@ -8,7 +8,7 @@ class DataStore {
   static const String prefixSingleTask = 'single_task_';
 
   /// Saves a single daily task to the preferences with continuing index
-  static Future<void> saveDailyTask(DailyTask task) async {
+  static Future<void> saveNewDailyTask(DailyTask task) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> taskAsMap = task.toJson();
     String taskAsJson = jsonEncode(taskAsMap);
@@ -45,5 +45,25 @@ class DataStore {
       prefs.setString('$prefixSingleTask$index', null);
     }
     prefs.setInt(keyLength, null);
+  }
+
+  static Future<void> removeSingleTask() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int length = _getLength(prefs);
+    for (int index = 0; index < length; index++) {
+      prefs.setString('$prefixSingleTask$index', null);
+    }
+    prefs.setInt(keyLength, null);
+
+    // remove specified task from task-array
+    // Save ALL tasks again, overwriting the old task-slot
+  }
+
+  static Future<void> updateSingleTask(DailyTask task, int index) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Saves new task to specified index, overwriting the old one
+    Map<String, dynamic> taskAsMap = task.toJson();
+    String taskAsJson = jsonEncode(taskAsMap);
+    prefs.setString('$prefixSingleTask$index', taskAsJson);
   }
 }

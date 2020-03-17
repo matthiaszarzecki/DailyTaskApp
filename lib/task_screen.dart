@@ -90,7 +90,7 @@ class _TaskScreenState extends State<TaskScreen> {
       () {
         _dailyTasks.add(newTask);
         _cellStates.add(false);
-        DataStore.saveDailyTask(newTask);
+        DataStore.saveNewDailyTask(newTask);
 
         // TODO(MZ): Figure out scrolling to newest entry
         _scrollController.animateTo(
@@ -160,6 +160,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 },
               );
             },
+            index,
           ),
         ),
       ),
@@ -198,6 +199,7 @@ class _TaskScreenState extends State<TaskScreen> {
     DailyTask currentTask,
     bool cellIsOpen,
     Function setState,
+    int index,
   ) {
     return <Widget>[
       ListTile(
@@ -213,7 +215,7 @@ class _TaskScreenState extends State<TaskScreen> {
         children: <Widget>[
           OutlineButton(
             onPressed: () {
-              _getNewIcon();
+              _getNewIcon(currentTask, index);
             },
             child: currentTask.getIcon(),
           ),
@@ -262,9 +264,18 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void _deleteTask() {
     // TODO(MZ): Delete Task
+    // Remove task from array Empty Arrays
+    //_dailyTasks = <DailyTask>[];
+    //_cellStates = <bool>[];
+    //DataStore.removeAllSavedTasks();
+    //print('Deleted all tasks');
   }
 
-  void _getNewIcon() {
-    // TODO(MZ): Assign random icon
+  void _getNewIcon(DailyTask currentTask, int index) {
+    setState(() {
+      currentTask.iconString = _getRandomIconString();
+    });
+    DataStore.updateSingleTask(currentTask, index);
+    // TODO(MZ): Save Icon
   }
 }
