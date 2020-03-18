@@ -50,15 +50,19 @@ class DataStore {
   static Future<void> removeSingleTask(DailyTask task, int index) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-
     int length = _getLength(prefs);
-    for (int index = 0; index < length; index++) {
-      prefs.setString('$prefixSingleTask$index', null);
+    // Find saved task at Index
+    for (int counter = index + 1; counter < length; counter++) {
+      // More all SUBSEQUENT TASKS down one step, thus overwriting the specified task
+      int adaptedIndex = counter - 1;
+      prefs.setString('$prefixSingleTask$adaptedIndex', null);
     }
-    prefs.setInt(keyLength, null);
 
-    // remove specified task from task-array
-    // Save ALL tasks after again, overwriting the old task-slot
+    // Set Index to -1, and save it
+    prefs.setInt(keyLength, length - 1);
+
+    // There is still technically a task saved at the previous length-index, but will not be accessed
+    
   }
 
   static Future<void> updateSingleTask(DailyTask task, int index) async {

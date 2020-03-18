@@ -250,7 +250,7 @@ class _TaskScreenState extends State<TaskScreen> {
             child: const Text('DELETE TASK'),
             color: Colors.redAccent,
             onPressed: () {
-              _deleteTask();
+              _deleteTask(currentTask, index);
             },
           ),
         ],
@@ -262,13 +262,14 @@ class _TaskScreenState extends State<TaskScreen> {
     return randomChoice(iconStrings);
   }
 
-  void _deleteTask() {
+  void _deleteTask(DailyTask currentTask, int index) {
     // TODO(MZ): Delete Task
-    // Remove task from array Empty Arrays
+    // Remove task from task-arrays 
     //_dailyTasks = <DailyTask>[];
     //_cellStates = <bool>[];
-    //DataStore.removeAllSavedTasks();
-    //print('Deleted all tasks');
+
+    DataStore.removeSingleTask(currentTask, index);
+    print("Deleted Task '${currentTask.title}' at index $currentTask");
   }
 
   void _getNewIcon(DailyTask currentTask, int index) {
