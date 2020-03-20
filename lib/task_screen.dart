@@ -278,6 +278,6 @@ class _TaskScreenState extends State<TaskScreen> {
       currentTask.iconString = _getRandomIconString();
     });
     DataStore.updateSingleTask(currentTask, index);
-    // TODO(MZ): Save Icon
+    print('Updated Icon to ${currentTask.iconString}');
   }
 }
