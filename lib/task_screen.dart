@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
+import 'package:daily_task_app/intervals.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
@@ -221,7 +222,7 @@ class _TaskScreenState extends State<TaskScreen> {
           ),
           OutlineButton(
             onPressed: () {},
-            child: const Text('Daily'),
+            child: Text(intervals.daily.toString()),
           ),
           OutlineButton(
             onPressed: () {},

@@ -1,0 +1,4 @@
+enum intervals {
+  daily,
+  monthly,
+}
