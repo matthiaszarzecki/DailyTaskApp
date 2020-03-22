@@ -167,6 +167,8 @@ class _TaskScreenState extends State<TaskScreen> {
 
   // TODO(MZ): Allow Changing of icons
   // TODO(MZ): Close all other cells when opening one
+  // TODO(MZ): Display when a task has been last updated (1 day ago, etc) - Find library?
+  // TODO(MZ): Find Library for saving things on device
   List<Widget> _getStandardCellRow(
     DailyTask currentTask,
     bool cellIsOpen,
