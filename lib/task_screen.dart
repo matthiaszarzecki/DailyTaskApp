@@ -131,13 +131,7 @@ class _TaskScreenState extends State<TaskScreen> {
           children: _getStandardCellRow(
             currentTask,
             cellIsOpen,
-            () {
-              setState(
-                () {
-                  _openCellAtIndex(index);
-                },
-              );
-            },
+            () => _openCellAtIndex(index),
           ),
         ),
       ),
@@ -153,14 +147,7 @@ class _TaskScreenState extends State<TaskScreen> {
           children: _getExpandewdCellRow(
             currentTask,
             cellIsOpen,
-            // TODO(MZ): Simplify this
-            () {
-              setState(
-                () {
-                  _openCellAtIndex(index);
-                },
-              );
-            },
+            () => _openCellAtIndex(index),
             index,
           ),
         ),
@@ -169,7 +156,11 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _openCellAtIndex(int index) {
-    _cellStates[index] = !_cellStates[index];
+    setState(
+      () {
+        _cellStates[index] = !_cellStates[index];
+      },
+    );
   }
 
   Icon _buildCellIcon(bool cellIsOpen) {
@@ -265,7 +256,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void _deleteTask(DailyTask currentTask, int index) {
     // TODO(MZ): Delete Task
-    // Remove task from task-arrays 
+    // Remove task from task-arrays
     //_dailyTasks = <DailyTask>[];
     //_cellStates = <bool>[];
 
