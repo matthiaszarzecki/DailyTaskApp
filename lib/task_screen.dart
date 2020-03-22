@@ -156,11 +156,9 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _openCellAtIndex(int index) {
-    setState(
-      () {
-        _cellStates[index] = !_cellStates[index];
-      },
-    );
+    setState(() {
+      _cellStates[index] = !_cellStates[index];
+    });
   }
 
   Icon _buildCellIcon(bool cellIsOpen) {
@@ -241,9 +239,7 @@ class _TaskScreenState extends State<TaskScreen> {
           FlatButton(
             child: const Text('DELETE TASK'),
             color: Colors.redAccent,
-            onPressed: () {
-              _deleteTask(currentTask, index);
-            },
+            onPressed: () => _deleteTask(currentTask, index),
           ),
         ],
       ),
@@ -255,12 +251,13 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _deleteTask(DailyTask currentTask, int index) {
-    // TODO(MZ): Delete Task
-    // Remove task from task-arrays
-    //_dailyTasks = <DailyTask>[];
-    //_cellStates = <bool>[];
-
     DataStore.removeSingleTask(currentTask, index);
+
+    setState(() {
+      _dailyTasks.removeAt(index);
+      _cellStates.removeAt(index);
+    });
+
     print("Deleted Task '${currentTask.title}' at index $currentTask");
   }
 

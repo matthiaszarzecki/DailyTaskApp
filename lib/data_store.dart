@@ -49,6 +49,7 @@ class DataStore {
 
   static Future<void> removeSingleTask(DailyTask task, int index) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // TODO(MZ): Delete Task
 
     int length = _getLength(prefs);
     // Find saved task at Index
@@ -62,7 +63,6 @@ class DataStore {
     prefs.setInt(keyLength, length - 1);
 
     // There is still technically a task saved at the previous length-index, but will not be accessed
-    
   }
 
   static Future<void> updateSingleTask(DailyTask task, int index) async {
