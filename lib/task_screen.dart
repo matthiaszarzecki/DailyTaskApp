@@ -140,11 +140,11 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Container _buildLargeCell(bool cellIsOpen, DailyTask currentTask, int index) {
     return Container(
-      height: 300, //If true, set bigger cell
+      height: 310, //If true, set bigger cell
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: _getExpandewdCellRow(
+          children: _getExpandedCellRow(
             currentTask,
             cellIsOpen,
             () => _openCellAtIndex(index),
@@ -187,7 +187,7 @@ class _TaskScreenState extends State<TaskScreen> {
     ];
   }
 
-  List<Widget> _getExpandewdCellRow(
+  List<Widget> _getExpandedCellRow(
     DailyTask currentTask,
     bool cellIsOpen,
     Function setState,
@@ -234,6 +234,10 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
       const Text(
         'Record Streak: 24 Days',
+        textAlign: TextAlign.left,
+      ),
+      const Text(
+        'Last updated: 2 Days ago',
         textAlign: TextAlign.left,
       ),
       ButtonBar(
