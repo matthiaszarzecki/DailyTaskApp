@@ -236,8 +236,8 @@ class _TaskScreenState extends State<TaskScreen> {
         'Record Streak: 24 Days',
         textAlign: TextAlign.left,
       ),
-      const Text(
-        'Last updated: 2 Days ago',
+      Text(
+        'Last updated: ${currentTask.lastModified}',
         textAlign: TextAlign.left,
       ),
       ButtonBar(
