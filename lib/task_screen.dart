@@ -92,9 +92,10 @@ class _TaskScreenState extends State<TaskScreen> {
       _cellStates.add(false);
       DataStore.saveNewDailyTask(newTask);
 
-      // TODO(MZ): Scroll to newest entry
+      // Scrolls the view to the lowest scroll position,
+      // and a bit further to accomodate cell-height
       _scrollController.animateTo(
-        0.0,
+        _scrollController.position.maxScrollExtent + 150,
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 300),
       );
@@ -122,7 +123,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Container _buildSmallCell(bool cellIsOpen, DailyTask currentTask, int index) {
     return Container(
-      height: 64, //If true, set bigger cell
+      height: 64,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -138,7 +139,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Container _buildLargeCell(bool cellIsOpen, DailyTask currentTask, int index) {
     return Container(
-      height: 310, //If true, set bigger cell
+      height: 310,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -153,6 +154,7 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
+  // TODO(MZ): Scroll to show full cell when lower cells opened
   void _openCellAtIndex(int index) {
     setState(() {
       // Close all cells that are not the specified cell
