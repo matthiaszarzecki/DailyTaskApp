@@ -95,7 +95,8 @@ class _TaskScreenState extends State<TaskScreen> {
       // Scrolls the view to the lowest scroll position,
       // and a bit further to accomodate cell-height
       _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent + 150,
+        // TODO(MZ): Only scroll when new cell would be very low on screen
+        0.0,//_scrollController.position.maxScrollExtent + 150,
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 300),
       );
