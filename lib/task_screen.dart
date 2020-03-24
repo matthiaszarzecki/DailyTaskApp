@@ -154,8 +154,13 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _openCellAtIndex(int index) {
-    // TODO(MZ): Close all other cells when opening one
     setState(() {
+      // Close all cells that are not the specified cell
+      for (int counter = 0; counter < _cellStates.length; counter++) {
+        if (counter != index) {
+          _cellStates[counter] = false;
+        }
+      }
       _cellStates[index] = !_cellStates[index];
     });
   }
