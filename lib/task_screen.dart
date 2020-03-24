@@ -92,7 +92,7 @@ class _TaskScreenState extends State<TaskScreen> {
       _cellStates.add(false);
       DataStore.saveNewDailyTask(newTask);
 
-      // TODO(MZ): Figure out scrolling to newest entry
+      // TODO(MZ): Scroll to newest entry
       _scrollController.animateTo(
         0.0,
         curve: Curves.easeOut,
@@ -154,6 +154,7 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _openCellAtIndex(int index) {
+    // TODO(MZ): Close all other cells when opening one
     setState(() {
       _cellStates[index] = !_cellStates[index];
     });
@@ -163,10 +164,6 @@ class _TaskScreenState extends State<TaskScreen> {
     return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
   }
 
-  // TODO(MZ): Allow Changing of icons
-  // TODO(MZ): Close all other cells when opening one
-  // TODO(MZ): Display when a task has been last updated (1 day ago, etc) - Find library?
-  // TODO(MZ): Find Library for saving things on device
   List<Widget> _getStandardCellRow(
     DailyTask currentTask,
     bool cellIsOpen,
@@ -234,6 +231,7 @@ class _TaskScreenState extends State<TaskScreen> {
         'Record Streak: 24 Days',
         textAlign: TextAlign.left,
       ),
+      // TODO(MZ): Display when a task has been last updated (1 day ago, etc)
       Text(
         'Last updated: ${currentTask.lastModified}',
         textAlign: TextAlign.left,
@@ -266,6 +264,7 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _getNewIcon(DailyTask currentTask, int index) {
+    // TODO(MZ): Allow Custom Setting of Icons
     setState(() {
       currentTask.iconString = _getRandomIconString();
     });
