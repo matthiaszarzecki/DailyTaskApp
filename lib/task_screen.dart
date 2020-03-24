@@ -1,5 +1,6 @@
 import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:flutter/material.dart';
+import 'package:popup_menu/popup_menu.dart';
 
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
@@ -26,6 +27,8 @@ class _TaskScreenState extends State<TaskScreen> {
     'airplane-off',
     'battery-70',
   ];
+
+  GlobalKey btnKey2 = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +99,7 @@ class _TaskScreenState extends State<TaskScreen> {
       // and a bit further to accomodate cell-height
       _scrollController.animateTo(
         // TODO(MZ): Only scroll when new cell would be very low on screen
-        0.0,//_scrollController.position.maxScrollExtent + 150,
+        0.0, //_scrollController.position.maxScrollExtent + 150,
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 300),
       );
@@ -251,6 +254,14 @@ class _TaskScreenState extends State<TaskScreen> {
             color: Colors.redAccent,
             onPressed: () => _deleteTask(currentTask, index),
           ),
+          Container(
+            child: MaterialButton(
+              key: btnKey2,
+              height: 45.0,
+              onPressed: customBackground,
+              child: const Text('Show Menu'),
+            ),
+          ),
         ],
       ),
     ];
@@ -278,5 +289,71 @@ class _TaskScreenState extends State<TaskScreen> {
     });
     DataStore.updateSingleTask(currentTask, index);
     print('Updated Icon to ${currentTask.iconString}');
+  }
+
+  void customBackground() {
+    PopupMenu menu = PopupMenu(
+      // backgroundColor: Colors.teal,
+      // lineColor: Colors.tealAccent,
+      // maxColumn: 2,
+      items: <MenuItem>[
+        MenuItem(
+          title: 'Copy',
+          image: Image.asset('assets/copy.png'),
+        ),
+        MenuItem(
+          title: 'Home',
+          textStyle: TextStyle(fontSize: 10.0, color: Colors.tealAccent),
+          image: Icon(
+            Icons.home,
+            color: Colors.white,
+          ),
+        ),
+        MenuItem(
+          title: 'Mail',
+          image: Icon(
+            Icons.mail,
+            color: Colors.white,
+          ),
+        ),
+        MenuItem(
+          title: 'Power',
+          image: Icon(
+            Icons.power,
+            color: Colors.white,
+          ),
+        ),
+        MenuItem(
+          title: 'Setting',
+          image: Icon(
+            Icons.settings,
+            color: Colors.white,
+          ),
+        ),
+        MenuItem(
+          title: 'PopupMenu',
+          image: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+        )
+      ],
+      onClickMenu: onClickMenu,
+      stateChanged: stateChanged,
+      onDismiss: onDismiss,
+    );
+    menu.show(widgetKey: btnKey2);
+  }
+
+  void stateChanged(bool isShow) {
+    print('menu is ${isShow ? 'showing' : 'closed'}');
+  }
+
+  void onClickMenu(MenuItemProvider item) {
+    print('Click menu -> ${item.menuTitle}');
+  }
+
+  void onDismiss() {
+    print('Menu is dismiss');
   }
 }
