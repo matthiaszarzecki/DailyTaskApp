@@ -87,22 +87,20 @@ class _TaskScreenState extends State<TaskScreen> {
       counter: 0,
       iconString: _getRandomIconString(),
     );
-    setState(
-      () {
-        _dailyTasks.add(newTask);
-        _cellStates.add(false);
-        DataStore.saveNewDailyTask(newTask);
+    setState(() {
+      _dailyTasks.add(newTask);
+      _cellStates.add(false);
+      DataStore.saveNewDailyTask(newTask);
 
-        // TODO(MZ): Figure out scrolling to newest entry
-        _scrollController.animateTo(
-          0.0,
-          curve: Curves.easeOut,
-          duration: const Duration(milliseconds: 300),
-        );
+      // TODO(MZ): Figure out scrolling to newest entry
+      _scrollController.animateTo(
+        0.0,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 300),
+      );
 
-        print('Added new task: ${newTask.title}');
-      },
-    );
+      print('Added new task: ${newTask.title}');
+    });
   }
 
   // Builds the cells. Is called on screen-load and cell-addition

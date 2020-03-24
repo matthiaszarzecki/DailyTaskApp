@@ -49,14 +49,14 @@ class DataStore {
 
   static Future<void> removeSingleTask(DailyTask task, int index) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // TODO(MZ): Delete Task
-
     int length = _getLength(prefs);
     // Find saved task at Index
     for (int counter = index + 1; counter < length; counter++) {
       // More all SUBSEQUENT TASKS down one step, thus overwriting the specified task
       int adaptedIndex = counter - 1;
-      prefs.setString('$prefixSingleTask$adaptedIndex', null);
+      Map<String, dynamic> taskAsMap = task.toJson();
+      String taskAsJson = jsonEncode(taskAsMap);
+      prefs.setString('$prefixSingleTask$adaptedIndex', taskAsJson);
     }
 
     // Set Index to -1, and save it
