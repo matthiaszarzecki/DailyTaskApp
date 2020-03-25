@@ -32,6 +32,8 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    PopupMenu.context = context;
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.appBarTitle),
