@@ -36,20 +36,7 @@ class _TaskScreenState extends State<TaskScreen> {
       appBar: AppBar(
         title: Text(widget.appBarTitle),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () {
-              setState(
-                () {
-                  // Empty Arrays
-                  _dailyTasks = <DailyTask>[];
-                  _cellStates = <bool>[];
-                  DataStore.removeAllSavedTasks();
-                  print('Deleted all tasks');
-                },
-              );
-            },
-          ),
+          _buildDeleteAllTasksButton(),
         ],
       ),
       body: ListView(
@@ -69,6 +56,23 @@ class _TaskScreenState extends State<TaskScreen> {
   void initState() {
     getAllSavedTasks();
     super.initState();
+  }
+
+  Widget _buildDeleteAllTasksButton() {
+    return IconButton(
+      icon: Icon(Icons.close),
+      onPressed: () {
+        setState(
+          () {
+            // Empty Arrays
+            _dailyTasks = <DailyTask>[];
+            _cellStates = <bool>[];
+            DataStore.removeAllSavedTasks();
+            print('Deleted all tasks');
+          },
+        );
+      },
+    );
   }
 
   Future<void> getAllSavedTasks() async {
@@ -254,13 +258,11 @@ class _TaskScreenState extends State<TaskScreen> {
             color: Colors.redAccent,
             onPressed: () => _deleteTask(currentTask, index),
           ),
-          Container(
-            child: MaterialButton(
-              key: btnKey2,
-              height: 45.0,
-              onPressed: customBackground,
-              child: const Text('Show Menu'),
-            ),
+          MaterialButton(
+            key: btnKey2,
+            height: 45.0,
+            onPressed: _openPopupMenu,
+            child: const Text('Show Menu'),
           ),
         ],
       ),
@@ -291,7 +293,7 @@ class _TaskScreenState extends State<TaskScreen> {
     print('Updated Icon to ${currentTask.iconString}');
   }
 
-  void customBackground() {
+  void _openPopupMenu() {
     PopupMenu menu = PopupMenu(
       // backgroundColor: Colors.teal,
       // lineColor: Colors.tealAccent,
