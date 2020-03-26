@@ -33,7 +33,7 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
     PopupMenu.context = context;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.appBarTitle),
@@ -218,8 +218,9 @@ class _TaskScreenState extends State<TaskScreen> {
       ButtonBar(
         children: <Widget>[
           OutlineButton(
+            key: btnKey2,
             onPressed: () {
-              _getNewIcon(currentTask, index);
+              _openPopupMenu();
             },
             child: currentTask.getIcon(),
           ),
@@ -260,12 +261,6 @@ class _TaskScreenState extends State<TaskScreen> {
             color: Colors.redAccent,
             onPressed: () => _deleteTask(currentTask, index),
           ),
-          MaterialButton(
-            key: btnKey2,
-            height: 45.0,
-            onPressed: _openPopupMenu,
-            child: const Text('Show Menu'),
-          ),
         ],
       ),
     ];
@@ -296,52 +291,56 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _openPopupMenu() {
+    List<MenuItem> items = <MenuItem>[
+      MenuItem(
+        title: 'Copy',
+        image: Icon(
+          Icons.home,
+          color: Colors.white,
+        ),
+      ),
+      MenuItem(
+        title: 'Home',
+        textStyle: TextStyle(fontSize: 10.0, color: Colors.tealAccent),
+        image: Icon(
+          Icons.home,
+          color: Colors.white,
+        ),
+      ),
+      MenuItem(
+        title: 'Mail',
+        image: Icon(
+          Icons.mail,
+          color: Colors.white,
+        ),
+      ),
+      MenuItem(
+        title: 'Power',
+        image: Icon(
+          Icons.power,
+          color: Colors.white,
+        ),
+      ),
+      MenuItem(
+        title: 'Setting',
+        image: Icon(
+          Icons.settings,
+          color: Colors.white,
+        ),
+      ),
+      MenuItem(
+        title: 'PopupMenu',
+        image: Icon(
+          Icons.menu,
+          color: Colors.white,
+        ),
+      )
+    ];
     PopupMenu menu = PopupMenu(
       // backgroundColor: Colors.teal,
-      // lineColor: Colors.tealAccent,
+      // lineColor: Colors.white,
       // maxColumn: 2,
-      items: <MenuItem>[
-        MenuItem(
-          title: 'Copy',
-          image: Image.asset('assets/copy.png'),
-        ),
-        MenuItem(
-          title: 'Home',
-          textStyle: TextStyle(fontSize: 10.0, color: Colors.tealAccent),
-          image: Icon(
-            Icons.home,
-            color: Colors.white,
-          ),
-        ),
-        MenuItem(
-          title: 'Mail',
-          image: Icon(
-            Icons.mail,
-            color: Colors.white,
-          ),
-        ),
-        MenuItem(
-          title: 'Power',
-          image: Icon(
-            Icons.power,
-            color: Colors.white,
-          ),
-        ),
-        MenuItem(
-          title: 'Setting',
-          image: Icon(
-            Icons.settings,
-            color: Colors.white,
-          ),
-        ),
-        MenuItem(
-          title: 'PopupMenu',
-          image: Icon(
-            Icons.menu,
-            color: Colors.white,
-          ),
-        )
-      ],
+      items: items,
       onClickMenu: onClickMenu,
       stateChanged: stateChanged,
       onDismiss: onDismiss,
