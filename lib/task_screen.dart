@@ -1,5 +1,6 @@
 import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:popup_menu/popup_menu.dart';
 
 import 'package:daily_task_app/daily_task.dart';
@@ -281,17 +282,36 @@ class _TaskScreenState extends State<TaskScreen> {
     print("Deleted Task '${currentTask.title}' at index $currentTask");
   }
 
-  void _getNewIcon(DailyTask currentTask, int index) {
-    // TODO(MZ): Allow Custom Setting of Icons
+  /*void _getNewRandomIcon(DailyTask currentTask, int index) {
     setState(() {
       currentTask.iconString = _getRandomIconString();
     });
     DataStore.updateSingleTask(currentTask, index);
     print('Updated Icon to ${currentTask.iconString}');
+  }*/
+
+  void _setNewIconForTask(DailyTask task, int index, String iconString) {
+    setState(() {
+      task.iconString = iconString;
+    });
+    DataStore.updateSingleTask(task, index);
+    print('Updated Icon to ${task.iconString}');
   }
 
   void _openPopupMenu() {
-    List<MenuItem> items = <MenuItem>[
+    List<MenuItem> items = iconStrings.map(
+      (String currentIconString) {
+        return MenuItem(
+          title: currentIconString,
+          image: Icon(
+            MdiIcons.fromString(currentIconString),
+            color: Colors.white,
+          ),
+        );
+      },
+    ).toList();
+
+    /*List<MenuItem> items = <MenuItem>[
       MenuItem(
         title: 'Copy',
         image: Icon(
@@ -335,7 +355,7 @@ class _TaskScreenState extends State<TaskScreen> {
           color: Colors.white,
         ),
       )
-    ];
+    ];*/
     PopupMenu menu = PopupMenu(
       // backgroundColor: Colors.teal,
       // lineColor: Colors.white,
@@ -353,6 +373,8 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void onClickMenu(MenuItemProvider item) {
+    // TODO(MZ): Allow Custom Setting of Icons
+    // Set icon of task to item.menuTitle
     print('Click menu -> ${item.menuTitle}');
   }
 
