@@ -28,6 +28,7 @@ class _TaskScreenState extends State<TaskScreen> {
     'airplane-off',
     'battery-70',
   ];
+  DailyTask currentSelectedTask;
 
   GlobalKey btnKey2 = GlobalKey();
 
@@ -141,7 +142,7 @@ class _TaskScreenState extends State<TaskScreen> {
           children: _getStandardCellRow(
             currentTask,
             cellIsOpen,
-            () => _openCellAtIndex(index),
+            () => _openCellAtIndex(currentTask, index),
           ),
         ),
       ),
@@ -157,7 +158,7 @@ class _TaskScreenState extends State<TaskScreen> {
           children: _getExpandedCellRow(
             currentTask,
             cellIsOpen,
-            () => _openCellAtIndex(index),
+            () => _openCellAtIndex(currentTask, index),
             index,
           ),
         ),
@@ -166,7 +167,8 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   // TODO(MZ): Scroll to show full cell when lower cells opened
-  void _openCellAtIndex(int index) {
+  void _openCellAtIndex(DailyTask task, int index) {
+    currentSelectedTask = task;
     setState(() {
       // Close all cells that are not the specified cell
       for (int counter = 0; counter < _cellStates.length; counter++) {
@@ -290,14 +292,6 @@ class _TaskScreenState extends State<TaskScreen> {
     print('Updated Icon to ${currentTask.iconString}');
   }*/
 
-  void _setNewIconForTask(DailyTask task, int index, String iconString) {
-    setState(() {
-      task.iconString = iconString;
-    });
-    DataStore.updateSingleTask(task, index);
-    print('Updated Icon to ${task.iconString}');
-  }
-
   void _openPopupMenu() {
     List<MenuItem> items = iconStrings.map(
       (String currentIconString) {
@@ -376,6 +370,14 @@ class _TaskScreenState extends State<TaskScreen> {
     // TODO(MZ): Allow Custom Setting of Icons
     // Set icon of task to item.menuTitle
     print('Click menu -> ${item.menuTitle}');
+  }
+
+  void _setNewIconForTask(DailyTask task, int index, String iconString) {
+    setState(() {
+      task.iconString = iconString;
+    });
+    DataStore.updateSingleTask(task, index);
+    print('Updated Icon to ${task.iconString}');
   }
 
   void onDismiss() {
