@@ -28,6 +28,10 @@ class _TaskScreenState extends State<TaskScreen> {
     'airplane-off',
     'battery-70',
   ];
+  final List<String> intervalStrings = <String>[
+    'Daily',
+    'Monthly',
+  ];
   DailyTask currentSelectedTask;
   int currentSelectedIndex;
 
@@ -239,7 +243,10 @@ class _TaskScreenState extends State<TaskScreen> {
             child: currentTask.getIcon(),
           ),
           OutlineButton(
-            onPressed: () {},
+            key: keyOpenIntervalMenu,
+            onPressed: () {
+              _openIntervalMenu();
+            },
             child: Text(intervals.daily.toString()),
           ),
           OutlineButton(
@@ -303,7 +310,60 @@ class _TaskScreenState extends State<TaskScreen> {
     print('Updated Icon to ${currentTask.iconString}');
   }*/
 
-  // TODO(MZ): Create CellState class that contains a task and the cellstate (open, done)aw
+  void _openIntervalMenu() {
+    List<MenuItem> items = intervalStrings.map(
+      (String currentIntervalString) {
+        return MenuItem(
+          title: currentIntervalString,
+          image: Icon(
+            MdiIcons.fromString('unity'),
+            color: Colors.white,
+          ),
+        );
+      },
+    ).toList();
+    PopupMenu menu = PopupMenu(
+      // backgroundColor: Colors.teal,
+      // lineColor: Colors.white,
+      // maxColumn: 2,
+      items: items,
+      onClickMenu: _intervalItemClicked,
+      stateChanged: _intervalStateChanged,
+      onDismiss: _intervalMenuDismissed,
+    );
+    menu.show(widgetKey: keyOpenIntervalMenu);
+  }
+
+  void _intervalStateChanged(bool isShow) {
+    print('menu is ${isShow ? 'showing' : 'closed'}');
+  }
+
+  void _intervalMenuDismissed() {
+    print('Menu is dismissed');
+  }
+
+  void _intervalItemClicked(MenuItemProvider item) {
+    _setNewIntervalForTask(
+      currentSelectedTask,
+      currentSelectedIndex,
+      item.menuTitle,
+    );
+  }
+
+  void _setNewIntervalForTask(
+    DailyTask task,
+    int index,
+    String intervalString,
+  ) {
+    // TODO(MZ): Allow setting of Intervals
+    //setState(() {
+    //  task.iconString = iconString;
+    //});
+    DataStore.updateSingleTask(task, index);
+    print('Updated Icon to ${task.iconString}');
+  }
+
+  // TODO(MZ): Create CellState class that contains a task and the cellstate (open, done)
   void _openIconMenu() {
     List<MenuItem> items = iconStrings.map(
       (String currentIconString) {
@@ -383,7 +443,11 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _iconItemClicked(MenuItemProvider item) {
-    _setNewIconForTask(currentSelectedTask, currentSelectedIndex, item.menuTitle);
+    _setNewIconForTask(
+      currentSelectedTask,
+      currentSelectedIndex,
+      item.menuTitle,
+    );
   }
 
   void _setNewIconForTask(DailyTask task, int index, String iconString) {
