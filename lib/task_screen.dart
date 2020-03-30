@@ -29,8 +29,10 @@ class _TaskScreenState extends State<TaskScreen> {
     'battery-70',
   ];
   DailyTask currentSelectedTask;
+  int currentSelectedIndex;
 
-  GlobalKey btnKey2 = GlobalKey();
+  GlobalKey keyOpenIconMenu = GlobalKey();
+  GlobalKey keyOpenIntervalMenu = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +171,7 @@ class _TaskScreenState extends State<TaskScreen> {
   // TODO(MZ): Scroll to show full cell when lower cells opened
   void _openCellAtIndex(DailyTask task, int index) {
     currentSelectedTask = task;
+    currentSelectedIndex = index;
     setState(() {
       // Close all cells that are not the specified cell
       for (int counter = 0; counter < _cellStates.length; counter++) {
@@ -191,8 +194,15 @@ class _TaskScreenState extends State<TaskScreen> {
   ) {
     return <Widget>[
       ListTile(
-        title: Text(currentTask.title),
-        // TODO(MZ): Add checkbox
+        title: Row(
+          children: <Widget>[
+            const Checkbox(
+              value: false,
+              onChanged: null,
+            ),
+            Text(currentTask.title),
+          ],
+        ),
         leading: currentTask.getIcon(),
         trailing: IconButton(
           icon: _buildCellIcon(cellIsOpen),
@@ -222,9 +232,9 @@ class _TaskScreenState extends State<TaskScreen> {
       ButtonBar(
         children: <Widget>[
           OutlineButton(
-            key: btnKey2,
+            key: keyOpenIconMenu,
             onPressed: () {
-              _openPopupMenu();
+              _openIconMenu();
             },
             child: currentTask.getIcon(),
           ),
@@ -253,7 +263,7 @@ class _TaskScreenState extends State<TaskScreen> {
         'Record Streak: 24 Days',
         textAlign: TextAlign.left,
       ),
-      // TODO(MZ): Display when a task has been last updated (1 day ago, etc)
+      // TODO(MZ): Display when a task has been last updated in nice text (1 day ago, etc)
       Text(
         'Last updated: ${currentTask.lastModified}',
         textAlign: TextAlign.left,
@@ -294,8 +304,7 @@ class _TaskScreenState extends State<TaskScreen> {
   }*/
 
   // TODO(MZ): Create CellState class that contains a task and the cellstate (open, done)aw
-
-  void _openPopupMenu() {
+  void _openIconMenu() {
     List<MenuItem> items = iconStrings.map(
       (String currentIconString) {
         return MenuItem(
@@ -358,21 +367,23 @@ class _TaskScreenState extends State<TaskScreen> {
       // lineColor: Colors.white,
       // maxColumn: 2,
       items: items,
-      onClickMenu: onClickMenu,
-      stateChanged: stateChanged,
-      onDismiss: onDismiss,
+      onClickMenu: _iconItemClicked,
+      stateChanged: _iconStateChanged,
+      onDismiss: _iconMenuDismissed,
     );
-    menu.show(widgetKey: btnKey2);
+    menu.show(widgetKey: keyOpenIconMenu);
   }
 
-  void stateChanged(bool isShow) {
+  void _iconStateChanged(bool isShow) {
     print('menu is ${isShow ? 'showing' : 'closed'}');
   }
 
-  void onClickMenu(MenuItemProvider item) {
-    // TODO(MZ): Allow Custom Setting of Icons
-    // Set icon of task to item.menuTitle
-    print('Click menu -> ${item.menuTitle}');
+  void _iconMenuDismissed() {
+    print('Menu is dismissed');
+  }
+
+  void _iconItemClicked(MenuItemProvider item) {
+    _setNewIconForTask(currentSelectedTask, currentSelectedIndex, item.menuTitle);
   }
 
   void _setNewIconForTask(DailyTask task, int index, String iconString) {
@@ -381,9 +392,5 @@ class _TaskScreenState extends State<TaskScreen> {
     });
     DataStore.updateSingleTask(task, index);
     print('Updated Icon to ${task.iconString}');
-  }
-
-  void onDismiss() {
-    print('Menu is dismiss');
   }
 }
