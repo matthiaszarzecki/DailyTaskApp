@@ -192,6 +192,7 @@ class _TaskScreenState extends State<TaskScreen> {
     return <Widget>[
       ListTile(
         title: Text(currentTask.title),
+        // TODO(MZ): Add checkbox
         leading: currentTask.getIcon(),
         trailing: IconButton(
           icon: _buildCellIcon(cellIsOpen),
@@ -291,6 +292,8 @@ class _TaskScreenState extends State<TaskScreen> {
     DataStore.updateSingleTask(currentTask, index);
     print('Updated Icon to ${currentTask.iconString}');
   }*/
+
+  // TODO(MZ): Create CellState class that contains a task and the cellstate (open, done)aw
 
   void _openPopupMenu() {
     List<MenuItem> items = iconStrings.map(
