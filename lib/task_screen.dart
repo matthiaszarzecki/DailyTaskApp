@@ -6,8 +6,6 @@ import 'package:popup_menu/popup_menu.dart';
 import 'package:daily_task_app/cell_state.dart';
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
-//import 'package:daily_task_app/intervals.dart';
-//import 'package:daily_task_app/popup_icon_menu.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
@@ -21,11 +19,8 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  // TODO(MZ): Replace these with CellState class that encompasses _dailyTasks & _cellStates
-  //List<DailyTask> _dailyTasks = <DailyTask>[];
-  //List<bool> _cellStates = <bool>[];
-
-  List<CellState> _cellStatesComplicated = <CellState>[];
+  // TODO(MZ): Bug: Adding, deleting of tasks is currently wonky
+  List<CellState> _cellStates = <CellState>[];
 
   final ScrollController _scrollController = ScrollController();
   final List<String> iconStrings = <String>[
@@ -38,8 +33,11 @@ class _TaskScreenState extends State<TaskScreen> {
     'Daily',
     'Monthly',
   ];
+
+  // TODO(MZ): Replace these with cellStates
   DailyTask currentSelectedTask;
   int currentSelectedIndex;
+  CellState currentlySelectedCellState;
 
   GlobalKey keyOpenIconMenu = GlobalKey();
   GlobalKey keyOpenIntervalMenu = GlobalKey();
@@ -59,7 +57,7 @@ class _TaskScreenState extends State<TaskScreen> {
       body: ListView(
         controller: _scrollController,
         reverse: false, // Reverses list
-        children: _getCells(_cellStatesComplicated),
+        children: _getCells(_cellStates),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addDailyTask,
@@ -82,9 +80,7 @@ class _TaskScreenState extends State<TaskScreen> {
         setState(
           () {
             // Empty Arrays
-            //_dailyTasks = <DailyTask>[];
-            //_cellStates = <bool>[];
-            _cellStatesComplicated = <CellState>[];
+            _cellStates = <CellState>[];
             DataStore.removeAllSavedTasks();
             print('Deleted all tasks');
           },
@@ -98,13 +94,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Future<void> getAllSavedTasks() async {
     List<DailyTask> _dailyTasks = await DataStore.getAllDailyTasks();
-    /*_cellStates = List<bool>.filled(
-      _dailyTasks.length,
-      false,
-      growable: true,
-    );*/
-
-    _cellStatesComplicated = _dailyTasks.map(
+    _cellStates = _dailyTasks.map(
       (DailyTask task) {
         return CellState(
           task: task,
@@ -120,7 +110,7 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _addDailyTask() {
-    int currentIndex = _cellStatesComplicated.length;
+    int currentIndex = _cellStates.length;
     DailyTask newTask = DailyTask(
       title: 'Task $currentIndex',
       counter: 0,
@@ -128,15 +118,14 @@ class _TaskScreenState extends State<TaskScreen> {
       interval: 'Daily',
     );
     setState(() {
-      //_dailyTasks.add(newTask);
-      //_cellStates.add(false);
-      _cellStatesComplicated.add(
+      _cellStates.add(
         CellState(
           task: newTask,
           open: false,
           todo: false,
         ),
       );
+      // TODO(MZ): Allow saving via CellState-parameter
       DataStore.saveNewDailyTask(newTask);
 
       // Scrolls the view to the lowest scroll position,
@@ -157,12 +146,14 @@ class _TaskScreenState extends State<TaskScreen> {
     return cellStates.map(
       (CellState currentState) {
         int index = cellStates.indexOf(currentState);
-        bool cellIsOpen = _cellStatesComplicated[index].open;
+        bool cellIsOpen = currentState.open;
         return _buildCell(cellIsOpen, currentState.task, index);
       },
     ).toList();
   }
 
+  // TODO(MZ): Give buildCell CellState parameter
+  // TODO(MZ): Save index in cellState?
   Container _buildCell(bool cellIsOpen, DailyTask currentTask, int index) {
     return cellIsOpen
         ? _buildLargeCell(cellIsOpen, currentTask, index)
@@ -203,19 +194,21 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   // TODO(MZ): Alternatively add cells at the top of list
+  // TODO(MZ): Remove task-parameter?
   void _openCellAtIndex(DailyTask task, int index) {
+    // TODO(MZ): Replace these with cellStates
     currentSelectedTask = task;
     currentSelectedIndex = index;
     setState(() {
       // Close all cells that are not the specified cell
       for (int counter = 0;
-          counter < _cellStatesComplicated.length;
+          counter < _cellStates.length;
           counter++) {
         if (counter != index) {
-          _cellStatesComplicated[counter].open = false;
+          _cellStates[counter].open = false;
         }
       }
-      _cellStatesComplicated[index].open = !_cellStatesComplicated[index].open;
+      _cellStates[index].open = !_cellStates[index].open;
     });
   }
 
@@ -223,6 +216,7 @@ class _TaskScreenState extends State<TaskScreen> {
     return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
   }
 
+  // TODO(MZ): Replace parameters with CellStates
   List<Widget> _getStandardCellRow(
     DailyTask currentTask,
     bool cellIsOpen,
@@ -249,6 +243,7 @@ class _TaskScreenState extends State<TaskScreen> {
     ];
   }
 
+  // TODO(MZ): Replace parameters with CellStates
   List<Widget> _getExpandedCellRow(
     DailyTask currentTask,
     bool cellIsOpen,
@@ -355,21 +350,11 @@ class _TaskScreenState extends State<TaskScreen> {
     DataStore.removeSingleTask(currentTask, index);
 
     setState(() {
-      //_dailyTasks.removeAt(index);
-      //_cellStates.removeAt(index);
-      _cellStatesComplicated.removeAt(index);
+      _cellStates.removeAt(index);
     });
 
     print("Deleted Task '${currentTask.title}' at index $currentTask");
   }
-
-  /*void _getNewRandomIcon(DailyTask currentTask, int index) {
-    setState(() {
-      currentTask.iconString = _getRandomIconString();
-    });
-    DataStore.updateSingleTask(currentTask, index);
-    print('Updated Icon to ${currentTask.iconString}');
-  }*/
 
   void _openIntervalMenu() {
     List<MenuItem> items = intervalStrings.map(
