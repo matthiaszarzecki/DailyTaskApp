@@ -27,6 +27,8 @@ class _TaskScreenState extends State<TaskScreen> {
   List<DailyTask> _dailyTasks = <DailyTask>[];
   List<bool> _cellStates = <bool>[];
 
+  List<CellState> _cellStatesComplicated = <CellState>[];
+
   final ScrollController _scrollController = ScrollController();
   final List<String> iconStrings = <String>[
     'unity',
