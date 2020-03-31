@@ -278,9 +278,9 @@ class _TaskScreenState extends State<TaskScreen> {
         'Record Streak: 24 Days',
         textAlign: TextAlign.left,
       ),
-      // TODO(MZ): Display when a task has been last updated in nice text (1 day ago, etc)
       Text(
-        'Last updated: ${currentTask.lastModified}',
+        //'Last updated: ${currentTask.lastModified}',
+        _getLastUpdatedText(currentTask.lastModified),
         textAlign: TextAlign.left,
       ),
       ButtonBar(
@@ -293,6 +293,19 @@ class _TaskScreenState extends State<TaskScreen> {
         ],
       ),
     ];
+  }
+
+  String _getLastUpdatedText(DateTime lastModified) {
+    Duration differenceToRightNow = DateTime.now().difference(lastModified);
+    String returnText;
+    if (differenceToRightNow > const Duration(days: 2)) {
+      returnText = '2 Days ago';
+    } else if (differenceToRightNow > const Duration(days: 1)) {
+      returnText = '1 Day ago';
+    } else {
+      returnText = 'Less than 1 Day ago';
+    }
+    return 'Last Updated: $returnText';
   }
 
   void _updateTaskTitle(String text) {
