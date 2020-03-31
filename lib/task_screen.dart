@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:popup_menu/popup_menu.dart';
 
+import 'package:daily_task_app/cell_state.dart';
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
-import 'package:daily_task_app/intervals.dart';
+//import 'package:daily_task_app/intervals.dart';
 //import 'package:daily_task_app/popup_icon_menu.dart';
 
 class TaskScreen extends StatefulWidget {
@@ -19,11 +20,13 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
-// TODO(MZ): Create CellState class that contains a task and the cellstate (open, done)
+
 
 class _TaskScreenState extends State<TaskScreen> {
+  // TODO(MZ): Replace these with CellState class that encompasses _dailyTasks & _cellStates
   List<DailyTask> _dailyTasks = <DailyTask>[];
   List<bool> _cellStates = <bool>[];
+
   final ScrollController _scrollController = ScrollController();
   final List<String> iconStrings = <String>[
     'unity',
@@ -40,6 +43,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   GlobalKey keyOpenIconMenu = GlobalKey();
   GlobalKey keyOpenIntervalMenu = GlobalKey();
+  GlobalKey keyOpenDeleteMenu = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +123,7 @@ class _TaskScreenState extends State<TaskScreen> {
       // Scrolls the view to the lowest scroll position,
       // and a bit further to accomodate cell-height
       _scrollController.animateTo(
-        // TODO(MZ): Only scroll when new cell would be very low on screen
+        // TODO(MZ): Remove scrolling - add cells at top of list
         0.0, //_scrollController.position.maxScrollExtent + 150,
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 300),
@@ -179,7 +183,7 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  // TODO(MZ): Scroll to show full cell when lower cells opened - Alternatively add cells at the top of list
+  // TODO(MZ): Alternatively add cells at the top of list
   void _openCellAtIndex(DailyTask task, int index) {
     currentSelectedTask = task;
     currentSelectedIndex = index;
@@ -286,14 +290,18 @@ class _TaskScreenState extends State<TaskScreen> {
       ButtonBar(
         children: <Widget>[
           FlatButton(
+            key: keyOpenDeleteMenu,
             child: const Text('DELETE TASK'),
             color: Colors.redAccent,
-            onPressed: () => _deleteTask(currentTask, index),
+            //onPressed: () => _deleteTask(currentTask, index),
+            onPressed: () => _openDeleteTaskmenu(),
           ),
         ],
       ),
     ];
   }
+
+  // TODO(MZ): Bug: Delete task, add new task, delete new task in same slot again
 
   String _getLastUpdatedText(DateTime lastModified) {
     Duration differenceToRightNow = DateTime.now().difference(lastModified);
@@ -443,5 +451,47 @@ class _TaskScreenState extends State<TaskScreen> {
     print('Updated Icon to ${task.iconString}');
   }
 
-  // TODO(MZ): Add popupmenu to delete task
+  void _openDeleteTaskmenu() {
+    List<MenuItem> items = <MenuItem>[
+      MenuItem(
+        title: 'Delete',
+        image: Icon(
+          MdiIcons.fromString('unity'),
+          color: Colors.white,
+        ),
+      ),
+      MenuItem(
+        title: 'No. Go Back.',
+        image: Icon(
+          MdiIcons.fromString('unity'),
+          color: Colors.white,
+        ),
+      ),
+    ];
+    PopupMenu menu = PopupMenu(
+      items: items,
+      onClickMenu: _deleteMenuClicked,
+      stateChanged: _deleteMenuChanged,
+      onDismiss: _deleteMenuDismissed,
+    );
+    menu.show(widgetKey: keyOpenDeleteMenu);
+  }
+
+  void _deleteMenuChanged(bool isShow) {
+    print('menu is ${isShow ? 'showing' : 'closed'}');
+  }
+
+  void _deleteMenuDismissed() {
+    print('Menu is dismissed');
+  }
+
+  void _deleteMenuClicked(MenuItemProvider item) {
+    if (item.menuTitle == 'Delete') {
+      // DELETE TASK
+      _deleteTask(currentSelectedTask, currentSelectedIndex);
+    } else {
+      // dismiss menu
+      _deleteMenuDismissed();
+    }
+  }
 }
