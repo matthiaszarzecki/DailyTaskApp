@@ -20,12 +20,10 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
-
-
 class _TaskScreenState extends State<TaskScreen> {
   // TODO(MZ): Replace these with CellState class that encompasses _dailyTasks & _cellStates
-  List<DailyTask> _dailyTasks = <DailyTask>[];
-  List<bool> _cellStates = <bool>[];
+  //List<DailyTask> _dailyTasks = <DailyTask>[];
+  //List<bool> _cellStates = <bool>[];
 
   List<CellState> _cellStatesComplicated = <CellState>[];
 
@@ -61,7 +59,7 @@ class _TaskScreenState extends State<TaskScreen> {
       body: ListView(
         controller: _scrollController,
         reverse: false, // Reverses list
-        children: _getCells(_dailyTasks),
+        children: _getCells(_cellStatesComplicated),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addDailyTask,
@@ -84,8 +82,9 @@ class _TaskScreenState extends State<TaskScreen> {
         setState(
           () {
             // Empty Arrays
-            _dailyTasks = <DailyTask>[];
-            _cellStates = <bool>[];
+            //_dailyTasks = <DailyTask>[];
+            //_cellStates = <bool>[];
+            _cellStatesComplicated = <CellState>[];
             DataStore.removeAllSavedTasks();
             print('Deleted all tasks');
           },
@@ -98,19 +97,30 @@ class _TaskScreenState extends State<TaskScreen> {
   // TODO(MZ): Remove checkmarks daily at 0300
 
   Future<void> getAllSavedTasks() async {
-    _dailyTasks = await DataStore.getAllDailyTasks();
-    _cellStates = List<bool>.filled(
+    List<DailyTask> _dailyTasks = await DataStore.getAllDailyTasks();
+    /*_cellStates = List<bool>.filled(
       _dailyTasks.length,
       false,
       growable: true,
-    );
+    );*/
+
+    _cellStatesComplicated = _dailyTasks.map(
+      (DailyTask task) {
+        return CellState(
+          task: task,
+          open: false,
+          todo: false,
+        );
+      },
+    ).toList();
+
     setState(
       () {},
     );
   }
 
   void _addDailyTask() {
-    int currentIndex = _dailyTasks.length;
+    int currentIndex = _cellStatesComplicated.length;
     DailyTask newTask = DailyTask(
       title: 'Task $currentIndex',
       counter: 0,
@@ -118,8 +128,15 @@ class _TaskScreenState extends State<TaskScreen> {
       interval: 'Daily',
     );
     setState(() {
-      _dailyTasks.add(newTask);
-      _cellStates.add(false);
+      //_dailyTasks.add(newTask);
+      //_cellStates.add(false);
+      _cellStatesComplicated.add(
+        CellState(
+          task: newTask,
+          open: false,
+          todo: false,
+        ),
+      );
       DataStore.saveNewDailyTask(newTask);
 
       // Scrolls the view to the lowest scroll position,
@@ -136,12 +153,12 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   // Builds the cells. Is called on screen-load and cell-addition
-  List<Widget> _getCells(List<DailyTask> tasks) {
-    return tasks.map(
-      (DailyTask currentTask) {
-        int index = tasks.indexOf(currentTask);
-        bool cellIsOpen = _cellStates[index];
-        return _buildCell(cellIsOpen, currentTask, index);
+  List<Widget> _getCells(List<CellState> cellStates) {
+    return cellStates.map(
+      (CellState currentState) {
+        int index = cellStates.indexOf(currentState);
+        bool cellIsOpen = _cellStatesComplicated[index].open;
+        return _buildCell(cellIsOpen, currentState.task, index);
       },
     ).toList();
   }
@@ -191,12 +208,14 @@ class _TaskScreenState extends State<TaskScreen> {
     currentSelectedIndex = index;
     setState(() {
       // Close all cells that are not the specified cell
-      for (int counter = 0; counter < _cellStates.length; counter++) {
+      for (int counter = 0;
+          counter < _cellStatesComplicated.length;
+          counter++) {
         if (counter != index) {
-          _cellStates[counter] = false;
+          _cellStatesComplicated[counter].open = false;
         }
       }
-      _cellStates[index] = !_cellStates[index];
+      _cellStatesComplicated[index].open = !_cellStatesComplicated[index].open;
     });
   }
 
@@ -336,8 +355,9 @@ class _TaskScreenState extends State<TaskScreen> {
     DataStore.removeSingleTask(currentTask, index);
 
     setState(() {
-      _dailyTasks.removeAt(index);
-      _cellStates.removeAt(index);
+      //_dailyTasks.removeAt(index);
+      //_cellStates.removeAt(index);
+      _cellStatesComplicated.removeAt(index);
     });
 
     print("Deleted Task '${currentTask.title}' at index $currentTask");
