@@ -19,7 +19,6 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  // TODO(MZ): Bug: Adding, deleting of tasks is currently wonky
   List<CellState> _cellStates = <CellState>[];
 
   final ScrollController _scrollController = ScrollController();
@@ -93,8 +92,8 @@ class _TaskScreenState extends State<TaskScreen> {
   // TODO(MZ): Remove checkmarks daily at 0300
 
   Future<void> getAllSavedTasks() async {
-    List<DailyTask> _dailyTasks = await DataStore.getAllDailyTasks();
-    _cellStates = _dailyTasks.map(
+    List<DailyTask> dailyTasks = await DataStore.getAllDailyTasks();
+    List<CellState> newCellStates = dailyTasks.map(
       (DailyTask task) {
         return CellState(
           task: task,
@@ -104,9 +103,9 @@ class _TaskScreenState extends State<TaskScreen> {
       },
     ).toList();
 
-    setState(
-      () {},
-    );
+    setState(() {
+      _cellStates = newCellStates;
+    });
   }
 
   void _addDailyTask() {
@@ -125,6 +124,7 @@ class _TaskScreenState extends State<TaskScreen> {
           todo: false,
         ),
       );
+
       // TODO(MZ): Allow saving via CellState-parameter
       DataStore.saveNewDailyTask(newTask);
 
@@ -196,14 +196,13 @@ class _TaskScreenState extends State<TaskScreen> {
   // TODO(MZ): Alternatively add cells at the top of list
   // TODO(MZ): Remove task-parameter?
   void _openCellAtIndex(DailyTask task, int index) {
+    
     // TODO(MZ): Replace these with cellStates
     currentSelectedTask = task;
     currentSelectedIndex = index;
     setState(() {
       // Close all cells that are not the specified cell
-      for (int counter = 0;
-          counter < _cellStates.length;
-          counter++) {
+      for (int counter = 0; counter < _cellStates.length; counter++) {
         if (counter != index) {
           _cellStates[counter].open = false;
         }
@@ -299,7 +298,6 @@ class _TaskScreenState extends State<TaskScreen> {
         textAlign: TextAlign.left,
       ),
       Text(
-        //'Last updated: ${currentTask.lastModified}',
         _getLastUpdatedText(currentTask.lastModified),
         textAlign: TextAlign.left,
       ),
@@ -309,7 +307,6 @@ class _TaskScreenState extends State<TaskScreen> {
             key: keyOpenDeleteMenu,
             child: const Text('DELETE TASK'),
             color: Colors.redAccent,
-            //onPressed: () => _deleteTask(currentTask, index),
             onPressed: () => _openDeleteTaskmenu(),
           ),
         ],
@@ -320,8 +317,10 @@ class _TaskScreenState extends State<TaskScreen> {
   // TODO(MZ): Bug: Delete task, add new task, delete new task in same slot again
 
   String _getLastUpdatedText(DateTime lastModified) {
+    // TODO(MZ): Bug: Adding, deleting of tasks is currently wonky - is happening in this line
     Duration differenceToRightNow = DateTime.now().difference(lastModified);
-    String returnText;
+
+    String returnText = '';
     if (differenceToRightNow > const Duration(days: 2)) {
       returnText = '2 Days ago';
     } else if (differenceToRightNow > const Duration(days: 1)) {
