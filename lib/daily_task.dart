@@ -17,7 +17,7 @@ class DailyTask {
         lastModified = _dateFromString(json['lastModified']),
         interval = json['interval'];
 
-  final String title;
+  String title;
   final int counter;
   String iconString;
   final DateTime lastModified;

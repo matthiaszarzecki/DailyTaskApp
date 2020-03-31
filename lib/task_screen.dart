@@ -88,7 +88,6 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  // TODO(MZ): Allow changing name of tasks
   // TODO(MZ): Allow setting of checkmarks
   // TODO(MZ): Remove checkmarks daily at 0300
 
@@ -264,11 +263,12 @@ class _TaskScreenState extends State<TaskScreen> {
         ],
       ),
       TextField(
-        obscureText: true,
+        obscureText: false,
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: currentTask.title,
         ),
+        onChanged: (String text) => _updateTaskTitle(text),
       ),
       const Text(
         'Current Streak: 13 Days',
@@ -295,9 +295,19 @@ class _TaskScreenState extends State<TaskScreen> {
     ];
   }
 
+  void _updateTaskTitle(String text) {
+    setState(() {
+      currentSelectedTask.title = text;
+    });
+    DataStore.updateSingleTask(currentSelectedTask, currentSelectedIndex);
+    print('Updated Title to ${currentSelectedTask.title}');
+  }
+
   String _getRandomIconString() {
     return randomChoice(iconStrings);
   }
+
+  // TODO(MZ): Replace title of open cell with textfield
 
   void _deleteTask(DailyTask currentTask, int index) {
     DataStore.removeSingleTask(currentTask, index);
@@ -419,4 +429,6 @@ class _TaskScreenState extends State<TaskScreen> {
     DataStore.updateSingleTask(task, index);
     print('Updated Icon to ${task.iconString}');
   }
+
+  // TODO(MZ): Add popupmenu to delete task
 }
