@@ -7,18 +7,21 @@ class DailyTask {
     this.counter,
     this.iconString,
     this.lastModified,
+    this.interval,
   });
 
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         counter = json['counter'],
         iconString = json['iconString'],
-        lastModified = _dateFromString(json['lastModified']);
+        lastModified = _dateFromString(json['lastModified']),
+        interval = json['interval'];
 
   final String title;
   final int counter;
   String iconString;
   final DateTime lastModified;
+  String interval;
 
   Icon getIcon() {
     return Icon(MdiIcons.fromString(iconString)) ?? Icon(Icons.hourglass_full);
@@ -34,11 +37,12 @@ class DailyTask {
       'counter': counter,
       'iconString': iconString,
       'lastModified': DateTime.now().toIso8601String(),
+      'interval': interval,
     };
   }
 
   @override
   String toString() {
-    return 'DailyTask: $title, $counter, icon: $iconString, lastModifed: $lastModified';
+    return 'DailyTask: $title, $counter, icon: $iconString, lastModifed: $lastModified, interval: $interval';
   }
 }

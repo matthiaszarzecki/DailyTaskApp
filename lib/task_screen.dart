@@ -6,7 +6,7 @@ import 'package:popup_menu/popup_menu.dart';
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
 import 'package:daily_task_app/intervals.dart';
-import 'package:daily_task_app/popup_icon_menu.dart';
+//import 'package:daily_task_app/popup_icon_menu.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
@@ -110,6 +110,7 @@ class _TaskScreenState extends State<TaskScreen> {
       title: 'Task $currentIndex',
       counter: 0,
       iconString: _getRandomIconString(),
+      interval: 'Daily',
     );
     setState(() {
       _dailyTasks.add(newTask);
@@ -254,7 +255,7 @@ class _TaskScreenState extends State<TaskScreen> {
             onPressed: () {
               _openIntervalMenu();
             },
-            child: Text(intervals.daily.toString()),
+            child: Text(currentTask.interval),
           ),
           OutlineButton(
             onPressed: () {},
@@ -362,10 +363,59 @@ class _TaskScreenState extends State<TaskScreen> {
     int index,
     String intervalString,
   ) {
-    // TODO(MZ): Allow setting of Intervals
-    //setState(() {
-    //  task.iconString = iconString;
-    //});
+    setState(() {
+      task.interval = intervalString;
+    });
+    DataStore.updateSingleTask(task, index);
+    print('Updated Icon to ${task.iconString}');
+  }
+
+  void openIconMenu(List<String> iconStrings, GlobalKey menuKey) {
+    List<MenuItem> items = iconStrings.map(
+      (String currentIconString) {
+        return MenuItem(
+          title: currentIconString,
+          image: Icon(
+            MdiIcons.fromString(currentIconString),
+            color: Colors.white,
+          ),
+        );
+      },
+    ).toList();
+
+    PopupMenu menu = PopupMenu(
+      // backgroundColor: Colors.teal,
+      // lineColor: Colors.white,
+      // maxColumn: 2,
+      items: items,
+      onClickMenu: _iconItemClicked,
+      stateChanged: _iconStateChanged,
+      onDismiss: _iconMenuDismissed,
+    );
+    menu.show(widgetKey: menuKey);
+  }
+
+  void _iconStateChanged(bool isShow) {
+    print('menu is ${isShow ? 'showing' : 'closed'}');
+  }
+
+  void _iconMenuDismissed() {
+    print('Menu is dismissed');
+  }
+
+  void _iconItemClicked(MenuItemProvider item) {
+    _setNewIconForTask(
+      currentSelectedTask,
+      currentSelectedIndex,
+      item.menuTitle,
+    );
+  }
+
+  // TODO(MZ): Does this class need a state for setState to work?
+  void _setNewIconForTask(DailyTask task, int index, String iconString) {
+    setState(() {
+      task.iconString = iconString;
+    });
     DataStore.updateSingleTask(task, index);
     print('Updated Icon to ${task.iconString}');
   }

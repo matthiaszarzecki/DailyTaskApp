@@ -5,9 +5,8 @@ import 'package:popup_menu/popup_menu.dart';
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
 import 'package:daily_task_app/task_screen.dart';
-
+/*
 class IconPopupMenu {
-
   void openIconMenu(List<String> iconStrings, GlobalKey menuKey) {
     List<MenuItem> items = iconStrings.map(
       (String currentIconString) {
@@ -103,3 +102,4 @@ class IconPopupMenu {
     print('Updated Icon to ${task.iconString}');
   }
 }
+*/
