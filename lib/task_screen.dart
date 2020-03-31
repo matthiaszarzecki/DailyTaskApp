@@ -90,7 +90,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   // TODO(MZ): Allow changing name of tasks
   // TODO(MZ): Allow setting of checkmarks
-  // TODO(MZ): Remove checkmarks at 0300
+  // TODO(MZ): Remove checkmarks daily at 0300
 
   Future<void> getAllSavedTasks() async {
     _dailyTasks = await DataStore.getAllDailyTasks();
@@ -180,7 +180,7 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  // TODO(MZ): Scroll to show full cell when lower cells opened
+  // TODO(MZ): Scroll to show full cell when lower cells opened - Alternatively add cells at the top of list
   void _openCellAtIndex(DailyTask task, int index) {
     currentSelectedTask = task;
     currentSelectedIndex = index;

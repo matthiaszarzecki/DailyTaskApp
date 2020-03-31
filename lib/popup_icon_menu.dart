@@ -93,7 +93,6 @@ class IconPopupMenu {
     );
   }
 
-// TODO(MZ): Does this class need a state for setState to work?
   void _setNewIconForTask(DailyTask task, int index, String iconString) {
     setState(() {
       task.iconString = iconString;
