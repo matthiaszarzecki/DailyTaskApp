@@ -6,20 +6,22 @@ import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
 import 'package:daily_task_app/task_screen.dart';
 
-void openIconMenu(List<String> iconStrings, GlobalKey menuKey) {
-  List<MenuItem> items = iconStrings.map(
-    (String currentIconString) {
-      return MenuItem(
-        title: currentIconString,
-        image: Icon(
-          MdiIcons.fromString(currentIconString),
-          color: Colors.white,
-        ),
-      );
-    },
-  ).toList();
+class IconPopupMenu {
 
-  /*List<MenuItem> items = <vMenuItem>[
+  void openIconMenu(List<String> iconStrings, GlobalKey menuKey) {
+    List<MenuItem> items = iconStrings.map(
+      (String currentIconString) {
+        return MenuItem(
+          title: currentIconString,
+          image: Icon(
+            MdiIcons.fromString(currentIconString),
+            color: Colors.white,
+          ),
+        );
+      },
+    ).toList();
+
+    /*List<MenuItem> items = <vMenuItem>[
       MenuItem(
         title: 'Copy',
         image: Icon(
@@ -64,39 +66,40 @@ void openIconMenu(List<String> iconStrings, GlobalKey menuKey) {
         ),
       )
     ];*/
-  PopupMenu menu = PopupMenu(
-    // backgroundColor: Colors.teal,
-    // lineColor: Colors.white,
-    // maxColumn: 2,
-    items: items,
-    onClickMenu: _iconItemClicked,
-    stateChanged: _iconStateChanged,
-    onDismiss: _iconMenuDismissed,
-  );
-  menu.show(widgetKey: menuKey);
-}
+    PopupMenu menu = PopupMenu(
+      // backgroundColor: Colors.teal,
+      // lineColor: Colors.white,
+      // maxColumn: 2,
+      items: items,
+      onClickMenu: _iconItemClicked,
+      stateChanged: _iconStateChanged,
+      onDismiss: _iconMenuDismissed,
+    );
+    menu.show(widgetKey: menuKey);
+  }
 
-void _iconStateChanged(bool isShow) {
-  print('menu is ${isShow ? 'showing' : 'closed'}');
-}
+  void _iconStateChanged(bool isShow) {
+    print('menu is ${isShow ? 'showing' : 'closed'}');
+  }
 
-void _iconMenuDismissed() {
-  print('Menu is dismissed');
-}
+  void _iconMenuDismissed() {
+    print('Menu is dismissed');
+  }
 
-void _iconItemClicked(MenuItemProvider item) {
-  _setNewIconForTask(
-    currentSelectedTask,
-    currentSelectedIndex,
-    item.menuTitle,
-  );
-}
+  void _iconItemClicked(MenuItemProvider item) {
+    _setNewIconForTask(
+      currentSelectedTask,
+      currentSelectedIndex,
+      item.menuTitle,
+    );
+  }
 
 // TODO(MZ): Does this class need a state for setState to work?
-void _setNewIconForTask(DailyTask task, int index, String iconString) {
-  setState(() {
-    task.iconString = iconString;
-  });
-  DataStore.updateSingleTask(task, index);
-  print('Updated Icon to ${task.iconString}');
+  void _setNewIconForTask(DailyTask task, int index, String iconString) {
+    setState(() {
+      task.iconString = iconString;
+    });
+    DataStore.updateSingleTask(task, index);
+    print('Updated Icon to ${task.iconString}');
+  }
 }

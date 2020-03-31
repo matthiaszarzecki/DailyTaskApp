@@ -88,6 +88,10 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
+  // TODO(MZ): Allow changing name of tasks
+  // TODO(MZ): Allow setting of checkmarks
+  // TODO(MZ): Remove checkmarks at 0300
+
   Future<void> getAllSavedTasks() async {
     _dailyTasks = await DataStore.getAllDailyTasks();
     _cellStates = List<bool>.filled(
