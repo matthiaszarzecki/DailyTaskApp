@@ -53,7 +53,7 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
       body: ListView(
         controller: _scrollController,
-        reverse: false, // Reverses list
+        reverse: false, // reverses list
         children: _getCells(_cellStates),
       ),
       floatingActionButton: FloatingActionButton(
@@ -122,8 +122,6 @@ class _TaskScreenState extends State<TaskScreen> {
 
     setState(() {
       _cellStates.add(newState);
-
-      // TODO(MZ): Allow saving via CellState-parameter
       DataStore.saveNewDailyTask(newState.task);
 
       // Scrolls the view to the lowest scroll position,
@@ -144,7 +142,6 @@ class _TaskScreenState extends State<TaskScreen> {
     return cellStates.map(
       (CellState currentState) {
         int index = cellStates.indexOf(currentState);
-        //bool cellIsOpen = currentState.open;
         return _buildCell(currentState, index);
       },
     ).toList();
@@ -152,13 +149,12 @@ class _TaskScreenState extends State<TaskScreen> {
 
   // TODO(MZ): Save index in cellState?
   Container _buildCell(CellState cellState, int index) {
-    /*bool cellIsOpen, DailyTask currentTask,*/
     return cellState.open
-        ? _buildLargeCell(cellState.open, cellState, index)
-        : _buildSmallCell(cellState.open, cellState, index);
+        ? _buildLargeCell(cellState, index)
+        : _buildSmallCell(cellState, index);
   }
 
-  Container _buildSmallCell(bool cellIsOpen, CellState cellState, int index) {
+  Container _buildSmallCell(CellState cellState, int index) {
     return Container(
       height: 64,
       child: Card(
@@ -173,7 +169,7 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  Container _buildLargeCell(bool cellIsOpen, CellState cellState, int index) {
+  Container _buildLargeCell(CellState cellState, int index) {
     return Container(
       height: 310,
       child: Card(
@@ -190,7 +186,8 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _openCellAtIndex(CellState cellState, int index) {
-    currentlySelectedCellState.task = cellState.task;
+    // TODO(MZ): Cell Opening newly added cells Bug happening after here
+    currentlySelectedCellState = cellState;
     currentlySelectedIndex = index;
     setState(() {
       // Close all cells that are not the specified cell
