@@ -50,13 +50,11 @@ class _TaskScreenState extends State<TaskScreen> {
         ],
       ),
       body: ListView(
-        // TODO(MZ): Add cells at top of list
-        reverse: false, // reverses list
+        // TODO(MZ): Sort ListView, show done tasks last
         children: _getCells(_cellStates),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addDailyTask,
-        tooltip: 'Add Daily Task',
         child: Icon(Icons.add),
       ),
     );
@@ -112,15 +110,18 @@ class _TaskScreenState extends State<TaskScreen> {
         iconString: _getRandomIconString(),
         interval: 'Daily',
         markedAsDone: false,
+        lastModified: DateTime.now(),
       ),
       cellIsOpen: false,
     );
 
     setState(() {
-      _cellStates.add(newState);
-      DataStore.saveNewDailyTask(newState.task);
+      _cellStates.insert(0, newState);
+      //_cellStates.add(newState);
       print('Added new task: ${newState.task.title}');
     });
+
+    DataStore.saveNewDailyTask(newState.task);
   }
 
   // Builds the cells. Is called on screen-load and cell-addition
@@ -193,6 +194,8 @@ class _TaskScreenState extends State<TaskScreen> {
     int index = _cellStates.indexOf(cellState);
     return <Widget>[
       ListTile(
+        // TODO(MZ): Make icon colorful
+        leading: cellState.task.getIcon(Colors.green[200]),
         title: Row(
           children: <Widget>[
             Checkbox(
@@ -202,7 +205,6 @@ class _TaskScreenState extends State<TaskScreen> {
             Text(cellState.task.title),
           ],
         ),
-        leading: cellState.task.getIcon(),
         trailing: IconButton(
           icon: _buildCellIcon(cellState.cellIsOpen),
           tooltip: 'Edit',
@@ -221,7 +223,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   List<Widget> _getExpandedCellRow(
     CellState cellState,
-    Function setState,
+    Function closeFunction,
     int index,
   ) {
     return <Widget>[
@@ -234,34 +236,27 @@ class _TaskScreenState extends State<TaskScreen> {
           ),
           onChanged: (String text) => _updateTaskTitle(text),
         ),
-        leading: cellState.task.getIcon(),
+        leading: OutlineButton(
+          key: keyOpenIconMenu,
+          onPressed: () {
+            openIconMenu(iconStrings, keyOpenIconMenu);
+          },
+          child: cellState.task.getIcon(Colors.green[200]),
+        ),
         trailing: IconButton(
           icon: _buildCellIcon(cellState.cellIsOpen),
-          tooltip: 'Edit',
-          onPressed: setState,
+          onPressed: closeFunction,
         ),
       ),
-      // TODO(MZ): Replace icon in open cell with IconButton
       // TOOD(MZ): Remove +1 button
       ButtonBar(
         children: <Widget>[
-          OutlineButton(
-            key: keyOpenIconMenu,
-            onPressed: () {
-              openIconMenu(iconStrings, keyOpenIconMenu);
-            },
-            child: cellState.task.getIcon(),
-          ),
           OutlineButton(
             key: keyOpenIntervalMenu,
             onPressed: () {
               _openIntervalMenu();
             },
             child: Text(cellState.task.interval),
-          ),
-          OutlineButton(
-            onPressed: () {},
-            child: const Text('+1'),
           ),
         ],
       ),
@@ -291,10 +286,6 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   String _getLastUpdatedText(DateTime lastModified) {
-    print(lastModified);
-    return 'asdsa';
-
-    // TODO(MZ): Bug: lastModified-value is null, somehow
     Duration differenceToRightNow = DateTime.now().difference(lastModified);
 
     String returnText = '';
