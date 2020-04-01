@@ -146,18 +146,19 @@ class _TaskScreenState extends State<TaskScreen> {
     return cellStates.map(
       (CellState currentState) {
         int index = cellStates.indexOf(currentState);
-        bool cellIsOpen = currentState.open;
-        return _buildCell(cellIsOpen, currentState.task, index);
+        //bool cellIsOpen = currentState.open;
+        return _buildCell(currentState, index);
       },
     ).toList();
   }
 
   // TODO(MZ): Give buildCell CellState parameter
   // TODO(MZ): Save index in cellState?
-  Container _buildCell(bool cellIsOpen, DailyTask currentTask, int index) {
-    return cellIsOpen
-        ? _buildLargeCell(cellIsOpen, currentTask, index)
-        : _buildSmallCell(cellIsOpen, currentTask, index);
+  Container _buildCell(CellState cellState, int index) {
+    /*bool cellIsOpen, DailyTask currentTask,*/
+    return cellState.open
+        ? _buildLargeCell(cellState.open, cellState.task, index)
+        : _buildSmallCell(cellState.open, cellState.task, index);
   }
 
   Container _buildSmallCell(bool cellIsOpen, DailyTask currentTask, int index) {
@@ -287,14 +288,6 @@ class _TaskScreenState extends State<TaskScreen> {
           ),
         ],
       ),
-      TextField(
-        obscureText: false,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: currentTask.title,
-        ),
-        onChanged: (String text) => _updateTaskTitle(text),
-      ),
       const Text(
         'Current Streak: 13 Days',
         textAlign: TextAlign.right,
@@ -346,8 +339,6 @@ class _TaskScreenState extends State<TaskScreen> {
   String _getRandomIconString() {
     return randomChoice(iconStrings);
   }
-
-  // TODO(MZ): Replace title of open cell with textfield
 
   void _deleteTask(DailyTask currentTask, int index) {
     DataStore.removeSingleTask(currentTask, index);
