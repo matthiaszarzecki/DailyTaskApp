@@ -186,7 +186,6 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   void _openCellAtIndex(CellState cellState, int index) {
-    // TODO(MZ): Cell Opening newly added cells Bug happening after here
     currentlySelectedCellState = cellState;
     currentlySelectedIndex = index;
     setState(() {
@@ -204,17 +203,14 @@ class _TaskScreenState extends State<TaskScreen> {
     return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
   }
 
-  List<Widget> _getStandardCellRow(
-    CellState cellState,
-    Function setState,
-  ) {
+  List<Widget> _getStandardCellRow(CellState cellState, Function openFunction) {
     return <Widget>[
       ListTile(
         title: Row(
           children: <Widget>[
-            const Checkbox(
-              value: false,
-              onChanged: null,
+            Checkbox(
+              value: cellState.todo,
+              onChanged: (_) => _markTaskAsChecked(cellState),
             ),
             Text(cellState.task.title),
           ],
@@ -223,10 +219,16 @@ class _TaskScreenState extends State<TaskScreen> {
         trailing: IconButton(
           icon: _buildCellIcon(cellState.open),
           tooltip: 'Edit',
-          onPressed: setState,
+          onPressed: openFunction,
         ),
       ),
     ];
+  }
+
+  void _markTaskAsChecked(CellState cellState) {
+    setState(() {
+      cellState.todo = !cellState.todo;
+    });
   }
 
   List<Widget> _getExpandedCellRow(
@@ -234,6 +236,7 @@ class _TaskScreenState extends State<TaskScreen> {
     Function setState,
     int index,
   ) {
+    // TODO(MZ): Cell Opening only last cell Bug happening after here
     return <Widget>[
       ListTile(
         title: TextField(
@@ -299,6 +302,9 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   String _getLastUpdatedText(DateTime lastModified) {
+    print(lastModified);
+    return 'asdsa';
+
     // TODO(MZ): Bug: Adding, deleting of tasks is currently wonky - is happening in this line
     Duration differenceToRightNow = DateTime.now().difference(lastModified);
 

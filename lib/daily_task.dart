@@ -20,7 +20,7 @@ class DailyTask {
   String title;
   final int counter;
   String iconString;
-  final DateTime lastModified;
+  DateTime lastModified;
   String interval;
 
   Icon getIcon() {
