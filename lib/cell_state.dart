@@ -3,11 +3,9 @@ import 'package:daily_task_app/daily_task.dart';
 class CellState {
   CellState({
     this.task,
-    this.open,
-    this.todo,
+    this.cellIsOpen,
   });
 
   DailyTask task;
-  bool open;
-  bool todo;
+  bool cellIsOpen;
 }

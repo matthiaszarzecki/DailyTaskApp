@@ -71,5 +71,6 @@ class DataStore {
     Map<String, dynamic> taskAsMap = task.toJson();
     String taskAsJson = jsonEncode(taskAsMap);
     prefs.setString('$prefixSingleTask$index', taskAsJson);
+    print('Updated Task! ${task.toString()}');
   }
 }

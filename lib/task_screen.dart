@@ -66,7 +66,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   void initState() {
-    getAllSavedTasks();
+    _getAllSavedTasks();
     super.initState();
   }
 
@@ -86,17 +86,16 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  // TODO(MZ): Allow setting of checkmarks
   // TODO(MZ): Remove checkmarks daily at 0300
 
-  Future<void> getAllSavedTasks() async {
+  Future<void> _getAllSavedTasks() async {
     List<DailyTask> dailyTasks = await DataStore.getAllDailyTasks();
     List<CellState> newCellStates = dailyTasks.map(
       (DailyTask task) {
+        print(task.toString());
         return CellState(
           task: task,
-          open: false,
-          todo: false,
+          cellIsOpen: false,
         );
       },
     ).toList();
@@ -115,9 +114,9 @@ class _TaskScreenState extends State<TaskScreen> {
         counter: 0,
         iconString: _getRandomIconString(),
         interval: 'Daily',
+        markedAsDone: false,
       ),
-      open: false,
-      todo: false,
+      cellIsOpen: false,
     );
 
     setState(() {
@@ -147,9 +146,9 @@ class _TaskScreenState extends State<TaskScreen> {
     ).toList();
   }
 
-  // TODO(MZ): Save index in cellState?
+  // TODO(MZ): Get Index out at a later point? - figure out where it is needed!
   Container _buildCell(CellState cellState, int index) {
-    return cellState.open
+    return cellState.cellIsOpen
         ? _buildLargeCell(cellState, index)
         : _buildSmallCell(cellState, index);
   }
@@ -168,6 +167,8 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
     );
   }
+
+  // TODO(MZ): Save checkbox-status for the next day (task.currentlyMarkedAsDone - recalculate every task at 0300?)
 
   Container _buildLargeCell(CellState cellState, int index) {
     return Container(
@@ -192,10 +193,10 @@ class _TaskScreenState extends State<TaskScreen> {
       // Close all cells that are not the specified cell
       for (int counter = 0; counter < _cellStates.length; counter++) {
         if (counter != index) {
-          _cellStates[counter].open = false;
+          _cellStates[counter].cellIsOpen = false;
         }
       }
-      _cellStates[index].open = !_cellStates[index].open;
+      _cellStates[index].cellIsOpen = !_cellStates[index].cellIsOpen;
     });
   }
 
@@ -204,12 +205,13 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   List<Widget> _getStandardCellRow(CellState cellState, Function openFunction) {
+    print(cellState.task.markedAsDone);
     return <Widget>[
       ListTile(
         title: Row(
           children: <Widget>[
             Checkbox(
-              value: cellState.todo,
+              value: cellState.task.markedAsDone ?? false,
               onChanged: (_) => _markTaskAsChecked(cellState),
             ),
             Text(cellState.task.title),
@@ -217,7 +219,7 @@ class _TaskScreenState extends State<TaskScreen> {
         ),
         leading: cellState.task.getIcon(),
         trailing: IconButton(
-          icon: _buildCellIcon(cellState.open),
+          icon: _buildCellIcon(cellState.cellIsOpen),
           tooltip: 'Edit',
           onPressed: openFunction,
         ),
@@ -227,8 +229,9 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void _markTaskAsChecked(CellState cellState) {
     setState(() {
-      cellState.todo = !cellState.todo;
+      cellState.task.markedAsDone = !cellState.task.markedAsDone;
     });
+    DataStore.updateSingleTask(cellState.task, currentlySelectedIndex);
   }
 
   List<Widget> _getExpandedCellRow(
@@ -236,7 +239,6 @@ class _TaskScreenState extends State<TaskScreen> {
     Function setState,
     int index,
   ) {
-    // TODO(MZ): Cell Opening only last cell Bug happening after here
     return <Widget>[
       ListTile(
         title: TextField(
@@ -249,7 +251,7 @@ class _TaskScreenState extends State<TaskScreen> {
         ),
         leading: cellState.task.getIcon(),
         trailing: IconButton(
-          icon: _buildCellIcon(cellState.open),
+          icon: _buildCellIcon(cellState.cellIsOpen),
           tooltip: 'Edit',
           onPressed: setState,
         ),
@@ -305,7 +307,7 @@ class _TaskScreenState extends State<TaskScreen> {
     print(lastModified);
     return 'asdsa';
 
-    // TODO(MZ): Bug: Adding, deleting of tasks is currently wonky - is happening in this line
+    // TODO(MZ): Bug: lastModified-value is null, somehow
     Duration differenceToRightNow = DateTime.now().difference(lastModified);
 
     String returnText = '';
