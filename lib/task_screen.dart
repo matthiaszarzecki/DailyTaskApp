@@ -110,34 +110,34 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void _addDailyTask() {
     int currentIndex = _cellStates.length;
-    DailyTask newTask = DailyTask(
-      title: 'Task $currentIndex',
-      counter: 0,
-      iconString: _getRandomIconString(),
-      interval: 'Daily',
+
+    CellState newState = CellState(
+      task: DailyTask(
+        title: 'Task $currentIndex',
+        counter: 0,
+        iconString: _getRandomIconString(),
+        interval: 'Daily',
+      ),
+      open: false,
+      todo: false,
     );
+
     setState(() {
-      _cellStates.add(
-        CellState(
-          task: newTask,
-          open: false,
-          todo: false,
-        ),
-      );
+      _cellStates.add(newState);
 
       // TODO(MZ): Allow saving via CellState-parameter
-      DataStore.saveNewDailyTask(newTask);
+      DataStore.saveNewDailyTask(newState.task);
 
       // Scrolls the view to the lowest scroll position,
       // and a bit further to accomodate cell-height
-      _scrollController.animateTo(
+      /*_scrollController.animateTo(
         // TODO(MZ): Remove scrolling - add cells at top of list
         0.0, //_scrollController.position.maxScrollExtent + 150,
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 300),
-      );
+      );*/
 
-      print('Added new task: ${newTask.title}');
+      print('Added new task: ${newState.task.title}');
     });
   }
 
@@ -196,7 +196,6 @@ class _TaskScreenState extends State<TaskScreen> {
   // TODO(MZ): Alternatively add cells at the top of list
   // TODO(MZ): Remove task-parameter?
   void _openCellAtIndex(DailyTask task, int index) {
-    
     // TODO(MZ): Replace these with cellStates
     currentSelectedTask = task;
     currentSelectedIndex = index;
@@ -251,7 +250,14 @@ class _TaskScreenState extends State<TaskScreen> {
   ) {
     return <Widget>[
       ListTile(
-        title: Text(currentTask.title),
+        title: TextField(
+          obscureText: false,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: currentTask.title,
+          ),
+          onChanged: (String text) => _updateTaskTitle(text),
+        ),
         leading: currentTask.getIcon(),
         trailing: IconButton(
           icon: _buildCellIcon(cellIsOpen),
@@ -313,8 +319,6 @@ class _TaskScreenState extends State<TaskScreen> {
       ),
     ];
   }
-
-  // TODO(MZ): Bug: Delete task, add new task, delete new task in same slot again
 
   String _getLastUpdatedText(DateTime lastModified) {
     // TODO(MZ): Bug: Adding, deleting of tasks is currently wonky - is happening in this line
