@@ -33,10 +33,8 @@ class _TaskScreenState extends State<TaskScreen> {
     'Monthly',
   ];
 
-  // TODO(MZ): Replace these with cellStates
-  DailyTask currentSelectedTask;
-  int currentSelectedIndex;
   CellState currentlySelectedCellState;
+  int currentlySelectedIndex;
 
   GlobalKey keyOpenIconMenu = GlobalKey();
   GlobalKey keyOpenIntervalMenu = GlobalKey();
@@ -152,41 +150,38 @@ class _TaskScreenState extends State<TaskScreen> {
     ).toList();
   }
 
-  // TODO(MZ): Give buildCell CellState parameter
   // TODO(MZ): Save index in cellState?
   Container _buildCell(CellState cellState, int index) {
     /*bool cellIsOpen, DailyTask currentTask,*/
     return cellState.open
-        ? _buildLargeCell(cellState.open, cellState.task, index)
-        : _buildSmallCell(cellState.open, cellState.task, index);
+        ? _buildLargeCell(cellState.open, cellState, index)
+        : _buildSmallCell(cellState.open, cellState, index);
   }
 
-  Container _buildSmallCell(bool cellIsOpen, DailyTask currentTask, int index) {
+  Container _buildSmallCell(bool cellIsOpen, CellState cellState, int index) {
     return Container(
       height: 64,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: _getStandardCellRow(
-            currentTask,
-            cellIsOpen,
-            () => _openCellAtIndex(currentTask, index),
+            cellState,
+            () => _openCellAtIndex(cellState, index),
           ),
         ),
       ),
     );
   }
 
-  Container _buildLargeCell(bool cellIsOpen, DailyTask currentTask, int index) {
+  Container _buildLargeCell(bool cellIsOpen, CellState cellState, int index) {
     return Container(
       height: 310,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: _getExpandedCellRow(
-            currentTask,
-            cellIsOpen,
-            () => _openCellAtIndex(currentTask, index),
+            cellState,
+            () => _openCellAtIndex(cellState, index),
             index,
           ),
         ),
@@ -194,12 +189,9 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  // TODO(MZ): Alternatively add cells at the top of list
-  // TODO(MZ): Remove task-parameter?
-  void _openCellAtIndex(DailyTask task, int index) {
-    // TODO(MZ): Replace these with cellStates
-    currentSelectedTask = task;
-    currentSelectedIndex = index;
+  void _openCellAtIndex(CellState cellState, int index) {
+    currentlySelectedCellState.task = cellState.task;
+    currentlySelectedIndex = index;
     setState(() {
       // Close all cells that are not the specified cell
       for (int counter = 0; counter < _cellStates.length; counter++) {
@@ -215,10 +207,8 @@ class _TaskScreenState extends State<TaskScreen> {
     return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
   }
 
-  // TODO(MZ): Replace parameters with CellStates
   List<Widget> _getStandardCellRow(
-    DailyTask currentTask,
-    bool cellIsOpen,
+    CellState cellState,
     Function setState,
   ) {
     return <Widget>[
@@ -229,12 +219,12 @@ class _TaskScreenState extends State<TaskScreen> {
               value: false,
               onChanged: null,
             ),
-            Text(currentTask.title),
+            Text(cellState.task.title),
           ],
         ),
-        leading: currentTask.getIcon(),
+        leading: cellState.task.getIcon(),
         trailing: IconButton(
-          icon: _buildCellIcon(cellIsOpen),
+          icon: _buildCellIcon(cellState.open),
           tooltip: 'Edit',
           onPressed: setState,
         ),
@@ -242,10 +232,8 @@ class _TaskScreenState extends State<TaskScreen> {
     ];
   }
 
-  // TODO(MZ): Replace parameters with CellStates
   List<Widget> _getExpandedCellRow(
-    DailyTask currentTask,
-    bool cellIsOpen,
+    CellState cellState,
     Function setState,
     int index,
   ) {
@@ -255,13 +243,13 @@ class _TaskScreenState extends State<TaskScreen> {
           obscureText: false,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
-            labelText: currentTask.title,
+            labelText: cellState.task.title,
           ),
           onChanged: (String text) => _updateTaskTitle(text),
         ),
-        leading: currentTask.getIcon(),
+        leading: cellState.task.getIcon(),
         trailing: IconButton(
-          icon: _buildCellIcon(cellIsOpen),
+          icon: _buildCellIcon(cellState.open),
           tooltip: 'Edit',
           onPressed: setState,
         ),
@@ -273,14 +261,14 @@ class _TaskScreenState extends State<TaskScreen> {
             onPressed: () {
               openIconMenu(iconStrings, keyOpenIconMenu);
             },
-            child: currentTask.getIcon(),
+            child: cellState.task.getIcon(),
           ),
           OutlineButton(
             key: keyOpenIntervalMenu,
             onPressed: () {
               _openIntervalMenu();
             },
-            child: Text(currentTask.interval),
+            child: Text(cellState.task.interval),
           ),
           OutlineButton(
             onPressed: () {},
@@ -297,7 +285,7 @@ class _TaskScreenState extends State<TaskScreen> {
         textAlign: TextAlign.left,
       ),
       Text(
-        _getLastUpdatedText(currentTask.lastModified),
+        _getLastUpdatedText(cellState.task.lastModified),
         textAlign: TextAlign.left,
       ),
       ButtonBar(
@@ -330,10 +318,12 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void _updateTaskTitle(String text) {
     setState(() {
-      currentSelectedTask.title = text;
+      //currentSelectedTask.title = text;
+      currentlySelectedCellState.task.title = text;
     });
-    DataStore.updateSingleTask(currentSelectedTask, currentSelectedIndex);
-    print('Updated Title to ${currentSelectedTask.title}');
+    DataStore.updateSingleTask(
+        currentlySelectedCellState.task, currentlySelectedIndex);
+    print('Updated Title to ${currentlySelectedCellState.task.title}');
   }
 
   String _getRandomIconString() {
@@ -384,8 +374,8 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void _intervalItemClicked(MenuItemProvider item) {
     _setNewIntervalForTask(
-      currentSelectedTask,
-      currentSelectedIndex,
+      currentlySelectedCellState.task,
+      currentlySelectedIndex,
       item.menuTitle,
     );
   }
@@ -437,13 +427,12 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void _iconItemClicked(MenuItemProvider item) {
     _setNewIconForTask(
-      currentSelectedTask,
-      currentSelectedIndex,
+      currentlySelectedCellState.task,
+      currentlySelectedIndex,
       item.menuTitle,
     );
   }
 
-  // TODO(MZ): Does this class need a state for setState to work?
   void _setNewIconForTask(DailyTask task, int index, String iconString) {
     setState(() {
       task.iconString = iconString;
@@ -488,10 +477,8 @@ class _TaskScreenState extends State<TaskScreen> {
 
   void _deleteMenuClicked(MenuItemProvider item) {
     if (item.menuTitle == 'Delete') {
-      // DELETE TASK
-      _deleteTask(currentSelectedTask, currentSelectedIndex);
+      _deleteTask(currentlySelectedCellState.task, currentlySelectedIndex);
     } else {
-      // dismiss menu
       _deleteMenuDismissed();
     }
   }
