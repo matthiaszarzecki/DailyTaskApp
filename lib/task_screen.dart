@@ -20,8 +20,6 @@ class TaskScreen extends StatefulWidget {
 
 class _TaskScreenState extends State<TaskScreen> {
   List<CellState> _cellStates = <CellState>[];
-
-  final ScrollController _scrollController = ScrollController();
   final List<String> iconStrings = <String>[
     'unity',
     'adobe',
@@ -52,7 +50,7 @@ class _TaskScreenState extends State<TaskScreen> {
         ],
       ),
       body: ListView(
-        controller: _scrollController,
+        // TODO(MZ): Add cells at top of list
         reverse: false, // reverses list
         children: _getCells(_cellStates),
       ),
@@ -121,8 +119,6 @@ class _TaskScreenState extends State<TaskScreen> {
     setState(() {
       _cellStates.add(newState);
       DataStore.saveNewDailyTask(newState.task);
-
-      // TODO(MZ): Add cells at top of list
       print('Added new task: ${newState.task.title}');
     });
   }
@@ -245,6 +241,8 @@ class _TaskScreenState extends State<TaskScreen> {
           onPressed: setState,
         ),
       ),
+      // TODO(MZ): Replace icon in open cell with IconButton
+      // TOOD(MZ): Remove +1 button
       ButtonBar(
         children: <Widget>[
           OutlineButton(
