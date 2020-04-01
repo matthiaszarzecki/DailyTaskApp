@@ -92,7 +92,6 @@ class _TaskScreenState extends State<TaskScreen> {
     List<DailyTask> dailyTasks = await DataStore.getAllDailyTasks();
     List<CellState> newCellStates = dailyTasks.map(
       (DailyTask task) {
-        print(task.toString());
         return CellState(
           task: task,
           cellIsOpen: false,
@@ -123,15 +122,7 @@ class _TaskScreenState extends State<TaskScreen> {
       _cellStates.add(newState);
       DataStore.saveNewDailyTask(newState.task);
 
-      // Scrolls the view to the lowest scroll position,
-      // and a bit further to accomodate cell-height
-      /*_scrollController.animateTo(
-        // TODO(MZ): Remove scrolling - add cells at top of list
-        0.0, //_scrollController.position.maxScrollExtent + 150,
-        curve: Curves.easeOut,
-        duration: const Duration(milliseconds: 300),
-      );*/
-
+      // TODO(MZ): Add cells at top of list
       print('Added new task: ${newState.task.title}');
     });
   }
@@ -168,8 +159,6 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  // TODO(MZ): Save checkbox-status for the next day (task.currentlyMarkedAsDone - recalculate every task at 0300?)
-
   Container _buildLargeCell(CellState cellState, int index) {
     return Container(
       height: 310,
@@ -205,14 +194,14 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   List<Widget> _getStandardCellRow(CellState cellState, Function openFunction) {
-    print(cellState.task.markedAsDone);
+    int index = _cellStates.indexOf(cellState);
     return <Widget>[
       ListTile(
         title: Row(
           children: <Widget>[
             Checkbox(
               value: cellState.task.markedAsDone ?? false,
-              onChanged: (_) => _markTaskAsChecked(cellState),
+              onChanged: (_) => _markTaskAsChecked(cellState, index),
             ),
             Text(cellState.task.title),
           ],
@@ -227,11 +216,11 @@ class _TaskScreenState extends State<TaskScreen> {
     ];
   }
 
-  void _markTaskAsChecked(CellState cellState) {
+  void _markTaskAsChecked(CellState cellState, int index) {
     setState(() {
       cellState.task.markedAsDone = !cellState.task.markedAsDone;
     });
-    DataStore.updateSingleTask(cellState.task, currentlySelectedIndex);
+    DataStore.updateSingleTask(cellState.task, index);
   }
 
   List<Widget> _getExpandedCellRow(
@@ -321,9 +310,9 @@ class _TaskScreenState extends State<TaskScreen> {
     return 'Last Updated: $returnText';
   }
 
+  // TODO(MZ): Unify cellState parameter / global cellState
   void _updateTaskTitle(String text) {
     setState(() {
-      //currentSelectedTask.title = text;
       currentlySelectedCellState.task.title = text;
     });
     DataStore.updateSingleTask(
