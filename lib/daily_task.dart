@@ -26,6 +26,7 @@ class DailyTask {
   String interval;
   bool markedAsDone;
 
+  // TODO(MZ): Move iconBuilder to main screen
   Icon getIcon(Color color, double size) {
     return Icon(
       MdiIcons.fromString(iconString) ?? Icons.hourglass_full,

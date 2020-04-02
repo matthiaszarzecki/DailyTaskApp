@@ -22,7 +22,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
       body: Center(
         child: Column(
           children: <Widget>[
-            widget.task.getIcon(Colors.red),
+            widget.task.getIcon(Colors.red, 25),
             Text('Counter: ${widget.task.counter}'),
             Text('Last Modified: ${widget.task.lastModified}'),
           ],

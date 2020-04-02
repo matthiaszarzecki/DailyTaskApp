@@ -73,10 +73,9 @@ class DataStore {
     prefs.setString('$prefixSingleTask$index', taskAsJson);
   }
 
+  // TODO(MZ): Remove checkmarks daily at 0300
   /*
 
-  
-  
   Check on app-show {
     if (dayLaterThanLastDailyCheck() && isTimeOfDayLaterThan0300()) {
       for (DailyTask task in tasks) {

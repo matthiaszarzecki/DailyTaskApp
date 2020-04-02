@@ -47,6 +47,7 @@ class _TaskScreenState extends State<TaskScreen> {
         title: Text(widget.appBarTitle),
         actions: <Widget>[
           _buildReorderListButton(),
+          // TODO(MZ): Replace with Popupmenu
           _buildDeleteAllTasksButton(),
         ],
       ),
@@ -96,7 +97,6 @@ class _TaskScreenState extends State<TaskScreen> {
       },
     );
   }
-  // TODO(MZ): Remove checkmarks daily at 0300
 
   Future<void> _getAllSavedTasks() async {
     List<DailyTask> dailyTasks = await DataStore.getAllDailyTasks();
