@@ -98,6 +98,14 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
+  Icon _buildIcon(CellState cellState) {
+    return Icon(
+      cellState.task.getIconData(),
+      color: Colors.green[200],
+      size: 25,
+    );
+  }
+
   Future<void> _getAllSavedTasks() async {
     List<DailyTask> dailyTasks = await DataStore.getAllDailyTasks();
     List<CellState> newCellStates = dailyTasks.map(
@@ -225,7 +233,7 @@ class _TaskScreenState extends State<TaskScreen> {
         ),
         title: Row(
           children: <Widget>[
-            cellState.task.getIcon(Colors.green[200], 25),
+            _buildIcon(cellState),
             const Spacer(),
             Text(cellState.task.title),
             const Spacer(),
@@ -262,18 +270,20 @@ class _TaskScreenState extends State<TaskScreen> {
             Container(
               height: 25,
               width: 25,
+              // TODO(MZ): Fix Icon in OutlineButton
               child: OutlineButton(
                 key: keyOpenIconMenu,
                 onPressed: () {
                   _openIconMenu(iconStrings, keyOpenIconMenu);
                 },
-                child: cellState.task.getIcon(Colors.green[200], 25),
+                child: _buildIcon(cellState),
               ),
             ),
             const Spacer(),
             Container(
               height: 44,
               width: 200,
+              // TODO(MZ): Center TextField Placeholder Text
               child: TextField(
                 obscureText: false,
                 textAlign: TextAlign.center,

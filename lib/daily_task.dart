@@ -11,6 +11,8 @@ class DailyTask {
     this.markedAsDone,
   });
 
+  // TODO(MZ): Add currentStreak, longestStreak
+
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         counter = json['counter'],
@@ -26,13 +28,8 @@ class DailyTask {
   String interval;
   bool markedAsDone;
 
-  // TODO(MZ): Move iconBuilder to main screen
-  Icon getIcon(Color color, double size) {
-    return Icon(
-      MdiIcons.fromString(iconString) ?? Icons.hourglass_full,
-      color: color,
-      size: size,
-    );
+  IconData getIconData() {
+    return MdiIcons.fromString(iconString) ?? Icons.hourglass_full;
   }
 
   static DateTime _dateFromString(String key) {
