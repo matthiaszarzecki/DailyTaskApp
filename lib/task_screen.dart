@@ -48,7 +48,6 @@ class _TaskScreenState extends State<TaskScreen> {
         actions: <Widget>[
           _buildReorderListButton(),
           _buildDeleteAllTasksButton(),
-          
         ],
       ),
       body: ListView(
@@ -89,7 +88,7 @@ class _TaskScreenState extends State<TaskScreen> {
       onPressed: () {
         List<CellState> newCellStates = _cellStates;
         newCellStates
-            .sort((CellState a, CellState b) => compareCellStates(a, b));
+            .sort((CellState a, CellState b) => _compareCellStates(a, b));
 
         setState(() {
           _cellStates = newCellStates;
@@ -110,7 +109,7 @@ class _TaskScreenState extends State<TaskScreen> {
       },
     ).toList();
 
-    newCellStates.sort((CellState a, CellState b) => compareCellStates(a, b));
+    newCellStates.sort((CellState a, CellState b) => _compareCellStates(a, b));
 
     setState(() {
       _cellStates = newCellStates;
@@ -118,7 +117,7 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   /// Compares CellState's by markedAsDone parameter, sending "done" tasks back
-  int compareCellStates(CellState a, CellState b) {
+  int _compareCellStates(CellState a, CellState b) {
     if (a.task.markedAsDone && !b.task.markedAsDone) {
       return 1;
     } else if (!a.task.markedAsDone && b.task.markedAsDone) {
@@ -263,7 +262,7 @@ class _TaskScreenState extends State<TaskScreen> {
         leading: OutlineButton(
           key: keyOpenIconMenu,
           onPressed: () {
-            openIconMenu(iconStrings, keyOpenIconMenu);
+            _openIconMenu(iconStrings, keyOpenIconMenu);
           },
           child: cellState.task.getIcon(Colors.green[200]),
         ),
@@ -398,7 +397,7 @@ class _TaskScreenState extends State<TaskScreen> {
     print('Updated Icon to ${task.iconString}');
   }
 
-  void openIconMenu(List<String> iconStrings, GlobalKey menuKey) {
+  void _openIconMenu(List<String> iconStrings, GlobalKey menuKey) {
     List<MenuItem> items = iconStrings.map(
       (String currentIconString) {
         return MenuItem(
