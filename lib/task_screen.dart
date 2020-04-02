@@ -18,6 +18,8 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
+enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
+
 class _TaskScreenState extends State<TaskScreen> {
   List<CellState> _cellStates = <CellState>[];
   final List<String> iconStrings = <String>[
@@ -39,6 +41,7 @@ class _TaskScreenState extends State<TaskScreen> {
   GlobalKey keyOpenIconMenu = GlobalKey();
   GlobalKey keyOpenIntervalMenu = GlobalKey();
   GlobalKey keyOpenDeleteMenu = GlobalKey();
+  WhyFarther _selection;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +53,25 @@ class _TaskScreenState extends State<TaskScreen> {
         actions: <Widget>[
           _buildReorderListButton(),
           // TODO(MZ): Replace with Popupmenu
+
+          PopupMenuButton<WhyFarther>(
+            onSelected: (WhyFarther result) {
+              setState(() {
+                _selection = result;
+              });
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
+              const PopupMenuItem<WhyFarther>(
+                value: WhyFarther.harder,
+                child: Text('Working a lot harder'),
+              ),
+              const PopupMenuItem<WhyFarther>(
+                value: WhyFarther.smarter,
+                child: Text('Being a lot smarter'),
+              ),
+            ],
+          ),
+
           _buildDeleteAllTasksButton(),
         ],
       ),
