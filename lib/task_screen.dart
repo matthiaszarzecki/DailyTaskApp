@@ -294,8 +294,8 @@ class _TaskScreenState extends State<TaskScreen> {
           onPressed: closeFunction,
         ),
       ),
-      // TOOD(MZ): Remove +1 button
       ButtonBar(
+        alignment: MainAxisAlignment.center,
         children: <Widget>[
           OutlineButton(
             key: keyOpenIntervalMenu,
@@ -304,6 +304,7 @@ class _TaskScreenState extends State<TaskScreen> {
             },
             child: Text(cellState.task.interval),
           ),
+          Container(),
           FlatButton(
             key: keyOpenDeleteMenu,
             child: const Text('DELETE TASK'),
