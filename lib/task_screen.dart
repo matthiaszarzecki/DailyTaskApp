@@ -285,10 +285,8 @@ class _TaskScreenState extends State<TaskScreen> {
                 onChanged: (String text) => _updateTaskTitle(text),
               ),
             ),
-            //const Spacer(),
           ],
         ),
-        /*l*/
         trailing: IconButton(
           icon: _buildCellIcon(cellState.cellIsOpen),
           onPressed: closeFunction,
