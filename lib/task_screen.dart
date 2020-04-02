@@ -128,20 +128,19 @@ class _TaskScreenState extends State<TaskScreen> {
   List<Widget> _getCells(List<CellState> cellStates) {
     return cellStates.map(
       (CellState currentState) {
-        int index = cellStates.indexOf(currentState);
-        return _buildCell(currentState, index);
+        //int index = cellStates.indexOf(currentState);
+        return _buildCell(currentState);
       },
     ).toList();
   }
 
-  // TODO(MZ): Get Index out at a later point? - figure out where it is needed!
-  Container _buildCell(CellState cellState, int index) {
+  Container _buildCell(CellState cellState) {
     return cellState.cellIsOpen
-        ? _buildLargeCell(cellState, index)
-        : _buildSmallCell(cellState, index);
+        ? _buildLargeCell(cellState)
+        : _buildSmallCell(cellState);
   }
 
-  Container _buildSmallCell(CellState cellState, int index) {
+  Container _buildSmallCell(CellState cellState) {
     return Container(
       height: 64,
       child: Card(
@@ -149,14 +148,14 @@ class _TaskScreenState extends State<TaskScreen> {
           mainAxisSize: MainAxisSize.min,
           children: _getStandardCellRow(
             cellState,
-            () => _openCellAtIndex(cellState, index),
+            () => _openCellAtIndex(cellState),
           ),
         ),
       ),
     );
   }
 
-  Container _buildLargeCell(CellState cellState, int index) {
+  Container _buildLargeCell(CellState cellState) {
     return Container(
       height: 310,
       child: Card(
@@ -164,25 +163,25 @@ class _TaskScreenState extends State<TaskScreen> {
           mainAxisSize: MainAxisSize.min,
           children: _getExpandedCellRow(
             cellState,
-            () => _openCellAtIndex(cellState, index),
-            index,
+            () => _openCellAtIndex(cellState),
           ),
         ),
       ),
     );
   }
 
-  void _openCellAtIndex(CellState cellState, int index) {
+  void _openCellAtIndex(CellState cellState) {
     currentlySelectedCellState = cellState;
-    currentlySelectedIndex = index;
+    currentlySelectedIndex = _cellStates.indexOf(cellState);
     setState(() {
       // Close all cells that are not the specified cell
       for (int counter = 0; counter < _cellStates.length; counter++) {
-        if (counter != index) {
+        if (counter != currentlySelectedIndex) {
           _cellStates[counter].cellIsOpen = false;
         }
       }
-      _cellStates[index].cellIsOpen = !_cellStates[index].cellIsOpen;
+      _cellStates[currentlySelectedIndex].cellIsOpen =
+          !_cellStates[currentlySelectedIndex].cellIsOpen;
     });
   }
 
@@ -194,7 +193,6 @@ class _TaskScreenState extends State<TaskScreen> {
     int index = _cellStates.indexOf(cellState);
     return <Widget>[
       ListTile(
-        // TODO(MZ): Make icon colorful
         leading: cellState.task.getIcon(Colors.green[200]),
         title: Row(
           children: <Widget>[
@@ -224,7 +222,6 @@ class _TaskScreenState extends State<TaskScreen> {
   List<Widget> _getExpandedCellRow(
     CellState cellState,
     Function closeFunction,
-    int index,
   ) {
     return <Widget>[
       ListTile(
