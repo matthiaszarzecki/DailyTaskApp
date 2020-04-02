@@ -46,11 +46,12 @@ class _TaskScreenState extends State<TaskScreen> {
       appBar: AppBar(
         title: Text(widget.appBarTitle),
         actions: <Widget>[
+          _buildReorderListButton(),
           _buildDeleteAllTasksButton(),
+          
         ],
       ),
       body: ListView(
-        // TODO(MZ): Sort ListView, show done tasks last
         children: _getCells(_cellStates),
       ),
       floatingActionButton: FloatingActionButton(
@@ -82,6 +83,20 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
+  Widget _buildReorderListButton() {
+    return IconButton(
+      icon: Icon(Icons.refresh),
+      onPressed: () {
+        List<CellState> newCellStates = _cellStates;
+        newCellStates
+            .sort((CellState a, CellState b) => compareCellStates(a, b));
+
+        setState(() {
+          _cellStates = newCellStates;
+        });
+      },
+    );
+  }
   // TODO(MZ): Remove checkmarks daily at 0300
 
   Future<void> _getAllSavedTasks() async {
@@ -95,9 +110,21 @@ class _TaskScreenState extends State<TaskScreen> {
       },
     ).toList();
 
+    newCellStates.sort((CellState a, CellState b) => compareCellStates(a, b));
+
     setState(() {
       _cellStates = newCellStates;
     });
+  }
+
+  /// Compares CellState's by markedAsDone parameter, sending "done" tasks back
+  int compareCellStates(CellState a, CellState b) {
+    if (a.task.markedAsDone && !b.task.markedAsDone) {
+      return 1;
+    } else if (!a.task.markedAsDone && b.task.markedAsDone) {
+      return -1;
+    }
+    return 0;
   }
 
   void _addDailyTask() {
@@ -296,7 +323,6 @@ class _TaskScreenState extends State<TaskScreen> {
     return 'Last Updated: $returnText';
   }
 
-  // TODO(MZ): Unify cellState parameter / global cellState
   void _updateTaskTitle(String text) {
     setState(() {
       currentlySelectedCellState.task.title = text;
