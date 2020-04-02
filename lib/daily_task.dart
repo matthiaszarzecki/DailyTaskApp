@@ -26,10 +26,11 @@ class DailyTask {
   String interval;
   bool markedAsDone;
 
-  Icon getIcon(Color color) {
+  Icon getIcon(Color color, double size) {
     return Icon(
       MdiIcons.fromString(iconString) ?? Icons.hourglass_full,
       color: color,
+      size: size,
     );
   }
 

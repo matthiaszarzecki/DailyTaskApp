@@ -183,7 +183,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Container _buildLargeCell(CellState cellState) {
     return Container(
-      height: 310,
+      height: 200,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -219,14 +219,16 @@ class _TaskScreenState extends State<TaskScreen> {
     int index = _cellStates.indexOf(cellState);
     return <Widget>[
       ListTile(
-        leading: cellState.task.getIcon(Colors.green[200]),
+        leading: Checkbox(
+          value: cellState.task.markedAsDone ?? false,
+          onChanged: (_) => _markTaskAsChecked(cellState, index),
+        ),
         title: Row(
           children: <Widget>[
-            Checkbox(
-              value: cellState.task.markedAsDone ?? false,
-              onChanged: (_) => _markTaskAsChecked(cellState, index),
-            ),
+            cellState.task.getIcon(Colors.green[200], 25),
+            const Spacer(),
             Text(cellState.task.title),
+            const Spacer(),
           ],
         ),
         trailing: IconButton(
@@ -251,21 +253,42 @@ class _TaskScreenState extends State<TaskScreen> {
   ) {
     return <Widget>[
       ListTile(
-        title: TextField(
-          obscureText: false,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            labelText: cellState.task.title,
-          ),
-          onChanged: (String text) => _updateTaskTitle(text),
+        leading: Checkbox(
+          value: cellState.task.markedAsDone ?? false,
+          onChanged: (_) => _markTaskAsChecked(cellState, 0),
         ),
-        leading: OutlineButton(
-          key: keyOpenIconMenu,
-          onPressed: () {
-            _openIconMenu(iconStrings, keyOpenIconMenu);
-          },
-          child: cellState.task.getIcon(Colors.green[200]),
+        title: Row(
+          children: <Widget>[
+            Container(
+              height: 25,
+              width: 25,
+              child: OutlineButton(
+                key: keyOpenIconMenu,
+                onPressed: () {
+                  _openIconMenu(iconStrings, keyOpenIconMenu);
+                },
+                child: cellState.task.getIcon(Colors.green[200], 25),
+              ),
+            ),
+            const Spacer(),
+            Container(
+              height: 44,
+              width: 200,
+              child: TextField(
+                obscureText: false,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: cellState.task.title,
+                ),
+                onChanged: (String text) => _updateTaskTitle(text),
+              ),
+            ),
+            //const Spacer(),
+          ],
         ),
+        /*l*/
         trailing: IconButton(
           icon: _buildCellIcon(cellState.cellIsOpen),
           onPressed: closeFunction,
@@ -281,6 +304,12 @@ class _TaskScreenState extends State<TaskScreen> {
             },
             child: Text(cellState.task.interval),
           ),
+          FlatButton(
+            key: keyOpenDeleteMenu,
+            child: const Text('DELETE TASK'),
+            color: Colors.redAccent,
+            onPressed: () => _openDeleteTaskmenu(),
+          ),
         ],
       ),
       const Text(
@@ -294,16 +323,6 @@ class _TaskScreenState extends State<TaskScreen> {
       Text(
         _getLastUpdatedText(cellState.task.lastModified),
         textAlign: TextAlign.left,
-      ),
-      ButtonBar(
-        children: <Widget>[
-          FlatButton(
-            key: keyOpenDeleteMenu,
-            child: const Text('DELETE TASK'),
-            color: Colors.redAccent,
-            onPressed: () => _openDeleteTaskmenu(),
-          ),
-        ],
       ),
     ];
   }
