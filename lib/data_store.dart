@@ -72,4 +72,42 @@ class DataStore {
     String taskAsJson = jsonEncode(taskAsMap);
     prefs.setString('$prefixSingleTask$index', taskAsJson);
   }
+
+  /*
+
+  
+  
+  Check on app-show {
+    if (dayLaterThanLastDailyCheck() && isTimeOfDayLaterThan0300()) {
+      for (DailyTask task in tasks) {
+        if (task.markedAsDone) {
+          task.markedAsDone = false;
+          task.streak += 1;
+          if (task.streak > task.highestStreak) {
+            task.highestStreak = task.streak;
+          }
+        } else {
+          task.streak = 0;
+        }
+
+        DataStore.saveTask(task);
+      }
+
+      lastDailyCheck = DateTime.now();
+      Set Pref for lastDailyCheck
+    }
+  }
+
+  bool _dayLaterThanLastDailyCheck() {
+    DateTime lastDailyCheck = DataStore.getLastDailyCheckDate;
+
+
+    return true
+  }
+
+  bool _isTimeOfDayLaterThan0300() {
+    return true
+  }
+
+  */
 }
