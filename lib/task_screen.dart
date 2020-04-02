@@ -28,6 +28,8 @@ class _TaskScreenState extends State<TaskScreen> {
   ];
   final List<String> intervalStrings = <String>[
     'Daily',
+    'Mo-Fr',
+    'Weekly',
     'Monthly',
   ];
 
@@ -140,11 +142,12 @@ class _TaskScreenState extends State<TaskScreen> {
     CellState newState = CellState(
       task: DailyTask(
         title: 'Task $currentIndex',
-        counter: 0,
         iconString: _getRandomIconString(),
         interval: 'Daily',
         markedAsDone: false,
         lastModified: DateTime.now(),
+        currentStreak: 0,
+        longestStreak: 0,
       ),
       cellIsOpen: false,
     );
@@ -321,12 +324,12 @@ class _TaskScreenState extends State<TaskScreen> {
           ),
         ],
       ),
-      const Text(
-        'Current Streak: 13 Days',
+      Text(
+        'Current Streak: ${cellState.task.currentStreak} days',
         textAlign: TextAlign.right,
       ),
-      const Text(
-        'Record Streak: 24 Days',
+      Text(
+        'Longest Streak: ${cellState.task.longestStreak} days',
         textAlign: TextAlign.left,
       ),
       Text(

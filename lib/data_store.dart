@@ -75,18 +75,17 @@ class DataStore {
 
   // TODO(MZ): Remove checkmarks daily at 0300
   /*
-
   Check on app-show {
     if (dayLaterThanLastDailyCheck() && isTimeOfDayLaterThan0300()) {
       for (DailyTask task in tasks) {
         if (task.markedAsDone) {
           task.markedAsDone = false;
-          task.streak += 1;
-          if (task.streak > task.highestStreak) {
-            task.highestStreak = task.streak;
+          task.currentStreak += 1;
+          if (task.streak > task.longestStreak) {
+            task.longestStreak = task.currentStreak;
           }
         } else {
-          task.streak = 0;
+          task.currentStreak = 0;
         }
 
         DataStore.saveTask(task);
@@ -100,13 +99,11 @@ class DataStore {
   bool _dayLaterThanLastDailyCheck() {
     DateTime lastDailyCheck = DataStore.getLastDailyCheckDate;
 
-
     return true
   }
 
   bool _isTimeOfDayLaterThan0300() {
     return true
   }
-
   */
 }

@@ -4,29 +4,30 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class DailyTask {
   DailyTask({
     this.title,
-    this.counter,
     this.iconString,
     this.lastModified,
     this.interval,
     this.markedAsDone,
+    this.currentStreak,
+    this.longestStreak,
   });
-
-  // TODO(MZ): Add currentStreak, longestStreak
 
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
-        counter = json['counter'],
         iconString = json['iconString'],
         lastModified = _dateFromString(json['lastModified']),
         interval = json['interval'],
-        markedAsDone = json['markedAsDone'];
+        markedAsDone = json['markedAsDone'],
+        currentStreak = json['currentStreak'],
+        longestStreak = json['longestStreak'];
 
   String title;
-  final int counter;
   String iconString;
   DateTime lastModified;
   String interval;
   bool markedAsDone;
+  int currentStreak;
+  int longestStreak;
 
   IconData getIconData() {
     return MdiIcons.fromString(iconString) ?? Icons.hourglass_full;
@@ -39,16 +40,17 @@ class DailyTask {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'title': title,
-      'counter': counter,
       'iconString': iconString,
       'lastModified': DateTime.now().toIso8601String(),
       'interval': interval,
       'markedAsDone': markedAsDone,
+      'currentStreak': currentStreak,
+      'longestStreak': longestStreak,
     };
   }
 
   @override
   String toString() {
-    return 'DailyTask: $title, $counter, icon: $iconString, lastModifed: $lastModified, interval: $interval, markedAsDone: $markedAsDone';
+    return 'DailyTask: $title, icon: $iconString, lastModifed: $lastModified, interval: $interval, markedAsDone: $markedAsDone, currentStreak: $currentStreak, longestStreak: $longestStreak';
   }
 }
