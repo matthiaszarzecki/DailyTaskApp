@@ -20,7 +20,7 @@ class TaskScreen extends StatefulWidget {
 
 enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
 
-class _TaskScreenState extends State<TaskScreen> {
+class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
   final List<String> iconStrings = <String>[
     'unity',
@@ -42,9 +42,39 @@ class _TaskScreenState extends State<TaskScreen> {
   GlobalKey keyOpenIntervalMenu = GlobalKey();
   GlobalKey keyOpenDeleteMenu = GlobalKey();
 
+  // TODO(MZ): Put _dailyUpdateCheck in Resume AND Build
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("#####");
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.inactive:
+        print("##### App Inactive");
+        break;
+      case AppLifecycleState.paused:
+        print("##### App Paused");
+        break;
+      case AppLifecycleState.resumed:
+        print('##### App Resumed');
+        break;
+      case AppLifecycleState.suspending:
+        print("##### App Suspending");
+        break;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
   @override
   Widget build(BuildContext context) {
     PopupMenu.context = context;
+
+    print('BUILD BUILD BUILD');
 
     return Scaffold(
       appBar: AppBar(
@@ -91,6 +121,7 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   void initState() {
     _getAllSavedTasks();
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
