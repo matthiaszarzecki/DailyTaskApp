@@ -42,26 +42,17 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   GlobalKey keyOpenIntervalMenu = GlobalKey();
   GlobalKey keyOpenDeleteMenu = GlobalKey();
 
-  // TODO(MZ): Put _dailyUpdateCheck in Resume AND Build
-
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("#####");
     super.didChangeAppLifecycleState(state);
-    switch (state) {
-      case AppLifecycleState.inactive:
-        print("##### App Inactive");
-        break;
-      case AppLifecycleState.paused:
-        print("##### App Paused");
-        break;
-      case AppLifecycleState.resumed:
-        print('##### App Resumed');
-        break;
-      case AppLifecycleState.suspending:
-        print("##### App Suspending");
-        break;
+    if (state == AppLifecycleState.resumed) {
+      _dailyUpdateCheck();
     }
+  }
+
+  void _dailyUpdateCheck() {
+    // TODO(MZ): Put _dailyUpdateCheck in Resume AND Build
+    print('Daily Update Check');
   }
 
   @override
@@ -74,7 +65,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     PopupMenu.context = context;
 
-    print('BUILD BUILD BUILD');
+    _dailyUpdateCheck();
 
     return Scaffold(
       appBar: AppBar(
