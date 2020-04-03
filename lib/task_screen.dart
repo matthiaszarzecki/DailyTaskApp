@@ -51,7 +51,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _dailyUpdateCheck() {
-    // TODO(MZ): Put _dailyUpdateCheck in Resume AND Build
+     // TODO(MZ): Put _dailyUpdateCheck in Resume AND Build
     print('Daily Update Check');
   }
 
