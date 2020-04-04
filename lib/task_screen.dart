@@ -51,7 +51,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _dailyUpdateCheck() {
-     // TODO(MZ): Put _dailyUpdateCheck in Resume AND Build
+    // TODO(MZ): Put _dailyUpdateCheck in Resume AND Build
     print('Daily Update Check');
   }
 
@@ -90,22 +90,24 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   // TODO(MZ): Move Delete All Button here
   PopupMenuButton _buildCornerMenu() {
-    return PopupMenuButton<WhyFarther>(
-      onSelected: (WhyFarther result) {
+    return PopupMenuButton<int>(
+      onSelected: (int result) {
         setState(() {
-          _selection = result;
+          //_selection = result;
         });
       },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
-        const PopupMenuItem<WhyFarther>(
-          value: WhyFarther.harder,
-          child: Text('Working a lot harder'),
-        ),
-        const PopupMenuItem<WhyFarther>(
-          value: WhyFarther.smarter,
-          child: Text('Being a lot smarter'),
-        ),
-      ],
+      itemBuilder: (BuildContext context) {
+        return <PopupMenuEntry<int>>[
+          const PopupMenuItem<int>(
+            value: 1,
+            child: Text('Working a lot harder'),
+          ),
+          const PopupMenuItem<int>(
+            value: 1,
+            child: Text('Being a lot smarter'),
+          ),
+        ];
+      },
     );
   }
 
