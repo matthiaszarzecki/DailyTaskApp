@@ -51,7 +51,39 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _dailyUpdateCheck() {
-    // TODO(MZ): Put _dailyUpdateCheck in Resume AND Build
+    // TODO(MZ): Remove checkmarks daily at 0300 in Resume AND Build
+    /*
+    Check on app-show {
+      if (dayLaterThanLastDailyCheck() && isTimeOfDayLaterThan0300()) {
+        for (DailyTask task in tasks) {
+          if (task.markedAsDone) {
+            task.markedAsDone = false;
+            task.currentStreak += 1;
+            if (task.streak > task.longestStreak) {
+              task.longestStreak = task.currentStreak;
+            }
+          } else {
+            task.currentStreak = 0;
+          }
+
+          DataStore.saveTask(task);
+        }
+
+        lastDailyCheck = DateTime.now();
+        Set Pref for lastDailyCheck
+      }
+    }
+
+    bool _dayLaterThanLastDailyCheck() {
+      DateTime lastDailyCheck = DataStore.getLastDailyCheckDate;
+
+      return true
+    }
+
+    bool _isTimeOfDayLaterThan0300() {
+      return true
+    }
+    */
     print('Daily Update Check');
   }
 
