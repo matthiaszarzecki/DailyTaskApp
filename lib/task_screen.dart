@@ -142,11 +142,13 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       () {
         // Empty Arrays
         _cellStates = <CellState>[];
-        DataStore.removeAllSavedTasks();
-        print('Deleted all tasks');
       },
     );
+    DataStore.removeAllSavedTasks();
+    print('Deleted all tasks');
   }
+
+  // TODO(MZ): Only show sort-button when list is not sorted
 
   Widget _buildReorderListButton() {
     return IconButton(
