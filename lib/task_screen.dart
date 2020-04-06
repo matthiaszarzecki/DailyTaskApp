@@ -40,6 +40,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   GlobalKey keyOpenIntervalMenu = GlobalKey();
   GlobalKey keyOpenDeleteMenu = GlobalKey();
 
+  bool _isListSorted = false;
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -115,7 +117,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     );
   }
 
-  // TODO(MZ): Move Delete All Button here
   PopupMenuButton<int> _buildCornerMenu() {
     return PopupMenuButton<int>(
       onSelected: (_) => _deleteAllTasks(),
@@ -151,18 +152,21 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   // TODO(MZ): Only show sort-button when list is not sorted
 
   Widget _buildReorderListButton() {
-    return IconButton(
-      icon: Icon(MdiIcons.sort),
-      onPressed: () {
-        List<CellState> newCellStates = _cellStates;
-        newCellStates
-            .sort((CellState a, CellState b) => _compareCellStates(a, b));
+    return !_isListSorted
+        ? IconButton(
+            icon: Icon(MdiIcons.sort),
+            onPressed: () {
+              List<CellState> newCellStates = _cellStates;
+              newCellStates
+                  .sort((CellState a, CellState b) => _compareCellStates(a, b));
 
-        setState(() {
-          _cellStates = newCellStates;
-        });
-      },
-    );
+              setState(() {
+                _cellStates = newCellStates;
+                _isListSorted = true;
+              });
+            },
+          )
+        : Container();
   }
 
   Icon _buildIcon(CellState cellState) {
@@ -219,7 +223,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
     setState(() {
       _cellStates.insert(0, newState);
-      //_cellStates.add(newState);
       print('Added new task: ${newState.task.title}');
     });
 
@@ -230,7 +233,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<Widget> _getCells(List<CellState> cellStates) {
     return cellStates.map(
       (CellState currentState) {
-        //int index = cellStates.indexOf(currentState);
         return _buildCell(currentState);
       },
     ).toList();
@@ -288,7 +290,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   Icon _buildCellIcon(bool cellIsOpen) {
-    return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
+    return cellIsOpen
+        ? Icon(Icons.arrow_drop_up)
+        : Icon(Icons.arrow_drop_down);
   }
 
   List<Widget> _getStandardCellRow(CellState cellState, Function openFunction) {
