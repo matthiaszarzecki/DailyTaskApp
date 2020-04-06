@@ -18,6 +18,8 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
+// TODO(MZ): Make delete-text read
+
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
   final List<String> iconStrings = <String>[
