@@ -96,6 +96,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     PopupMenu.context = context;
+    //_checkIfListIsSorted();
 
     _dailyUpdateCheck();
 
@@ -167,6 +168,16 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
             },
           )
         : Container();
+  }
+
+  void _checkIfListIsSorted() {
+    // Copy the current list and sort it. If it equals the current list it is sorted.
+    List<CellState> sortedList = List<CellState>.from(_cellStates);
+    sortedList.addAll(_cellStates);
+    sortedList.sort((CellState a, CellState b) => _compareCellStates(a, b));
+
+    _isListSorted = sortedList == _cellStates;
+    print(_isListSorted);
   }
 
   Icon _buildIcon(CellState cellState) {
@@ -290,9 +301,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   Icon _buildCellIcon(bool cellIsOpen) {
-    return cellIsOpen
-        ? Icon(Icons.arrow_drop_up)
-        : Icon(Icons.arrow_drop_down);
+    return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
   }
 
   List<Widget> _getStandardCellRow(CellState cellState, Function openFunction) {
