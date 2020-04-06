@@ -18,8 +18,6 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
-enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
-
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
   final List<String> iconStrings = <String>[
@@ -105,7 +103,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         actions: <Widget>[
           _buildReorderListButton(),
           _buildCornerMenu(),
-          _buildDeleteAllTasksButton(),
         ],
       ),
       body: ListView(
@@ -118,25 +115,15 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     );
   }
 
-  WhyFarther _selection;
-
   // TODO(MZ): Move Delete All Button here
-  PopupMenuButton _buildCornerMenu() {
+  PopupMenuButton<int> _buildCornerMenu() {
     return PopupMenuButton<int>(
-      onSelected: (int result) {
-        setState(() {
-          //_selection = result;
-        });
-      },
+      onSelected: (_) => _deleteAllTasks(),
       itemBuilder: (BuildContext context) {
         return <PopupMenuEntry<int>>[
           const PopupMenuItem<int>(
             value: 1,
-            child: Text('Working a lot harder'),
-          ),
-          const PopupMenuItem<int>(
-            value: 1,
-            child: Text('Being a lot smarter'),
+            child: Text('Delete All Tasks'),
           ),
         ];
       },
@@ -150,25 +137,20 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     super.initState();
   }
 
-  Widget _buildDeleteAllTasksButton() {
-    return IconButton(
-      icon: Icon(Icons.close),
-      onPressed: () {
-        setState(
-          () {
-            // Empty Arrays
-            _cellStates = <CellState>[];
-            DataStore.removeAllSavedTasks();
-            print('Deleted all tasks');
-          },
-        );
+  void _deleteAllTasks() {
+    setState(
+      () {
+        // Empty Arrays
+        _cellStates = <CellState>[];
+        DataStore.removeAllSavedTasks();
+        print('Deleted all tasks');
       },
     );
   }
 
   Widget _buildReorderListButton() {
     return IconButton(
-      icon: Icon(Icons.refresh),
+      icon: Icon(MdiIcons.sort),
       onPressed: () {
         List<CellState> newCellStates = _cellStates;
         newCellStates
