@@ -18,8 +18,6 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
-// TODO(MZ): Make delete-text read
-
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
   final List<String> iconStrings = <String>[
@@ -128,6 +126,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           const PopupMenuItem<int>(
             value: 1,
             child: Text('Delete All Tasks'),
+            textStyle: TextStyle(color: Colors.red),
           ),
         ];
       },
