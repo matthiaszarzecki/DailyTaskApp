@@ -177,11 +177,11 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print(_isListSorted);
   }
 
-  Icon _buildIcon(CellState cellState) {
+  Icon _buildIcon(CellState cellState, double size) {
     return Icon(
       cellState.task.getIconData(),
       color: Colors.green[200],
-      size: 25,
+      size: size,
     );
   }
 
@@ -313,7 +313,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         ),
         title: Row(
           children: <Widget>[
-            _buildIcon(cellState),
+            _buildIcon(cellState, 25),
             const Spacer(),
             Text(cellState.task.title),
             const Spacer(),
@@ -348,23 +348,11 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         ),
         title: Row(
           children: <Widget>[
-            Container(
-              height: 25,
-              width: 25,
-              // TODO(MZ): Fix Icon in OutlineButton
-              child: OutlineButton(
-                key: keyOpenIconMenu,
-                onPressed: () {
-                  _openIconMenu(iconStrings, keyOpenIconMenu);
-                },
-                child: _buildIcon(cellState),
-              ),
-            ),
+            _buildIcon(cellState, 25),
             const Spacer(),
             Container(
               height: 44,
               width: 200,
-              // TODO(MZ): Center TextField Placeholder Text
               child: TextField(
                 obscureText: false,
                 textAlign: TextAlign.center,
@@ -387,13 +375,21 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         alignment: MainAxisAlignment.center,
         children: <Widget>[
           OutlineButton(
+            key: keyOpenIconMenu,
+            onPressed: () {
+              _openIntervalMenu();
+            },
+            child: Text('Icon: ${cellState.task.iconString}'),
+          ),
+          Container(),
+          /*OutlineButton(
             key: keyOpenIntervalMenu,
             onPressed: () {
               _openIntervalMenu();
             },
-            child: Text(cellState.task.interval),
+            child: Text('Interval: ${cellState.task.interval}'),
           ),
-          Container(),
+          Container(),*/
           FlatButton(
             key: keyOpenDeleteMenu,
             child: const Text('DELETE TASK'),
