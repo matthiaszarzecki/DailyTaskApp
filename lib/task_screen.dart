@@ -167,14 +167,24 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         : Container();
   }
 
-  void _checkIfListIsSorted() {
+  bool _checkIfListIsSorted() {
     // Copy the current list and sort it. If it equals the current list it is sorted.
-    List<CellState> sortedList = List<CellState>.from(_cellStates);
+    List<CellState> sortedList = <CellState>[];
     sortedList.addAll(_cellStates);
     sortedList.sort((CellState a, CellState b) => _compareCellStates(a, b));
 
-    _isListSorted = sortedList == _cellStates;
-    print(_isListSorted);
+    print('Sorted List');
+    for(CellState state in sortedList) {
+      print(state.task.title);
+    }
+    print('Actual List');
+    for(CellState state in _cellStates) {
+      print(state.task.title);
+    }
+
+    // TODO(MZ): Add custom comparison - current one is not working
+    print(sortedList == _cellStates);
+    return sortedList == _cellStates;
   }
 
   Icon _buildIcon(CellState cellState, double size) {
@@ -230,11 +240,11 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       cellIsOpen: false,
     );
 
+    _cellStates.insert(0, newState);
+    bool sortState = _checkIfListIsSorted();
+
     setState(() {
-      _cellStates.insert(0, newState);
-      // TODO(MZ): This sorting here is wonky. It should check before setState, and then add the new sort-status in setState
-      _checkIfListIsSorted();
-      print('Added new task: ${newState.task.title}');
+      _isListSorted = sortState;
     });
 
     DataStore.saveNewDailyTask(newState.task);
@@ -329,9 +339,11 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _markTaskAsChecked(CellState cellState, int index) {
+    bool sortState = _checkIfListIsSorted();
+    // TODO(MZ): Mark cell as done FIRST, THEN check sorting
     setState(() {
       cellState.task.markedAsDone = !cellState.task.markedAsDone;
-      _checkIfListIsSorted();
+      _isListSorted = sortState;
     });
     DataStore.updateSingleTask(cellState.task, index);
   }
