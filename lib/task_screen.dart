@@ -151,8 +151,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print('Deleted all tasks');
   }
 
-  // TODO(MZ): Only show sort-button when list is not sorted
-
   Widget _buildReorderListButton() {
     return !_isListSorted
         ? IconButton(
@@ -170,6 +168,16 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           )
         : Container();
   }
+
+  // TODO(MZ): Only show sort-button when list is not sorted
+
+  // CHeck if list is sorted after
+  //// - addition of a task
+  //// - Setting a task to markedAsDone / Todo
+
+  //// after sorting the list set it to "false"
+
+  //// On initial build sort list regardless
 
   void _checkIfListIsSorted() {
     // Copy the current list and sort it. If it equals the current list it is sorted.
@@ -203,6 +211,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     newCellStates.sort((CellState a, CellState b) => _compareCellStates(a, b));
 
     setState(() {
+      _isListSorted = true;
       _cellStates = newCellStates;
     });
   }
@@ -235,6 +244,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
     setState(() {
       _cellStates.insert(0, newState);
+      _checkIfListIsSorted();
       print('Added new task: ${newState.task.title}');
     });
 
@@ -333,10 +343,11 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   void _markTaskAsChecked(CellState cellState, int index) {
     setState(() {
       cellState.task.markedAsDone = !cellState.task.markedAsDone;
+      _checkIfListIsSorted();
     });
     DataStore.updateSingleTask(cellState.task, index);
   }
-
+  
   List<Widget> _getExpandedCellRow(
     CellState cellState,
     Function closeFunction,
