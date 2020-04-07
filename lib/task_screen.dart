@@ -96,8 +96,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     PopupMenu.context = context;
-    //_checkIfListIsSorted();
-
     _dailyUpdateCheck();
 
     return Scaffold(
@@ -169,16 +167,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         : Container();
   }
 
-  // TODO(MZ): Only show sort-button when list is not sorted
-
-  // CHeck if list is sorted after
-  //// - addition of a task
-  //// - Setting a task to markedAsDone / Todo
-
-  //// after sorting the list set it to "false"
-
-  //// On initial build sort list regardless
-
   void _checkIfListIsSorted() {
     // Copy the current list and sort it. If it equals the current list it is sorted.
     List<CellState> sortedList = List<CellState>.from(_cellStates);
@@ -244,6 +232,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
     setState(() {
       _cellStates.insert(0, newState);
+      // TODO(MZ): This sorting here is wonky. It should check before setState, and then add the new sort-status in setState
       _checkIfListIsSorted();
       print('Added new task: ${newState.task.title}');
     });
@@ -251,7 +240,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     DataStore.saveNewDailyTask(newState.task);
   }
 
-  // Builds the cells. Is called on screen-load and cell-addition
   List<Widget> _getCells(List<CellState> cellStates) {
     return cellStates.map(
       (CellState currentState) {
@@ -347,7 +335,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     });
     DataStore.updateSingleTask(cellState.task, index);
   }
-  
+
   List<Widget> _getExpandedCellRow(
     CellState cellState,
     Function closeFunction,
