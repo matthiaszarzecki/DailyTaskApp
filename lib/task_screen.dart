@@ -55,7 +55,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     /*
     Check on app-show {
       if (dayLaterThanLastDailyCheck() && isTimeOfDayLaterThan0300()) {
-        for (DailyTask task in tasks) {
+        tasks.forEach((DailyTask task) {
           if (task.markedAsDone) {
             task.markedAsDone = false;
             task.currentStreak += 1;
@@ -67,7 +67,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           }
 
           DataStore.saveTask(task);
-        }
+        });
 
         lastDailyCheck = DateTime.now();
         Set Pref for lastDailyCheck
