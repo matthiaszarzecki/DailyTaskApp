@@ -169,22 +169,21 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   bool _checkIfListIsSorted() {
     // Copy the current list and sort it. If it equals the current list it is sorted.
-    List<CellState> sortedList = <CellState>[];
-    sortedList.addAll(_cellStates);
-    sortedList.sort((CellState a, CellState b) => _compareCellStates(a, b));
+    List<CellState> maybeSortedList = <CellState>[];
+    maybeSortedList.addAll(_cellStates);
+    maybeSortedList
+        .sort((CellState a, CellState b) => _compareCellStates(a, b));
 
-    print('Sorted List');
-    for(CellState state in sortedList) {
-      print(state.task.title);
+    for (int i = 0; i < _cellStates.length; i++) {
+      // If markedAsDone values are not the same, then the lists are not identical.
+      // Abort and return false.
+      if (maybeSortedList[i].task.markedAsDone !=
+          _cellStates[i].task.markedAsDone) {
+        return false;
+      }
     }
-    print('Actual List');
-    for(CellState state in _cellStates) {
-      print(state.task.title);
-    }
-
-    // TODO(MZ): Add custom comparison - current one is not working
-    print(sortedList == _cellStates);
-    return sortedList == _cellStates;
+    // If the previous check runs succesfully the lists are identical. Return true.
+    return true;
   }
 
   Icon _buildIcon(CellState cellState, double size) {
@@ -339,10 +338,10 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _markTaskAsChecked(CellState cellState, int index) {
+    cellState.task.markedAsDone = !cellState.task.markedAsDone;
     bool sortState = _checkIfListIsSorted();
-    // TODO(MZ): Mark cell as done FIRST, THEN check sorting
     setState(() {
-      cellState.task.markedAsDone = !cellState.task.markedAsDone;
+      print('Update View');
       _isListSorted = sortState;
     });
     DataStore.updateSingleTask(cellState.task, index);
