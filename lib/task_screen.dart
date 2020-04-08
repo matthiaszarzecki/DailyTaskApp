@@ -52,6 +52,27 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   void _dailyUpdateCheck() {
     // TODO(MZ): Remove checkmarks daily at 0300 in Resume AND Build
+
+    if (_dayLaterThanLastDailyCheck() && _isTimeOfDayLaterThan0300()) {
+      for (int index = 0; index < _cellStates.length; index++) {
+        CellState state = _cellStates[index];
+        if (state.task.markedAsDone) {
+          state.task.markedAsDone = false;
+          state.task.currentStreak += 1;
+          if (state.task.currentStreak > state.task.longestStreak) {
+            state.task.longestStreak = state.task.currentStreak;
+          }
+        } else {
+          state.task.currentStreak = 0;
+        }
+
+        DataStore.updateSingleTask(state.task, 0);
+      }
+
+      //lastDailyCheck = DateTime.now();
+      //Set Pref for lastDailyCheck
+    }
+
     /*
     Check on app-show {
       if (dayLaterThanLastDailyCheck() && isTimeOfDayLaterThan0300()) {
@@ -85,6 +106,17 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     }
     */
     print('Daily Update Check');
+  }
+
+  bool _dayLaterThanLastDailyCheck() {
+    // TODO(MZ): Add function that checks if it is on a later day than the last checks, then sets the current date
+    //DateTime lastDailyCheck = DataStore.getLastDailyCheckDate;
+    return false;
+  }
+
+  bool _isTimeOfDayLaterThan0300() {
+    // TODO(MZ): Add function that returns true after a certain time of day
+    return false;
   }
 
   @override
