@@ -55,18 +55,18 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     /*
     Check on app-show {
       if (dayLaterThanLastDailyCheck() && isTimeOfDayLaterThan0300()) {
-        tasks.forEach((DailyTask task) {
-          if (task.markedAsDone) {
-            task.markedAsDone = false;
-            task.currentStreak += 1;
-            if (task.streak > task.longestStreak) {
-              task.longestStreak = task.currentStreak;
+        tasks.forEach((CellState state) {
+          if (state.task.markedAsDone) {
+            state.task.markedAsDone = false;
+            state.task.currentStreak += 1;
+            if (state.task.streak > state.task.longestStreak) {
+              state.task.longestStreak = state.task.currentStreak;
             }
           } else {
-            task.currentStreak = 0;
+            state.task.currentStreak = 0;
           }
 
-          DataStore.saveTask(task);
+          DataStore.saveTask(state.task);
         });
 
         lastDailyCheck = DateTime.now();
