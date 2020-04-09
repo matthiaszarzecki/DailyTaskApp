@@ -50,6 +50,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     }
   }
 
+  // TODO(MZ): Add Mark Task as Failed Button
+  // TODO(MZ): Change markedAsDone to Status that can take 3 statuses
+
   void _dailyUpdateCheck() {
     // TODO(MZ): Remove checkmarks daily at 0300 in Resume AND Build
 
