@@ -118,8 +118,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   bool _isTimeOfDayLaterThan0300() {
-    // TODO(MZ): Add function that returns true after a certain time of day
-    return false;
+    return TimeOfDay.now().hour >= 3;
   }
 
   @override
