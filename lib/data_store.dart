@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:daily_task_app/daily_task.dart';
+import 'package:daily_task_app/date_time_parser.dart';
 
 class DataStore {
   static const String keyLength = 'length';
@@ -80,17 +81,11 @@ class DataStore {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String dateString = prefs.getString(keyLastUpdate);
 
-    return dateString == null
-        ? DateTime.utc(1970)
-        : _dateFromString(dateString);
+    return dateString == null ? DateTime.utc(1970) : dateFromString(dateString);
   }
 
   static Future<void> saveLastDailyCheckDate() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(keyLastUpdate, DateTime.now().toIso8601String());
-  }
-
-  static DateTime _dateFromString(String key) {
-    return DateTime.parse(key);
   }
 }

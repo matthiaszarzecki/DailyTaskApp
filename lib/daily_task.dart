@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import 'package:daily_task_app/date_time_parser.dart';
+
 class DailyTask {
   DailyTask({
     this.title,
@@ -15,7 +17,7 @@ class DailyTask {
   DailyTask.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         iconString = json['iconString'],
-        lastModified = _dateFromString(json['lastModified']),
+        lastModified = dateFromString(json['lastModified']),
         interval = json['interval'],
         markedAsDone = json['markedAsDone'],
         currentStreak = json['currentStreak'],
@@ -31,11 +33,6 @@ class DailyTask {
 
   IconData getIconData() {
     return MdiIcons.fromString(iconString) ?? Icons.hourglass_full;
-  }
-
-  // TODO(MZ): Used twice - move to single location
-  static DateTime _dateFromString(String key) {
-    return DateTime.parse(key);
   }
 
   Map<String, dynamic> toJson() {

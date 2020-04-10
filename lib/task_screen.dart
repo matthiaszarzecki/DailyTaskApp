@@ -386,7 +386,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           OutlineButton(
             key: keyOpenIconMenu,
             onPressed: () {
-              _openIntervalMenu();
+              _openIconMenu();
             },
             child: Text('Icon: ${cellState.task.iconString}'),
           ),
@@ -511,7 +511,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print('Updated Icon to ${task.iconString}');
   }
 
-  void _openIconMenu(List<String> iconStrings, GlobalKey menuKey) {
+  void _openIconMenu() {
     List<MenuItem> items = iconStrings.map(
       (String currentIconString) {
         return MenuItem(
@@ -533,7 +533,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       stateChanged: _iconStateChanged,
       onDismiss: _iconMenuDismissed,
     );
-    menu.show(widgetKey: menuKey);
+    menu.show(widgetKey: keyOpenIconMenu);
   }
 
   void _iconStateChanged(bool isShow) {
