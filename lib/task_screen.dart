@@ -54,9 +54,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   // TODO(MZ): Change markedAsDone to Status that can take 3 statuses
 
   Future<void> _dailyUpdateCheck() async {
-    // TODO(MZ): Remove checkmarks daily at 0300 in Resume AND Build
-
-    if (await _dayLaterThanLastDailyCheck() && _isTimeOfDayLaterThan0300()) {
+    if (await _dayLaterThanLastDailyCheck() && _isTimeOfDayLaterThan0400()) {
       for (int index = 0; index < _cellStates.length; index++) {
         CellState state = _cellStates[index];
         if (state.task.markedAsDone) {
@@ -69,76 +67,24 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           state.task.currentStreak = 0;
         }
 
-        DataStore.updateSingleTask(state.task, 0);
+        DataStore.updateSingleTask(state.task, index);
       }
 
-      //lastDailyCheck = DateTime.now();
-      //Set Pref for lastDailyCheck
+      DataStore.saveLastDailyCheckDate();
+
+      setState(() {});
     }
-
-    /*
-    Check on app-show {
-      if (dayLaterThanLastDailyCheck() && isTimeOfDayLaterThan0300()) {
-        tasks.forEach((CellState state) {
-          if (state.task.markedAsDone) {
-            state.task.markedAsDone = false;
-            state.task.currentStreak += 1;
-            if (state.task.streak > state.task.longestStreak) {
-              state.task.longestStreak = state.task.currentStreak;
-            }
-          } else {
-            state.task.currentStreak = 0;
-          }
-
-          DataStore.saveTask(state.task);
-        });
-
-        lastDailyCheck = DateTime.now();
-        Set Pref for lastDailyCheck
-      }
-    }
-
-    bool _dayLaterThanLastDailyCheck() {
-      DateTime lastDailyCheck = DataStore.getLastDailyCheckDate;
-
-      return true
-    }
-
-    bool _isTimeOfDayLaterThan0300() {
-      return true
-    }
-    */
-    print('Daily Update Check');
   }
 
-  // TODO(MZ): Add function that checks if it is on a later day than the last checks, then sets the current date
   Future<bool> _dayLaterThanLastDailyCheck() async {
-    print('#### Start');
+    // Get the saved DateTime for the last check from the DataStore.
+    // If none exists the year 1970 will be returned.
     DateTime lastDailyCheck = await DataStore.getLastDailyCheckDate();
-    //print(DateTime.now().isAfter(lastDailyCheck));
-    print('Last Daily Check: $lastDailyCheck');
-    TimeOfDay now = TimeOfDay.now();
-    print('Now:      $now');
-    TimeOfDay testDate = TimeOfDay.fromDateTime(await DataStore.getLastDailyCheckDate());
-    print('TestDate: $testDate');
-    // Check if time is after
-    // Check if day is differnet
-
-    int nowInMinutes = now.hour * 60 + now.minute;
-    print(nowInMinutes);
-    int testDateInMinutes = testDate.hour * 60 + testDate.minute;
-    print(testDateInMinutes);
-
-    print('Now is after testDate: ${nowInMinutes > testDateInMinutes}');
-    //print('Now is a different day to testDate: ${now.day != testDate.day}');
-    //print(now.isAfter(lastDailyCheck) && now.day != lastDailyCheck.day);
-    
-    print('#### End');
-    return false;
+    return DateTime.now().isAfter(lastDailyCheck);
   }
 
-  bool _isTimeOfDayLaterThan0300() {
-    return TimeOfDay.now().hour >= 3;
+  bool _isTimeOfDayLaterThan0400() {
+    return TimeOfDay.now().hour >= 4;
   }
 
   @override

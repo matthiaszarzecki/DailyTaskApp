@@ -66,7 +66,7 @@ class DataStore {
     // There is still technically a task saved at the previous length-index, but will not be accessed
   }
 
-  // Updates a single task. Needs the index as length-indicator
+  // Updates a single task
   static Future<void> updateSingleTask(DailyTask task, int index) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // Saves new task to specified index, overwriting the old one
