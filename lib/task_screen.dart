@@ -53,10 +53,10 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   // TODO(MZ): Add Mark Task as Failed Button
   // TODO(MZ): Change markedAsDone to Status that can take 3 statuses
 
-  void _dailyUpdateCheck() {
+  Future<void> _dailyUpdateCheck() async {
     // TODO(MZ): Remove checkmarks daily at 0300 in Resume AND Build
 
-    if (_dayLaterThanLastDailyCheck() && _isTimeOfDayLaterThan0300()) {
+    if (await _dayLaterThanLastDailyCheck() && _isTimeOfDayLaterThan0300()) {
       for (int index = 0; index < _cellStates.length; index++) {
         CellState state = _cellStates[index];
         if (state.task.markedAsDone) {
@@ -111,9 +111,29 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print('Daily Update Check');
   }
 
-  bool _dayLaterThanLastDailyCheck() {
-    // TODO(MZ): Add function that checks if it is on a later day than the last checks, then sets the current date
-    //DateTime lastDailyCheck = DataStore.getLastDailyCheckDate;
+  // TODO(MZ): Add function that checks if it is on a later day than the last checks, then sets the current date
+  Future<bool> _dayLaterThanLastDailyCheck() async {
+    print('#### Start');
+    DateTime lastDailyCheck = await DataStore.getLastDailyCheckDate();
+    //print(DateTime.now().isAfter(lastDailyCheck));
+    print('Last Daily Check: $lastDailyCheck');
+    TimeOfDay now = TimeOfDay.now();
+    print('Now:      $now');
+    TimeOfDay testDate = TimeOfDay.fromDateTime(await DataStore.getLastDailyCheckDate());
+    print('TestDate: $testDate');
+    // Check if time is after
+    // Check if day is differnet
+
+    int nowInMinutes = now.hour * 60 + now.minute;
+    print(nowInMinutes);
+    int testDateInMinutes = testDate.hour * 60 + testDate.minute;
+    print(testDateInMinutes);
+
+    print('Now is after testDate: ${nowInMinutes > testDateInMinutes}');
+    //print('Now is a different day to testDate: ${now.day != testDate.day}');
+    //print(now.isAfter(lastDailyCheck) && now.day != lastDailyCheck.day);
+    
+    print('#### End');
     return false;
   }
 
@@ -173,12 +193,10 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _deleteAllTasks() {
-    setState(
-      () {
-        // Empty Arrays
-        _cellStates = <CellState>[];
-      },
-    );
+    setState(() {
+      // Empty Arrays
+      _cellStates = <CellState>[];
+    });
     DataStore.removeAllSavedTasks();
     print('Deleted all tasks');
   }

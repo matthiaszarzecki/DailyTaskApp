@@ -6,6 +6,7 @@ import 'package:daily_task_app/daily_task.dart';
 class DataStore {
   static const String keyLength = 'length';
   static const String prefixSingleTask = 'single_task_';
+  static const String keyLastUpdate = 'last_update';
 
   /// Saves a single daily task to the preferences with continuing index
   static Future<void> saveNewDailyTask(DailyTask task) async {
@@ -65,11 +66,31 @@ class DataStore {
     // There is still technically a task saved at the previous length-index, but will not be accessed
   }
 
+  // Updates a single task. Needs the index as length-indicator
   static Future<void> updateSingleTask(DailyTask task, int index) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // Saves new task to specified index, overwriting the old one
     Map<String, dynamic> taskAsMap = task.toJson();
     String taskAsJson = jsonEncode(taskAsMap);
     prefs.setString('$prefixSingleTask$index', taskAsJson);
+  }
+
+  // Returns the date the last daily check has been performed
+  static Future<DateTime> getLastDailyCheckDate() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String dateString = prefs.getString(keyLastUpdate);
+
+    return dateString == null
+        ? DateTime.utc(1970)
+        : _dateFromString(dateString);
+  }
+
+  static Future<void> saveLastDailyCheckDate() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(keyLastUpdate, DateTime.now().toIso8601String());
+  }
+
+  static DateTime _dateFromString(String key) {
+    return DateTime.parse(key);
   }
 }
