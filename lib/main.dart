@@ -14,7 +14,7 @@ class DailyTaskApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const TaskScreen(appBarTitle: 'Daily Tasks'),
+      home: const TaskScreen(appBarTitle: 'Your Daily Tasks'),
     );
   }
 }

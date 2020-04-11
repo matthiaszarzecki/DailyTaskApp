@@ -12,6 +12,7 @@ dependencies:
 
   cupertino_icons: 0.1.2
   dart_random_choice: 0.0.2
+  enum_to_string: 1.0.9
   material_design_icons_flutter: 3.4.4595
   popup_menu: 1.0.5
   shared_preferences: 0.5.4+3

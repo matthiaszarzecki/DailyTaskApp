@@ -7,6 +7,12 @@ import 'package:daily_task_app/cell_state.dart';
 import 'package:daily_task_app/daily_task.dart';
 import 'package:daily_task_app/data_store.dart';
 
+enum TaskStatus {
+  todo,
+  done,
+  failed,
+}
+
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
 
@@ -50,21 +56,21 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     }
   }
 
-  // TODO(MZ): Add Mark Task as Failed Button
-  // TODO(MZ): Change markedAsDone to Status that can take 3 statuses
-
   Future<void> _dailyUpdateCheck() async {
     if (await _dayLaterThanLastDailyCheck() && _isTimeOfDayLaterThan0400()) {
       for (int index = 0; index < _cellStates.length; index++) {
         CellState state = _cellStates[index];
-        if (state.task.markedAsDone) {
-          state.task.markedAsDone = false;
+        if (state.task.status == TaskStatus.done) {
           state.task.currentStreak += 1;
           if (state.task.currentStreak > state.task.longestStreak) {
             state.task.longestStreak = state.task.currentStreak;
           }
         } else {
           state.task.currentStreak = 0;
+        }
+
+        if (state.task.status != TaskStatus.todo) {
+          state.task.status = TaskStatus.todo;
         }
 
         DataStore.updateSingleTask(state.task, index);
@@ -173,10 +179,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         .sort((CellState a, CellState b) => _compareCellStates(a, b));
 
     for (int i = 0; i < _cellStates.length; i++) {
-      // If markedAsDone values are not the same, then the lists are not identical.
+      // If status values are not the same, then the lists are not identical.
       // Abort and return false.
-      if (maybeSortedList[i].task.markedAsDone !=
-          _cellStates[i].task.markedAsDone) {
+      if (maybeSortedList[i].task.status != _cellStates[i].task.status) {
         return false;
       }
     }
@@ -213,9 +218,11 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   /// Compares CellState's by markedAsDone parameter, sending "done" tasks back
   int _compareCellStates(CellState a, CellState b) {
-    if (a.task.markedAsDone && !b.task.markedAsDone) {
+    // TODO(MZ): Fix cell-sorting for 3 cases - failed go to the bottom
+    if (a.task.status == TaskStatus.done && b.task.status != TaskStatus.done) {
       return 1;
-    } else if (!a.task.markedAsDone && b.task.markedAsDone) {
+    } else if (a.task.status != TaskStatus.done &&
+        b.task.status == TaskStatus.done) {
       return -1;
     }
     return 0;
@@ -229,7 +236,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         title: 'Task $currentIndex',
         iconString: _getRandomIconString(),
         interval: 'Daily',
-        markedAsDone: false,
+        status: TaskStatus.todo,
         lastModified: DateTime.now(),
         currentStreak: 0,
         longestStreak: 0,
@@ -314,10 +321,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     int index = _cellStates.indexOf(cellState);
     return <Widget>[
       ListTile(
-        leading: Checkbox(
-          value: cellState.task.markedAsDone ?? false,
-          onChanged: (_) => _markTaskAsChecked(cellState, index),
-        ),
+        leading: _buildCheckBoxOrCross(cellState, index),
         title: Row(
           children: <Widget>[
             _buildIcon(cellState, 25),
@@ -336,7 +340,12 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _markTaskAsChecked(CellState cellState, int index) {
-    cellState.task.markedAsDone = !cellState.task.markedAsDone;
+    if (cellState.task.status == TaskStatus.todo) {
+      cellState.task.status = TaskStatus.done;
+    } else {
+      cellState.task.status = TaskStatus.todo;
+    }
+
     bool sortState = _checkIfListIsSorted();
     setState(() {
       print('Update View');
@@ -349,12 +358,11 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     CellState cellState,
     Function closeFunction,
   ) {
+    int index = _cellStates.indexOf(cellState);
+
     return <Widget>[
       ListTile(
-        leading: Checkbox(
-          value: cellState.task.markedAsDone ?? false,
-          onChanged: (_) => _markTaskAsChecked(cellState, 0),
-        ),
+        leading: _buildCheckBoxOrCross(cellState, index),
         title: Row(
           children: <Widget>[
             _buildIcon(cellState, 25),
@@ -399,9 +407,16 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
             child: Text('Interval: ${cellState.task.interval}'),
           ),
           Container(),*/
+          OutlineButton(
+            onPressed: () {
+              _markTaskAsFailed(cellState, index);
+            },
+            child: cellState.task.status == TaskStatus.failed ? Text('Mark as Todo') : Text('Mark as Failed'),
+          ),
+          Container(),
           FlatButton(
             key: keyOpenDeleteMenu,
-            child: const Text('DELETE TASK'),
+            child: const Text('Delete Task'),
             color: Colors.redAccent,
             onPressed: () => _openDeleteTaskmenu(),
           ),
@@ -420,6 +435,33 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         textAlign: TextAlign.left,
       ),
     ];
+  }
+
+  Widget _buildCheckBoxOrCross(CellState cellState, int index) {
+    if (cellState.task.status != TaskStatus.failed) {
+      return Checkbox(
+        value: cellState.task.status == TaskStatus.done ?? false,
+        onChanged: (_) => _markTaskAsChecked(cellState, index),
+      );
+    } else {
+      return Container(
+        // TODO(MZ): Try this edge-inset on outlinebutton with icon
+        padding: const EdgeInsets.all(12.0),
+        child: Icon(
+          MdiIcons.close,
+          color: Colors.red,
+          size: 25,
+        ),
+      );
+    }
+  }
+
+  void _markTaskAsFailed(CellState state, int index) {
+    setState(() {
+      state.task.status = state.task.status == TaskStatus.failed ? TaskStatus.todo : TaskStatus.failed;
+    });
+
+    DataStore.updateSingleTask(state.task, index);
   }
 
   String _getLastUpdatedText(DateTime lastModified) {
