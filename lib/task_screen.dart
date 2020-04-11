@@ -347,7 +347,13 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         leading: _buildCheckBoxOrCross(cellState, index),
         title: Row(
           children: <Widget>[
-            _buildIcon(cellState, iconSize),
+            //_buildIcon(cellState, iconSize),
+            Container(
+              width: 33,
+              height: 33,
+              child: _buildIcon(cellState, iconSize),
+              //padding: const EdgeInsets.all(0.0),
+            ),
             const Spacer(),
             Text(cellState.task.title),
             const Spacer(),
@@ -382,13 +388,26 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     Function closeFunction,
   ) {
     int index = _cellStates.indexOf(cellState);
-
     return <Widget>[
       ListTile(
         leading: _buildCheckBoxOrCross(cellState, index),
         title: Row(
           children: <Widget>[
-            _buildIcon(cellState, iconSize),
+            //_buildIcon(cellState, iconSize),
+            Container(
+              width: 33,
+              height: 33,
+              child: OutlineButton(
+                padding: const EdgeInsets.all(0.0),
+                child: _buildIcon(cellState, iconSize),
+                key: keyOpenIconMenu,
+                onPressed: () {
+                  _openIconMenu();
+                },
+                color: Theme.of(context).iconTheme.color,
+              ),
+              //padding: const EdgeInsets.all(0.0),
+            ),
             const Spacer(),
             Container(
               height: 44,
@@ -414,22 +433,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       ButtonBar(
         alignment: MainAxisAlignment.center,
         children: <Widget>[
-          OutlineButton(
-            key: keyOpenIconMenu,
-            onPressed: () {
-              _openIconMenu();
-            },
-            child: Text('Icon: ${cellState.task.iconString}'),
-          ),
           Container(),
-          /*OutlineButton(
-            key: keyOpenIntervalMenu,
-            onPressed: () {
-              _openIntervalMenu();
-            },
-            child: Text('Interval: ${cellState.task.interval}'),
-          ),
-          Container(),*/
           OutlineButton(
             onPressed: () {
               _markTaskAsFailed(cellState, index);
@@ -445,21 +449,28 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
             color: Colors.redAccent,
             onPressed: () => _openDeleteTaskmenu(),
           ),
+          Container(),
         ],
       ),
       Text(
-        'Current Streak: ${cellState.task.currentStreak} days',
-        textAlign: TextAlign.right,
-      ),
-      Text(
-        'Longest Streak: ${cellState.task.longestStreak} days',
-        textAlign: TextAlign.left,
-      ),
-      Text(
-        _getLastUpdatedText(cellState.task.lastModified),
-        textAlign: TextAlign.left,
+        '''
+        ${_getCurrentStreakDisplay(cellState)}
+        ${_getLongestStreakDisplay(cellState)}
+        ${_getLastUpdatedText(cellState.task.lastModified)}
+        ''',
+        textScaleFactor: 1.1,
       ),
     ];
+  }
+
+  String _getCurrentStreakDisplay(CellState cellState) {
+    String daysDisplay = cellState.task.currentStreak == 1 ? 'day' : 'days';
+    return 'Current Streak: ${cellState.task.currentStreak} $daysDisplay';
+  }
+
+  String _getLongestStreakDisplay(CellState cellState) {
+    String daysDisplay = cellState.task.currentStreak == 1 ? 'day' : 'days';
+    return 'Record Streak: ${cellState.task.currentStreak} $daysDisplay';
   }
 
   Widget _buildCheckBoxOrCross(CellState cellState, int index) {
