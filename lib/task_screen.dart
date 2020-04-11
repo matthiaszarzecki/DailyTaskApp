@@ -481,7 +481,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       );
     } else {
       return Container(
-        // TODO(MZ): Try this edge-inset on outlinebutton with icon
         padding: const EdgeInsets.all(12.0),
         child: Icon(
           MdiIcons.close,
