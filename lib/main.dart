@@ -11,11 +11,17 @@ class DailyTaskApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Your Daily Tasks',
-      theme: ThemeData(
-        // TODO(MZ): Create custom color-theme. Find a nice one!
-        primarySwatch: Colors.green,
-      ),
+      theme: _buildThemeData(),
       home: const TaskScreen(appBarTitle: 'Your Daily Tasks'),
+    );
+  }
+
+  ThemeData _buildThemeData() {
+    MaterialColor mainColor = Colors.green;
+    return ThemeData(
+      // TODO(MZ): Create custom color-theme. Find a nice one!
+      primarySwatch: mainColor,
+      iconTheme: IconThemeData(color: mainColor[300]),
     );
   }
 }

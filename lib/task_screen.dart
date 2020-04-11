@@ -209,7 +209,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     return Icon(
       cellState.task.getIconData(),
       // TODO(MZ): Link color to main color-theme
-      color: Colors.green[200],
+      color: Theme.of(context).iconTheme.color,
+      //color: Colors.green[200],
       size: size,
     );
   }
