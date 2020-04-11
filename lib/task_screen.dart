@@ -26,12 +26,26 @@ class TaskScreen extends StatefulWidget {
 
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
+
   final List<String> iconStrings = <String>[
-    'unity',
-    'adobe',
-    'airplane-off',
-    'battery-70',
+    'bike',
+    'book',
+    'cloud',
+    'console-line',
+    'exclamation',
+    'face',
+    'food-apple',
+    'fruit-grapes',
+    'fruit-pineapple',
+    'fruit-watermelon',
+    'music-clef-treble',
+    'stack-overflow',
+    'trumpet',
+    'walk',
+    'water',
+    'weather-sunny',
   ];
+
   final List<String> intervalStrings = <String>[
     'Daily',
     'Mo-Fr',
@@ -192,6 +206,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   Icon _buildIcon(CellState cellState, double size) {
     return Icon(
       cellState.task.getIconData(),
+      // TODO(MZ): Link color to main color-theme
       color: Colors.green[200],
       size: size,
     );
@@ -229,7 +244,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     } else if (a.task.status == TaskStatus.todo) {
       // If a.task is todo, always move a up
       return -1;
-    } 
+    }
 
     // If a.task is failed, always move a down
     return 1;
@@ -240,7 +255,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
     CellState newState = CellState(
       task: DailyTask(
-        title: 'Task $currentIndex',
+        title: 'New Task $currentIndex',
         iconString: _getRandomIconString(),
         interval: 'Daily',
         status: TaskStatus.todo,
@@ -331,6 +346,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         leading: _buildCheckBoxOrCross(cellState, index),
         title: Row(
           children: <Widget>[
+            // TODO(MZ): Put icon-size to constant
             _buildIcon(cellState, 25),
             const Spacer(),
             Text(cellState.task.title),
