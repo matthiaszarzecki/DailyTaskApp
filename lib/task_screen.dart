@@ -216,16 +216,23 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     });
   }
 
-  /// Compares CellState's by markedAsDone parameter, sending "done" tasks back
+  /// Compares CellState's by status. Todo are up top, followed by done and failed.
   int _compareCellStates(CellState a, CellState b) {
-    // TODO(MZ): Fix cell-sorting for 3 cases - failed go to the bottom
-    if (a.task.status == TaskStatus.done && b.task.status != TaskStatus.done) {
-      return 1;
-    } else if (a.task.status != TaskStatus.done &&
-        b.task.status == TaskStatus.done) {
+    if (a.task.status == TaskStatus.done) {
+      if (b.task.status == TaskStatus.todo) {
+        // If a.task is done and b.task is todo, move a down
+        return 1;
+      } else if (b.task.status == TaskStatus.failed) {
+        // If a.task is done and b.task is failed, move a up
+        return -1;
+      }
+    } else if (a.task.status == TaskStatus.todo) {
+      // If a.task is todo, always move a up
       return -1;
-    }
-    return 0;
+    } 
+
+    // If a.task is failed, always move a down
+    return 1;
   }
 
   void _addDailyTask() {
@@ -411,7 +418,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
             onPressed: () {
               _markTaskAsFailed(cellState, index);
             },
-            child: cellState.task.status == TaskStatus.failed ? Text('Mark as Todo') : Text('Mark as Failed'),
+            child: cellState.task.status == TaskStatus.failed
+                ? const Text('Unmark as Failed')
+                : const Text('Mark as Failed'),
           ),
           Container(),
           FlatButton(
@@ -458,7 +467,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   void _markTaskAsFailed(CellState state, int index) {
     setState(() {
-      state.task.status = state.task.status == TaskStatus.failed ? TaskStatus.todo : TaskStatus.failed;
+      state.task.status = state.task.status == TaskStatus.failed
+          ? TaskStatus.todo
+          : TaskStatus.failed;
     });
 
     DataStore.updateSingleTask(state.task, index);
