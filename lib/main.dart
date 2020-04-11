@@ -17,9 +17,24 @@ class DailyTaskApp extends StatelessWidget {
   }
 
   ThemeData _buildThemeData() {
-    MaterialColor mainColor = Colors.green;
+    const int primaryValue = 0xff2899cd;
+    const MaterialColor mainColor = MaterialColor(
+      primaryValue,
+      <int, Color>{
+        50: Color(primaryValue),
+        100: Color(primaryValue),
+        200: Color(primaryValue),
+        300: Color(0xff7bc6e9),
+        400: Color(primaryValue),
+        500: Color(primaryValue),
+        600: Color(primaryValue),
+        700: Color(primaryValue),
+        800: Color(primaryValue),
+        900: Color(primaryValue),
+      },
+    );
+
     return ThemeData(
-      // TODO(MZ): Create custom color-theme. Find a nice one!
       primarySwatch: mainColor,
       iconTheme: IconThemeData(color: mainColor[300]),
     );
