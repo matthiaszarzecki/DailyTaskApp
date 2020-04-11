@@ -53,6 +53,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     'Monthly',
   ];
 
+  final double iconSize = 25;
+
   CellState currentlySelectedCellState;
   int currentlySelectedIndex;
 
@@ -346,8 +348,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         leading: _buildCheckBoxOrCross(cellState, index),
         title: Row(
           children: <Widget>[
-            // TODO(MZ): Put icon-size to constant
-            _buildIcon(cellState, 25),
+            _buildIcon(cellState, iconSize),
             const Spacer(),
             Text(cellState.task.title),
             const Spacer(),
@@ -388,7 +389,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         leading: _buildCheckBoxOrCross(cellState, index),
         title: Row(
           children: <Widget>[
-            _buildIcon(cellState, 25),
+            _buildIcon(cellState, iconSize),
             const Spacer(),
             Container(
               height: 44,
@@ -475,7 +476,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         child: Icon(
           MdiIcons.close,
           color: Colors.red,
-          size: 25,
+          size: iconSize,
         ),
       );
     }
