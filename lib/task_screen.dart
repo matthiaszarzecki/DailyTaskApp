@@ -368,6 +368,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     ];
   }
 
+  // TODO(MZ): Change this one to use value paramter, is wonky on actual device
   void _markTaskAsChecked(CellState cellState, int index) {
     if (cellState.task.status == TaskStatus.todo) {
       cellState.task.status = TaskStatus.done;
@@ -383,6 +384,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     DataStore.updateSingleTask(cellState.task, index);
   }
 
+  // TODO(MZ): Allow editing of streaks
   List<Widget> _getExpandedCellRow(
     CellState cellState,
     Function closeFunction,
@@ -412,6 +414,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
             Container(
               height: 44,
               width: 200,
+              // TODO(MZ): Change size to be adaptive
               child: TextField(
                 obscureText: false,
                 textAlign: TextAlign.center,
@@ -477,7 +480,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     if (cellState.task.status != TaskStatus.failed) {
       return Checkbox(
         value: cellState.task.status == TaskStatus.done ?? false,
-        onChanged: (_) => _markTaskAsChecked(cellState, index),
+        onChanged: (bool value) => _markTaskAsChecked(cellState, index),
       );
     } else {
       return Container(
