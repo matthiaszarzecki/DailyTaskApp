@@ -368,18 +368,15 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     ];
   }
 
-  // TODO(MZ): Change this one to use value paramter, is wonky on actual device
-  void _markTaskAsChecked(CellState cellState, int index) {
-    if (cellState.task.status == TaskStatus.todo) {
-      cellState.task.status = TaskStatus.done;
-    } else {
-      cellState.task.status = TaskStatus.todo;
-    }
+  // TODO(MZ): Fix task-checking with parameter
+  void _markTaskAsChecked(CellState cellState, int index, bool newValue) {
+    
 
     bool sortState = _checkIfListIsSorted();
     setState(() {
       print('Update View');
       _isListSorted = sortState;
+      cellState.task.status = newValue ? TaskStatus.done : TaskStatus.todo;
     });
     DataStore.updateSingleTask(cellState.task, index);
   }
@@ -479,8 +476,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   Widget _buildCheckBoxOrCross(CellState cellState, int index) {
     if (cellState.task.status != TaskStatus.failed) {
       return Checkbox(
-        value: cellState.task.status == TaskStatus.done ?? false,
-        onChanged: (bool value) => _markTaskAsChecked(cellState, index),
+        value: cellState.task.status == TaskStatus.done,
+        onChanged: (bool newValue) => _markTaskAsChecked(cellState, index, newValue),
       );
     } else {
       return Container(
