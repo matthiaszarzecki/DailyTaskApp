@@ -74,6 +74,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   Future<void> _dailyUpdateCheck() async {
     if (await _dayLaterThanLastDailyCheck() && _isTimeOfDayLaterThan0400()) {
+      DataStore.saveLastDailyCheckDate();
+
       for (int index = 0; index < _cellStates.length; index++) {
         CellState state = _cellStates[index];
         if (state.task.status == TaskStatus.done) {
@@ -92,8 +94,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         DataStore.updateSingleTask(state.task, index);
       }
 
-      DataStore.saveLastDailyCheckDate();
-
       setState(() {});
     }
   }
@@ -102,7 +102,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     // Get the saved DateTime for the last check from the DataStore.
     // If none exists the year 1970 will be returned.
     DateTime lastDailyCheck = await DataStore.getLastDailyCheckDate();
-    return DateTime.now().isAfter(lastDailyCheck);
+    // Checks if it is after the lastDailyCheck, but also that the
+    // day is different, to make sure it is actually the day after.
+    return DateTime.now().isAfter(lastDailyCheck) && DateTime.now().day != lastDailyCheck.day;
   }
 
   bool _isTimeOfDayLaterThan0400() {
@@ -368,10 +370,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     ];
   }
 
-  // TODO(MZ): Fix task-checking with parameter
   void _markTaskAsChecked(CellState cellState, int index, bool newValue) {
-    
-
     bool sortState = _checkIfListIsSorted();
     setState(() {
       print('Update View');
