@@ -392,7 +392,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         leading: _buildCheckBoxOrCross(cellState, index),
         title: Row(
           children: <Widget>[
-            //_buildIcon(cellState, iconSize),
             Container(
               width: 33,
               height: 33,
@@ -405,13 +404,13 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
                 },
                 color: Theme.of(context).iconTheme.color,
               ),
-              //padding: const EdgeInsets.all(0.0),
             ),
             const Spacer(),
             Container(
               height: 44,
-              width: 200,
-              // TODO(MZ): Change size to be adaptive
+              // Adapts width to fix the available space
+              width: MediaQuery.of(context).size.width - 225,
+              margin: const EdgeInsets.all(0.0),
               child: TextField(
                 obscureText: false,
                 textAlign: TextAlign.center,
