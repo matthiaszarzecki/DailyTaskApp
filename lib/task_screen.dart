@@ -104,7 +104,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     DateTime lastDailyCheck = await DataStore.getLastDailyCheckDate();
     // Checks if it is after the lastDailyCheck, but also that the
     // day is different, to make sure it is actually the day after.
-    return DateTime.now().isAfter(lastDailyCheck) && DateTime.now().day != lastDailyCheck.day;
+    return DateTime.now().isAfter(lastDailyCheck) &&
+        DateTime.now().day != lastDailyCheck.day;
   }
 
   bool _isTimeOfDayLaterThan0400() {
@@ -371,11 +372,11 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _markTaskAsChecked(CellState cellState, int index, bool newValue) {
+    cellState.task.status = newValue ? TaskStatus.done : TaskStatus.todo;
     bool sortState = _checkIfListIsSorted();
     setState(() {
       print('Update View');
       _isListSorted = sortState;
-      cellState.task.status = newValue ? TaskStatus.done : TaskStatus.todo;
     });
     DataStore.updateSingleTask(cellState.task, index);
   }
@@ -476,7 +477,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     if (cellState.task.status != TaskStatus.failed) {
       return Checkbox(
         value: cellState.task.status == TaskStatus.done,
-        onChanged: (bool newValue) => _markTaskAsChecked(cellState, index, newValue),
+        onChanged: (bool newValue) =>
+            _markTaskAsChecked(cellState, index, newValue),
       );
     } else {
       return Container(
@@ -491,10 +493,12 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _markTaskAsFailed(CellState state, int index) {
+    state.task.status = state.task.status == TaskStatus.failed
+        ? TaskStatus.todo
+        : TaskStatus.failed;
+    bool sortState = _checkIfListIsSorted();
     setState(() {
-      state.task.status = state.task.status == TaskStatus.failed
-          ? TaskStatus.todo
-          : TaskStatus.failed;
+      _isListSorted = sortState;
     });
 
     DataStore.updateSingleTask(state.task, index);
