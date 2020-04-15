@@ -124,12 +124,21 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     _dailyUpdateCheck();
 
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
         title: Text(widget.appBarTitle),
         actions: <Widget>[
           _buildReorderListButton(),
           _buildCornerMenu(),
         ],
+      ),
+      // TODO(MZ): Test docking the floating action button
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        child: Container(
+          height: 40.0,
+          //color: Theme.of(context).iconTheme.color,
+        ),
       ),
       body: ListView(
         children: _getCells(_cellStates),
