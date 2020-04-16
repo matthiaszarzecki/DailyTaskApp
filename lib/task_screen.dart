@@ -73,6 +73,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   Future<void> _dailyUpdateCheck() async {
+    // TODO(MZ): Check if this works correctly
     if (await _dayLaterThanLastDailyCheck() && _isTimeOfDayLaterThan0400()) {
       DataStore.saveLastDailyCheckDate();
 
@@ -512,8 +513,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     DataStore.updateSingleTask(state.task, index);
   }
 
-  // TODO(MZ): Fix icons for task-deletions
-
   String _getLastUpdatedText(DateTime lastModified) {
     Duration differenceToRightNow = DateTime.now().difference(lastModified);
 
@@ -652,6 +651,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print('Updated Icon to ${task.iconString}');
   }
 
+  // TODO(MZ): Fix icons for task-deletions
   void _openDeleteTaskmenu() {
     List<MenuItem> items = <MenuItem>[
       MenuItem(
