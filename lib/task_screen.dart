@@ -166,6 +166,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     );
   }
 
+  // TODO(MZ): Datetime: Check if isAfter is less than a day, and if less than a day only then check same day
+  // Check day of the year
+
   @override
   void initState() {
     _getAllSavedTasks();
