@@ -13,6 +13,7 @@ class DailyTaskApp extends StatelessWidget {
       title: 'Your Daily Tasks',
       theme: _buildThemeData(),
       home: const TaskScreen(appBarTitle: 'Your Daily Tasks'),
+      debugShowCheckedModeBanner: false,
     );
   }
 

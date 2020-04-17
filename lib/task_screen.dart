@@ -333,7 +333,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   Container _buildLargeCell(CellState cellState) {
     return Container(
-      height: 200,
+      height: 180,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -453,6 +453,13 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           onPressed: closeFunction,
         ),
       ),
+      Text(
+        '''
+        ${_getCurrentStreakDisplay(cellState)}
+        ${_getLongestStreakDisplay(cellState)}
+        ${_getLastUpdatedText(cellState.task.lastModified)}''',
+        textScaleFactor: 1.1,
+      ),
       ButtonBar(
         alignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -474,14 +481,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           ),
           Container(),
         ],
-      ),
-      Text(
-        '''
-        ${_getCurrentStreakDisplay(cellState)}
-        ${_getLongestStreakDisplay(cellState)}
-        ${_getLastUpdatedText(cellState.task.lastModified)}
-        ''',
-        textScaleFactor: 1.1,
       ),
     ];
   }
