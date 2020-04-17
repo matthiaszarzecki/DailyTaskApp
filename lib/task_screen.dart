@@ -404,6 +404,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   // TODO(MZ): Allow editing of streaks
+  // TODO(MZ): Add iOS-icons
+
   List<Widget> _getExpandedCellRow(
     CellState cellState,
     Function closeFunction,
@@ -663,20 +665,19 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print('Updated Icon to ${task.iconString}');
   }
 
-  // TODO(MZ): Fix icons for task-deletions
   void _openDeleteTaskmenu() {
     List<MenuItem> items = <MenuItem>[
       MenuItem(
-        title: 'Delete',
+        title: 'Keep Task.',
         image: Icon(
-          MdiIcons.fromString('unity'),
+          MdiIcons.fromString('arrow-left-thick'),
           color: Colors.white,
         ),
       ),
       MenuItem(
-        title: 'No. Go Back.',
+        title: 'Delete!',
         image: Icon(
-          MdiIcons.fromString('unity'),
+          MdiIcons.fromString('delete'),
           color: Colors.white,
         ),
       ),
