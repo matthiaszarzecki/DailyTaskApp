@@ -145,13 +145,12 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           _buildCornerMenu(),
         ],
       ),
-      // TODO(MZ): Test docking the floating action button
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(
           height: 40.0,
-          //color: Theme.of(context).iconTheme.color,
         ),
+        color: Theme.of(context).iconTheme.color,
       ),
       body: ListView(
         children: _getCells(_cellStates),
@@ -159,6 +158,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       floatingActionButton: FloatingActionButton(
         onPressed: _addDailyTask,
         child: Icon(Icons.add),
+        mini: true,
       ),
     );
   }
