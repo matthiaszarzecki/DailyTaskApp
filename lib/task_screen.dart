@@ -73,11 +73,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   Future<void> _dailyUpdateCheck() async {
-    // TODO(MZ): Check if this works correctly
-    // TODO(MZ): Datetime: Check if isAfter is less than a day, and if less than a day only then check same day
-    // Check day of the year
-    //
-    // Check if at least one is different - year, month, day
     if (await _dayLaterThanLastDailyCheck() && _isTimeOfDayLaterThan0400()) {
       DataStore.saveLastDailyCheckDate();
 
@@ -104,13 +99,15 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   Future<bool> _dayLaterThanLastDailyCheck() async {
+    DateTime now = DateTime.now();
+
     // Get the saved DateTime for the last check from the DataStore.
     // If none exists the 1970.01.01 will be returned.
     DateTime lastDailyCheck = await DataStore.getLastDailyCheckDate();
-    // Checks if it is after the lastDailyCheck, but also that the
-    // day is different, to make sure it is actually the day after.
 
-    DateTime now = DateTime.now();
+    // Checks if it is after the lastDailyCheck, but also that the
+    // day, or month, of year is different, to make sure it is actually
+    // the day after. One of those 3 + isAfter should suffice.
 
     if (now.isAfter(lastDailyCheck)) {
       if (now.day != lastDailyCheck.day ||
@@ -120,6 +117,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       }
     }
 
+    // If the previous checks failed the current DateTime is not on a later day.
     return false;
   }
 
