@@ -404,7 +404,10 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   // TODO(MZ): Allow editing of streaks
-  // TODO(MZ): Add iOS-icons
+  // TODO(MZ): Hide keyboard when opening icon-menu
+  // TODO(MZ): Remove texts from icon-menu
+  // TODO(MZ): Do not show floating button when keyboard is shown
+  // TODO(MZ): Upload to TestFlight & Invite friends
 
   List<Widget> _getExpandedCellRow(
     CellState cellState,
