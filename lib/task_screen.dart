@@ -333,7 +333,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   Container _buildLargeCell(CellState cellState) {
     return Container(
-      height: 180,
+      height: 185,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
