@@ -8,6 +8,7 @@ class DataStore {
   static const String keyLength = 'length';
   static const String prefixSingleTask = 'single_task_';
   static const String keyLastUpdate = 'last_update';
+  static const String keyNextReset = 'next_reset';
 
   /// Saves a single daily task to the preferences with continuing index
   static Future<void> saveNewDailyTask(DailyTask task) async {
@@ -87,5 +88,23 @@ class DataStore {
   static Future<void> saveLastDailyCheckDate() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(keyLastUpdate, DateTime.now().toIso8601String());
+  }
+
+
+
+
+  // Returns the date after which the next reset should happen.
+  // If it doesn't exist yet returns 1970.01.01.
+  static Future<DateTime> getNextResetDateTime() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String dateString = prefs.getString(keyNextReset);
+    return dateString == null ? DateTime.utc(1970) : dateFromString(dateString);
+  }
+
+  static Future<void> saveNextResetDateTime() async {
+    // TODO(MZ): Save currentDay + 1, 0400
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    DateTime now = DateTime.now();
+    //prefs.setString(keyLastUpdate, DateTime.now().toIso8601String());
   }
 }
