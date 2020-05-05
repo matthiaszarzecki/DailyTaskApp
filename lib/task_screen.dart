@@ -388,7 +388,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   // TODO(MZ): Do not show floating button when keyboard is shown
   // TODO(MZ): Upload to TestFlight & Invite friends
   // TODO(MZ): ignore flutter_export_environment.sh
-  // TODO(MZ): Add flutter info popup in upper right corner (and move stuff on upper bar down)
+  // TODO(MZ): Add flutter info popup in lower corner
 
   List<Widget> _getExpandedCellRow(
     CellState cellState,
