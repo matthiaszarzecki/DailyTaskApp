@@ -373,6 +373,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _markTaskAsChecked(CellState cellState, int index, bool newValue) {
+    // TODO(MZ): Marking tasks on Device fails
     cellState.task.status = newValue ? TaskStatus.done : TaskStatus.todo;
     bool sortState = _checkIfListIsSorted();
     setState(() {
