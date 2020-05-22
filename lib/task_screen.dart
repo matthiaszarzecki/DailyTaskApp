@@ -487,6 +487,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       bool checkBoxValue = cellState.task.status == TaskStatus.done;
       print(checkBoxValue);
       // BUG(MZ): This is called every frame, endlessly. Should not be
+      // TODO(MZ): Ignore last build id file
 
       return Checkbox(
         value: checkBoxValue,
