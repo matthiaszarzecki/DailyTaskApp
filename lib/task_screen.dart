@@ -136,7 +136,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addDailyTask,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         mini: true,
       ),
     );
@@ -176,7 +176,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   Widget _buildReorderListButton() {
     return !_isListSorted
         ? IconButton(
-            icon: Icon(MdiIcons.sort),
+            icon: const Icon(MdiIcons.sort),
             onPressed: () {
               List<CellState> newCellStates = _cellStates;
               newCellStates
@@ -236,6 +236,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     });
   }
 
+  // TODO(MZ): Move this to new file
   /// Compares CellState's by status. Todo are up top, followed by done and failed.
   int _compareCellStates(CellState a, CellState b) {
     if (a.task.status == TaskStatus.done) {
@@ -374,9 +375,10 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   void _markTaskAsChecked(CellState cellState, int index, bool newValue) {
     // TODO(MZ): Marking tasks on Device fails
-    cellState.task.status = newValue ? TaskStatus.done : TaskStatus.todo;
+    //cellState.task.status = newValue ? TaskStatus.done : TaskStatus.todo;
     bool sortState = _checkIfListIsSorted();
     setState(() {
+      cellState.task.status = TaskStatus.done;
       print('Update View');
       _isListSorted = sortState;
     });
@@ -482,8 +484,12 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   Widget _buildCheckBoxOrCross(CellState cellState, int index) {
     if (cellState.task.status != TaskStatus.failed) {
+      bool checkBoxValue = cellState.task.status == TaskStatus.done;
+      print(checkBoxValue);
+      // BUG(MZ): This is called every frame, endlessly. Should not be
+
       return Checkbox(
-        value: cellState.task.status == TaskStatus.done,
+        value: checkBoxValue,
         onChanged: (bool newValue) =>
             _markTaskAsChecked(cellState, index, newValue),
       );
