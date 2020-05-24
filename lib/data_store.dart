@@ -105,6 +105,9 @@ class DataStore {
     // TODO(MZ): Save currentDay + 1, 0400
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     DateTime now = DateTime.now();
-    //prefs.setString(keyLastUpdate, DateTime.now().toIso8601String());
+    DateTime nextReset = now.add(const Duration(days: 1));
+    nextReset = DateTime(nextReset.year, nextReset.month, nextReset.day, 4);
+    print(nextReset);
+    prefs.setString(keyNextReset, nextReset.toIso8601String());
   }
 }

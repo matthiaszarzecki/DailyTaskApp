@@ -73,6 +73,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   Future<void> _dailyUpdateCheck() async {
+    print('#### Daily Update Check ####');
+    
     if (await _shouldResetHappen()) {
       DataStore.saveNextResetDateTime();
 
@@ -102,7 +104,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   Future<bool> _shouldResetHappen() async {
     DateTime resetTime = await DataStore.getNextResetDateTime();
     return DateTime.now().isAfter(resetTime);
-  } 
+  }
 
   @override
   void dispose() {
@@ -126,9 +128,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
-        child: Container(
-          height: 40.0,
-        ),
+        child: Container(height: 40.0),
         color: Theme.of(context).iconTheme.color,
       ),
       body: ListView(
