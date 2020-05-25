@@ -24,6 +24,8 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
+// TODO(MZ): Add "sort" text
+
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
 
@@ -74,7 +76,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   Future<void> _dailyUpdateCheck() async {
     print('#### Daily Update Check ####');
-    
+
     if (await _shouldResetHappen()) {
       DataStore.saveNextResetDateTime();
 
@@ -102,6 +104,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   // TODO(MZ): Test if this works
   Future<bool> _shouldResetHappen() async {
+    //return false;
     DateTime resetTime = await DataStore.getNextResetDateTime();
     return DateTime.now().isAfter(resetTime);
   }

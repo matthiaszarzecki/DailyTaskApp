@@ -76,3 +76,5 @@ ios/Flutter/flutter_export_environment.sh
 ios/Podfile.lock
 
 .flutter-plugins-dependencies
+
+ios/Flutter/.last_build_id
