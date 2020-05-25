@@ -2,8 +2,8 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import 'package:daily_task_app/date_time_parser.dart';
-import 'package:daily_task_app/task_screen.dart';
+import 'package:daily_task_app/enums/task_status.dart';
+import 'package:daily_task_app/utilities/date_time_parser.dart';
 
 class DailyTask {
   DailyTask({

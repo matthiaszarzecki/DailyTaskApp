@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:popup_menu/popup_menu.dart';
 
-import 'package:daily_task_app/daily_task.dart';
-import 'package:daily_task_app/data_store.dart';
-import 'package:daily_task_app/task_screen.dart';
+import 'package:daily_task_app/models/daily_task.dart';
+import 'package:daily_task_app/utilities/data_store.dart';
+import 'package:daily_task_app/screens/task_screen.dart';
 /*
 class IconPopupMenu {
   void openIconMenu(List<String> iconStrings, GlobalKey menuKey) {

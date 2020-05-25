@@ -1,4 +1,4 @@
-import 'package:daily_task_app/daily_task.dart';
+import 'package:daily_task_app/models/daily_task.dart';
 
 class CellState {
   CellState({

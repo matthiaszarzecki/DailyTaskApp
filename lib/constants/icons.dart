@@ -1,0 +1,18 @@
+final List<String> iconStrings = <String>[
+  'bike',
+  'book',
+  'cloud',
+  'console-line',
+  'exclamation',
+  'face',
+  'food-apple',
+  'fruit-grapes',
+  'fruit-pineapple',
+  'fruit-watermelon',
+  'music-clef-treble',
+  'stack-overflow',
+  'trumpet',
+  'walk',
+  'water',
+  'weather-sunny',
+];

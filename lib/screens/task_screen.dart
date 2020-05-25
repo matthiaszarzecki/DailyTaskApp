@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:popup_menu/popup_menu.dart';
 
-import 'package:daily_task_app/cell_state.dart';
-import 'package:daily_task_app/daily_task.dart';
-import 'package:daily_task_app/data_store.dart';
-
-enum TaskStatus {
-  todo,
-  done,
-  failed,
-}
+import 'package:daily_task_app/constants/icons.dart';
+import 'package:daily_task_app/enums/task_status.dart';
+import 'package:daily_task_app/models/cell_state.dart';
+import 'package:daily_task_app/models/daily_task.dart';
+import 'package:daily_task_app/utilities/data_store.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
@@ -26,26 +22,6 @@ class TaskScreen extends StatefulWidget {
 
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
-
-  // TODO(MZ): Moves these to new file
-  final List<String> iconStrings = <String>[
-    'bike',
-    'book',
-    'cloud',
-    'console-line',
-    'exclamation',
-    'face',
-    'food-apple',
-    'fruit-grapes',
-    'fruit-pineapple',
-    'fruit-watermelon',
-    'music-clef-treble',
-    'stack-overflow',
-    'trumpet',
-    'walk',
-    'water',
-    'weather-sunny',
-  ];
 
   final List<String> intervalStrings = <String>[
     'Daily',
