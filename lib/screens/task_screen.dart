@@ -322,7 +322,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   Icon _buildCellIcon(bool cellIsOpen) {
-    return cellIsOpen ? Icon(Icons.arrow_drop_up) : Icon(Icons.arrow_drop_down);
+    return cellIsOpen
+        ? const Icon(Icons.arrow_drop_up)
+        : const Icon(Icons.arrow_drop_down);
   }
 
   List<Widget> _getStandardCellRow(CellState cellState, Function openFunction) {
@@ -332,12 +334,10 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         leading: _buildCheckBoxOrCross(cellState, index),
         title: Row(
           children: <Widget>[
-            //_buildIcon(cellState, iconSize),
             Container(
               width: 33,
               height: 33,
               child: _buildIcon(cellState, iconSize),
-              //padding: const EdgeInsets.all(0.0),
             ),
             const Spacer(),
             Text(cellState.task.title),
@@ -420,13 +420,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           onPressed: closeFunction,
         ),
       ),
-      Text(
-        '''
-        ${_getCurrentStreakDisplay(cellState)}
-        ${_getLongestStreakDisplay(cellState)}
-        ${_getLastUpdatedText(cellState.task.lastModified)}''',
-        textScaleFactor: 1.1,
-      ),
+      _getStreakTexts(cellState),
       ButtonBar(
         alignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -450,6 +444,16 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         ],
       ),
     ];
+  }
+
+  Text _getStreakTexts(CellState cellState) {
+    return Text(
+      '''
+        ${_getCurrentStreakDisplay(cellState)}
+        ${_getLongestStreakDisplay(cellState)}
+        ${_getLastUpdatedText(cellState.task.lastModified)}''',
+      textScaleFactor: 1.1,
+    );
   }
 
   String _getCurrentStreakDisplay(CellState cellState) {
@@ -532,6 +536,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print("Deleted Task '${currentTask.title}' at index $currentTask");
   }
 
+  /*
   void _openIntervalMenu() {
     List<MenuItem> items = intervalStrings.map(
       (String currentIntervalString) {
@@ -582,7 +587,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     });
     DataStore.updateSingleTask(task, index);
     print('Updated Icon to ${task.iconString}');
-  }
+  }*/
 
   void _openIconMenu() {
     List<MenuItem> items = iconStrings.map(
