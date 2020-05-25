@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:daily_task_app/main.dart';
 
 void main() {
+  // TODO(MZ): Add unit-tests for datetime-checker
   testWidgets(
     'Counter increments smoke test',
     (WidgetTester tester) async {
