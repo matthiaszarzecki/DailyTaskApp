@@ -102,7 +102,7 @@ class DataStore {
   }
 
   static Future<void> saveNextResetDateTime() async {
-    // TODO(MZ): Save currentDay + 1, 0400
+    // TODO(MZ): CHeck if the new date is saved correctly
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     DateTime now = DateTime.now();
     DateTime nextReset = now.add(const Duration(days: 1));

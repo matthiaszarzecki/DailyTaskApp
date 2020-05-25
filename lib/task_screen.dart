@@ -24,11 +24,10 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
-// TODO(MZ): Add "sort" text
-
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
 
+  // TODO(MZ): Moves these to new file
   final List<String> iconStrings = <String>[
     'bike',
     'book',
@@ -102,9 +101,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     }
   }
 
-  // TODO(MZ): Test if this works
+  /// Checks if the current time is after the next scheduled daily reset.
   Future<bool> _shouldResetHappen() async {
-    //return false;
     DateTime resetTime = await DataStore.getNextResetDateTime();
     return DateTime.now().isAfter(resetTime);
   }
@@ -169,16 +167,19 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   void _deleteAllTasks() {
     setState(() {
-      // Empty Arrays
+      // Empty the Array of cellStates
       _cellStates = <CellState>[];
     });
     DataStore.removeAllSavedTasks();
     print('Deleted all tasks');
   }
 
+  /// Builds a button to auto-sort the list of tasks if the list is
+  /// not sorted, or an empty Container if it is sorted.
   Widget _buildReorderListButton() {
     return !_isListSorted
         ? IconButton(
+            // TODO(MZ): Add "sort" text to button
             icon: const Icon(MdiIcons.sort),
             onPressed: () {
               List<CellState> newCellStates = _cellStates;
@@ -240,7 +241,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   // TODO(MZ): Move this to new file
-  /// Compares CellState's by status. Todo are up top, followed by done and failed.
+  /// Compares CellState's by status. "Todo" are up top, followed by "done" and "failed".
   int _compareCellStates(CellState a, CellState b) {
     if (a.task.status == TaskStatus.done) {
       if (b.task.status == TaskStatus.todo) {
@@ -377,7 +378,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _markTaskAsChecked(CellState cellState, int index, bool newValue) {
-    // TODO(MZ): Marking tasks on Device fails
+    // TODO(MZ): Unmarking tasks fails
     //cellState.task.status = newValue ? TaskStatus.done : TaskStatus.todo;
     bool sortState = _checkIfListIsSorted();
     setState(() {
@@ -395,6 +396,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   // TODO(MZ): Upload to TestFlight & Invite friends
   // TODO(MZ): Add flutter info popup in lower corner
   // TODO(MZ): Add unit-tests for datetime-checker
+  // TODO(MZ): Something is weird with index-based updating & saving
+  // TODO(MZ): Add debug-functionality to reset to the next day in corner-menu
 
   List<Widget> _getExpandedCellRow(
     CellState cellState,
@@ -485,13 +488,10 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     return 'Record Streak: ${cellState.task.currentStreak} $daysDisplay';
   }
 
+  /// Builds a checkbox that can be marked as "done", or a Red Cross when a task is marked as "failed".
   Widget _buildCheckBoxOrCross(CellState cellState, int index) {
     if (cellState.task.status != TaskStatus.failed) {
       bool checkBoxValue = cellState.task.status == TaskStatus.done;
-      print(checkBoxValue);
-      // BUG(MZ): This is called every frame, endlessly. Should not be
-      // TODO(MZ): Ignore last build id file
-
       return Checkbox(
         value: checkBoxValue,
         onChanged: (bool newValue) =>
