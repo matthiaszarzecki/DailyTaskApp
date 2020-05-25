@@ -378,13 +378,12 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _markTaskAsChecked(CellState cellState, int index, bool newValue) {
-    // TODO(MZ): Unmarking tasks fails
-    //cellState.task.status = newValue ? TaskStatus.done : TaskStatus.todo;
+    TaskStatus newStatus = newValue ? TaskStatus.done : TaskStatus.todo;
     bool sortState = _checkIfListIsSorted();
     setState(() {
-      cellState.task.status = TaskStatus.done;
-      print('Update View');
+      cellState.task.status = newStatus;
       _isListSorted = sortState;
+      print('#### Update View ####');
     });
     DataStore.updateSingleTask(cellState.task, index);
   }
