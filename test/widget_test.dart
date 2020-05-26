@@ -5,6 +5,13 @@ import 'package:daily_task_app/main.dart';
 
 void main() {
   // TODO(MZ): Add unit-tests for datetime-checker
+
+  // Set fake "today" time
+  // Set Reset time for the day after
+  // Set "today" to the next day
+  // Check if shouldResetValues returns true
+  
+  
   testWidgets(
     'Counter increments smoke test',
     (WidgetTester tester) async {
