@@ -21,6 +21,8 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
+// TODO(MZ): Add Rectangular Fab with Notched Bottom Appbar https://github.com/erluxman/awesomefluttertips
+
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
 
@@ -156,7 +158,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   Widget _buildReorderListButton() {
     return !_isListSorted
         ? IconButton(
-            // TODO(MZ): Add "sort" text to button
+            // TODO(MZ): Add "sort" text to button, use FlatButton instead
             icon: const Icon(MdiIcons.sort),
             onPressed: () {
               List<CellState> newCellStates = _cellStates;
@@ -176,8 +178,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     // Copy the current list and sort it. If it equals the current list it is sorted.
     List<CellState> maybeSortedList = <CellState>[];
     maybeSortedList.addAll(_cellStates);
-    maybeSortedList
-        .sort((CellState a, CellState b) => compareCellStates(a, b));
+    maybeSortedList.sort((CellState a, CellState b) => compareCellStates(a, b));
 
     for (int i = 0; i < _cellStates.length; i++) {
       // If status values are not the same, then the lists are not identical.
@@ -340,7 +341,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     setState(() {
       cellState.task.status = newStatus;
       _isListSorted = sortState;
-      print('#### Update View ####');
+      print('#### Updated View ####');
     });
     DataStore.updateSingleTask(cellState.task, index);
   }
