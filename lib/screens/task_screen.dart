@@ -7,6 +7,7 @@ import 'package:daily_task_app/constants/icons.dart';
 import 'package:daily_task_app/enums/task_status.dart';
 import 'package:daily_task_app/models/cell_state.dart';
 import 'package:daily_task_app/models/daily_task.dart';
+import 'package:daily_task_app/utilities/comparison.dart';
 import 'package:daily_task_app/utilities/data_store.dart';
 
 class TaskScreen extends StatefulWidget {
@@ -160,7 +161,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
             onPressed: () {
               List<CellState> newCellStates = _cellStates;
               newCellStates
-                  .sort((CellState a, CellState b) => _compareCellStates(a, b));
+                  .sort((CellState a, CellState b) => compareCellStates(a, b));
 
               setState(() {
                 _cellStates = newCellStates;
@@ -176,7 +177,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     List<CellState> maybeSortedList = <CellState>[];
     maybeSortedList.addAll(_cellStates);
     maybeSortedList
-        .sort((CellState a, CellState b) => _compareCellStates(a, b));
+        .sort((CellState a, CellState b) => compareCellStates(a, b));
 
     for (int i = 0; i < _cellStates.length; i++) {
       // If status values are not the same, then the lists are not identical.
@@ -208,32 +209,12 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       },
     ).toList();
 
-    newCellStates.sort((CellState a, CellState b) => _compareCellStates(a, b));
+    newCellStates.sort((CellState a, CellState b) => compareCellStates(a, b));
 
     setState(() {
       _isListSorted = true;
       _cellStates = newCellStates;
     });
-  }
-
-  // TODO(MZ): Move this to new file
-  /// Compares CellState's by status. "Todo" are up top, followed by "done" and "failed".
-  int _compareCellStates(CellState a, CellState b) {
-    if (a.task.status == TaskStatus.done) {
-      if (b.task.status == TaskStatus.todo) {
-        // If a.task is done and b.task is todo, move a down
-        return 1;
-      } else if (b.task.status == TaskStatus.failed) {
-        // If a.task is done and b.task is failed, move a up
-        return -1;
-      }
-    } else if (a.task.status == TaskStatus.todo) {
-      // If a.task is todo, always move a up
-      return -1;
-    }
-
-    // If a.task is failed, always move a down
-    return 1;
   }
 
   void _addDailyTask() {
