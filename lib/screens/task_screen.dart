@@ -354,6 +354,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   // TODO(MZ): Add flutter info popup in lower corner
   // TODO(MZ): Something is weird with index-based updating & saving
   // TODO(MZ): Add debug-functionality to reset to the next day in corner-menu
+  // TODO(MZ): Replace Cells with Expansion Panels https://medium.com/aubergine-solutions/how-to-create-expansion-panel-list-in-flutter-2fba574366e8
+  // TODO(MZ): Use relative imports https://github.com/erluxman/awesomefluttertips
+  // TODO(MZ): Prioritize TODOs into First and Afterwards priority
 
   List<Widget> _getExpandedCellRow(
     CellState cellState,
