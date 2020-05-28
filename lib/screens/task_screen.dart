@@ -484,6 +484,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     DataStore.updateSingleTask(state.task, index);
   }
 
+  // TODO(MZ): Move to new file
   String _getLastUpdatedText(DateTime lastModified) {
     Duration differenceToRightNow = DateTime.now().difference(lastModified);
 
