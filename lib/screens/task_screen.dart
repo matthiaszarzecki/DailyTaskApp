@@ -108,8 +108,26 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
-        child: Container(height: 40.0),
         color: Theme.of(context).iconTheme.color,
+        child: Container(
+          height: 40,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                color: Colors.white,
+                iconSize: 30.0,
+                padding: const EdgeInsets.only(left: 12.0, top: 12.0),
+                icon: const Icon(Icons.info_outline),
+                onPressed: () {
+                  // TODO(MZ): Add flutter info popup in lower corner (AboutDialog Widget https://www.youtube.com/watch?v=YFCSODyFxbE)
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
+        ),
       ),
       body: ListView(
         children: _getCells(_cellStates),
@@ -351,7 +369,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   // TODO(MZ): Remove texts from icon-menu
   // TODO(MZ): Do not show floating button when keyboard is shown
   // TODO(MZ): Upload to TestFlight & Invite friends
-  // TODO(MZ): Add flutter info popup in lower corner (AboutDialog Widget https://www.youtube.com/watch?v=YFCSODyFxbE)
   // TODO(MZ): Something is weird with index-based updating & saving
   // TODO(MZ): Add debug-functionality to reset to the next day in corner-menu
   // TODO(MZ): Replace Cells with Expansion Panels https://medium.com/aubergine-solutions/how-to-create-expansion-panel-list-in-flutter-2fba574366e8
