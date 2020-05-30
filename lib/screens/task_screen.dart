@@ -171,6 +171,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print('Deleted all tasks');
   }
 
+  // TODO(MZ): Move sort-button to lower right
   /// Builds a button to auto-sort the list of tasks if the list is
   /// not sorted, or an empty Container if it is sorted.
   Widget _buildReorderListButton() {
