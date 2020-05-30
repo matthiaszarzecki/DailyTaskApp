@@ -157,9 +157,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   /// not sorted, or an empty Container if it is sorted.
   Widget _buildReorderListButton() {
     return !_isListSorted
-        ? IconButton(
-            // TODO(MZ): Add "sort" text to button, use FlatButton instead
-            icon: const Icon(MdiIcons.sort),
+        ? FlatButton(
+            child: const Text('Sort'),
+            textColor: Colors.white,
             onPressed: () {
               List<CellState> newCellStates = _cellStates;
               newCellStates
@@ -351,7 +351,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   // TODO(MZ): Remove texts from icon-menu
   // TODO(MZ): Do not show floating button when keyboard is shown
   // TODO(MZ): Upload to TestFlight & Invite friends
-  // TODO(MZ): Add flutter info popup in lower corner
+  // TODO(MZ): Add flutter info popup in lower corner (AboutDialog Widget https://www.youtube.com/watch?v=YFCSODyFxbE)
   // TODO(MZ): Something is weird with index-based updating & saving
   // TODO(MZ): Add debug-functionality to reset to the next day in corner-menu
   // TODO(MZ): Replace Cells with Expansion Panels https://medium.com/aubergine-solutions/how-to-create-expansion-panel-list-in-flutter-2fba574366e8
@@ -484,7 +484,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     DataStore.updateSingleTask(state.task, index);
   }
 
-  // TODO(MZ): Move to new file
+  // TODO(MZ): Make entire cell clickable
+
+  // TODO(MZ): Move this to new file
   String _getLastUpdatedText(DateTime lastModified) {
     Duration differenceToRightNow = DateTime.now().difference(lastModified);
 
