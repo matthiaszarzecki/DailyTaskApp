@@ -126,6 +126,15 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
                   setState(() {});
                 },
               ),
+              IconButton(
+                color: Colors.white,
+                iconSize: 30.0,
+                padding: const EdgeInsets.only(right: 12.0, top: 12.0),
+                icon: const Icon(Icons.info_outline),
+                onPressed: () {
+                  setState(() {});
+                },
+              ),
             ],
           ),
         ),
