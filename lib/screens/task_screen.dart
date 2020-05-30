@@ -9,6 +9,7 @@ import 'package:daily_task_app/models/cell_state.dart';
 import 'package:daily_task_app/models/daily_task.dart';
 import 'package:daily_task_app/utilities/comparison.dart';
 import 'package:daily_task_app/utilities/data_store.dart';
+import 'package:daily_task_app/utilities/date_time_parser.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key key, this.appBarTitle}) : super(key: key);
@@ -454,7 +455,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       '''
         ${_getCurrentStreakDisplay(cellState)}
         ${_getLongestStreakDisplay(cellState)}
-        ${_getLastUpdatedText(cellState.task.lastModified)}''',
+        ${getLastUpdatedText(cellState.task.lastModified)}''',
       textScaleFactor: 1.1,
     );
   }
@@ -503,21 +504,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   // TODO(MZ): Make entire cell clickable
-
-  // TODO(MZ): Move this to new file
-  String _getLastUpdatedText(DateTime lastModified) {
-    Duration differenceToRightNow = DateTime.now().difference(lastModified);
-
-    String returnText = '';
-    if (differenceToRightNow > const Duration(days: 2)) {
-      returnText = '2 Days ago';
-    } else if (differenceToRightNow > const Duration(days: 1)) {
-      returnText = '1 Day ago';
-    } else {
-      returnText = 'Less than 1 Day ago';
-    }
-    return 'Last Updated: $returnText';
-  }
 
   void _updateTaskTitle(String text) {
     setState(() {
