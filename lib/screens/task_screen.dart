@@ -22,8 +22,6 @@ class TaskScreen extends StatefulWidget {
   }
 }
 
-// TODO(MZ): Add Rectangular Fab with Notched Bottom Appbar https://github.com/erluxman/awesomefluttertips
-
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
 
@@ -99,15 +97,49 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     _dailyUpdateCheck();
 
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
         title: Text(widget.appBarTitle),
         actions: <Widget>[
-          //_buildReorderListButton(),
           _buildCornerMenu(),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _addDailyTask,
+        icon: const Icon(Icons.add),
+        label: const Text('Add Task'),
+      ),
       bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).iconTheme.color,
+        notchMargin: 6.0,
+        shape: const AutomaticNotchedShape(
+          RoundedRectangleBorder(),
+          StadiumBorder(
+            side: BorderSide(),
+          ),
+        ),
+        child: Container(
+          height: 40,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                color: Colors.white,
+                iconSize: 30.0,
+                padding: const EdgeInsets.only(left: 12.0, top: 12.0),
+                icon: const Icon(Icons.info_outline),
+                onPressed: () {
+                  // TODO(MZ): Add flutter info popup in lower corner (AboutDialog Widget https://www.youtube.com/watch?v=YFCSODyFxbE)
+                  setState(() {});
+                },
+              ),
+              _buildReorderListButton(),
+            ],
+          ),
+        ),
+      ),
+      /*BottomAppBar(
         shape: const CircularNotchedRectangle(),
         color: Theme.of(context).iconTheme.color,
         child: Container(
@@ -130,15 +162,15 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
             ],
           ),
         ),
-      ),
+      ),*/
       body: ListView(
         children: _getCells(_cellStates),
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: _addDailyTask,
         child: const Icon(Icons.add),
         mini: true,
-      ),
+      ),*/
     );
   }
 
