@@ -48,6 +48,9 @@ class DataStore {
       prefs.setString('$prefixSingleTask$index', null);
     }
     prefs.setInt(keyLength, null);
+
+    // Also remove next reset time
+    prefs.setString(keyNextReset, null);
   }
 
   static Future<void> removeSingleTask(DailyTask task, int index) async {
@@ -99,10 +102,11 @@ class DataStore {
   }
 
   /// Saves the time after which the next reset should happen, which is 0400 on the next day.
-  static Future<void> saveNextResetDateTime() async {
+  static Future<void> saveNextResetDateTime(int offset) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    DateTime nextReset = getNextResetDateFrom(DateTime.now());
+    DateTime nextReset = getNextResetDateFrom(DateTime.now().add(Duration(days: offset)));
     prefs.setString(keyNextReset, nextReset.toIso8601String());
+    print('xxxxxxxxxx');
   }
 
   static DateTime getNextResetDateFrom(DateTime dateTime) {

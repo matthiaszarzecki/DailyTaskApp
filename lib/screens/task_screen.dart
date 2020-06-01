@@ -34,6 +34,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   ];
 
   final double iconSize = 25;
+  DateTime currentDateTime;
+  int dateTimeOffsetInDays = 0;
 
   CellState currentlySelectedCellState;
   int currentlySelectedIndex;
@@ -54,8 +56,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   Future<void> _dailyUpdateCheck() async {
     print('#### Daily Update Check ####');
+
     if (await _shouldResetHappen()) {
-      DataStore.saveNextResetDateTime();
+      DataStore.saveNextResetDateTime(dateTimeOffsetInDays);
 
       for (int index = 0; index < _cellStates.length; index++) {
         CellState state = _cellStates[index];
@@ -81,9 +84,10 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   /// Checks if the current time is after the next scheduled daily reset.
   Future<bool> _shouldResetHappen() async {
+    currentDateTime = DateTime.now().add(Duration(days: dateTimeOffsetInDays));
     DateTime resetTime = await DataStore.getNextResetDateTime();
-    bool shouldReset = DateTime.now().isAfter(resetTime);
-    print('Next Reset at $resetTime, Should Reset: $shouldReset');
+    bool shouldReset = currentDateTime.isAfter(resetTime);
+    print('It is $currentDateTime. Next Reset at $resetTime, Should Reset: $shouldReset');
     return shouldReset;
   }
 
@@ -194,6 +198,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   void _advanceToNextDay() {
     // TODO(MZ): Add debug-functionality to reset to the next day in corner-menu
+    setState(() {
+      dateTimeOffsetInDays += 1;
+    });
   }
 
   @override
