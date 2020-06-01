@@ -95,7 +95,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     // showFloatingActionButton is used to hide the button when a keyboard appears on-screen
-    final bool showFloatingActionButton = MediaQuery.of(context).viewInsets.bottom == 0.0;
+    final bool showFloatingActionButton =
+        MediaQuery.of(context).viewInsets.bottom == 0.0;
 
     PopupMenu.context = context;
     _dailyUpdateCheck();
@@ -331,7 +332,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   Container _buildLargeCell(CellState cellState) {
-    // TODO(MZ): Make entire cell clickable
     return Container(
       height: 185,
       child: Card(
@@ -372,17 +372,21 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     return <Widget>[
       ListTile(
         leading: _buildCheckBoxOrCross(cellState, index),
-        title: Row(
-          children: <Widget>[
-            Container(
-              width: 33,
-              height: 33,
-              child: _buildIcon(cellState, iconSize),
-            ),
-            const Spacer(),
-            Text(cellState.task.title),
-            const Spacer(),
-          ],
+        // InkWell allows the entire space to be clickable
+        title: InkWell(
+          onTap: openFunction,
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: 33,
+                height: 33,
+                child: _buildIcon(cellState, iconSize),
+              ),
+              const Spacer(),
+              Text(cellState.task.title),
+              const Spacer(),
+            ],
+          ),
         ),
         trailing: IconButton(
           icon: _buildCellIcon(cellState.cellIsOpen),
