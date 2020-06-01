@@ -630,7 +630,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       onDismiss: _iconMenuDismissed,
     );
 
-    // TODO(MZ): Hide keyboard when opening icon-menu
+    // Hide keyboard when opening icon-menu
+    FocusScope.of(context).unfocus();
+
     menu.show(widgetKey: keyOpenIconMenu);
   }
 
