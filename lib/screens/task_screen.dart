@@ -197,7 +197,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   void _advanceToNextDay() {
-    // TODO(MZ): Add debug-functionality to reset to the next day in corner-menu
     setState(() {
       dateTimeOffsetInDays += 1;
     });
