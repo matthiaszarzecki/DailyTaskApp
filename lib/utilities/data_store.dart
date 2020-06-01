@@ -101,9 +101,12 @@ class DataStore {
   /// Saves the time after which the next reset should happen, which is 0400 on the next day.
   static Future<void> saveNextResetDateTime() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    DateTime now = DateTime.now();
-    DateTime nextReset = now.add(const Duration(days: 1));
-    nextReset = DateTime(nextReset.year, nextReset.month, nextReset.day, 4);
+    DateTime nextReset = getNextResetDateFrom(DateTime.now());
     prefs.setString(keyNextReset, nextReset.toIso8601String());
+  }
+
+  static DateTime getNextResetDateFrom(DateTime dateTime) {
+    DateTime nextReset = dateTime.add(const Duration(days: 1));
+    return DateTime(nextReset.year, nextReset.month, nextReset.day, 4);
   }
 }
