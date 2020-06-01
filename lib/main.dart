@@ -6,6 +6,15 @@ void main() {
   return runApp(DailyTaskApp());
 }
 
+/*
+  // Lower priority:
+  // TODO(MZ): Allow editing of streaks
+  // TODO(MZ): Remove texts from icon-menu
+  // TODO(MZ): Upload to TestFlight & Invite friends
+  // TODO(MZ): Replace Cells with Expansion Panels https://medium.com/aubergine-solutions/how-to-create-expansion-panel-list-in-flutter-2fba574366e8
+  // TODO(MZ): Use relative imports https://github.com/erluxman/awesomefluttertips
+*/
+
 class DailyTaskApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

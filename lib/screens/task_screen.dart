@@ -103,7 +103,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         actions: <Widget>[
           _buildCornerMenu(),
         ],
+        centerTitle: false,
       ),
+      // TODO(MZ): Do not show floating button when keyboard is shown
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _addDailyTask,
@@ -160,9 +162,20 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   PopupMenuButton<int> _buildCornerMenu() {
     return PopupMenuButton<int>(
-      onSelected: (_) => _deleteAllTasks(),
+      onSelected: (int value) {
+        if (value == 1) {
+          _deleteAllTasks();
+        } else {
+          _advanceToNextDay();
+        }
+      },
       itemBuilder: (BuildContext context) {
         return <PopupMenuEntry<int>>[
+          const PopupMenuItem<int>(
+            value: 0,
+            child: Text('Go to Next Day'),
+            textStyle: TextStyle(color: Colors.green),
+          ),
           const PopupMenuItem<int>(
             value: 1,
             child: Text('Delete All Tasks'),
@@ -171,6 +184,10 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         ];
       },
     );
+  }
+
+  void _advanceToNextDay() {
+    // TODO(MZ): Add debug-functionality to reset to the next day in corner-menu
   }
 
   @override
@@ -189,7 +206,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print('Deleted all tasks');
   }
 
-  // TODO(MZ): Move sort-button to lower right
   /// Builds a button to auto-sort the list of tasks if the list is
   /// not sorted, or an empty Container if it is sorted.
   Widget _buildReorderListButton() {
@@ -311,6 +327,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   Container _buildLargeCell(CellState cellState) {
+    // TODO(MZ): Make entire cell clickable
     return Container(
       height: 185,
       child: Card(
@@ -382,17 +399,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     });
     DataStore.updateSingleTask(cellState.task, index);
   }
-
-  // TODO(MZ): Allow editing of streaks
-  // TODO(MZ): Hide keyboard when opening icon-menu
-  // TODO(MZ): Remove texts from icon-menu
-  // TODO(MZ): Do not show floating button when keyboard is shown
-  // TODO(MZ): Upload to TestFlight & Invite friends
-  // TODO(MZ): Something is weird with index-based updating & saving
-  // TODO(MZ): Add debug-functionality to reset to the next day in corner-menu
-  // TODO(MZ): Replace Cells with Expansion Panels https://medium.com/aubergine-solutions/how-to-create-expansion-panel-list-in-flutter-2fba574366e8
-  // TODO(MZ): Use relative imports https://github.com/erluxman/awesomefluttertips
-  // TODO(MZ): Prioritize TODOs into First and Afterwards priority
 
   List<Widget> _getExpandedCellRow(
     CellState cellState,
@@ -520,12 +526,11 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     DataStore.updateSingleTask(state.task, index);
   }
 
-  // TODO(MZ): Make entire cell clickable
-
   void _updateTaskTitle(String text) {
     setState(() {
       currentlySelectedCellState.task.title = text;
     });
+    // TODO(MZ): Something is wrong with index-based updating & saving. Find it and fix it.
     DataStore.updateSingleTask(
         currentlySelectedCellState.task, currentlySelectedIndex);
     print('Updated Title to ${currentlySelectedCellState.task.title}');
@@ -620,6 +625,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
       stateChanged: _iconStateChanged,
       onDismiss: _iconMenuDismissed,
     );
+
+    // TODO(MZ): Hide keyboard when opening icon-menu
     menu.show(widgetKey: keyOpenIconMenu);
   }
 
