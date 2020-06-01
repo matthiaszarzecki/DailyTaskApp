@@ -106,7 +106,6 @@ class DataStore {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     DateTime nextReset = getNextResetDateFrom(DateTime.now().add(Duration(days: offset)));
     prefs.setString(keyNextReset, nextReset.toIso8601String());
-    print('xxxxxxxxxx');
   }
 
   static DateTime getNextResetDateFrom(DateTime dateTime) {
