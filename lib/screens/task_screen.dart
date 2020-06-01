@@ -1,4 +1,5 @@
 import 'package:dart_random_choice/dart_random_choice.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:popup_menu/popup_menu.dart';
@@ -130,8 +131,20 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
                 padding: const EdgeInsets.only(left: 12.0, top: 12.0),
                 icon: const Icon(Icons.info_outline),
                 onPressed: () {
-                  // TODO(MZ): Add flutter info popup in lower corner (AboutDialog Widget https://www.youtube.com/watch?v=YFCSODyFxbE)
-                  setState(() {});
+                  showAboutDialog(
+                    context: context,
+                    applicationVersion: '0.1.0',
+                    applicationIcon: const FlutterLogo(),
+                    children: <Widget>[
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Text(
+                          'This is where I\'d put more information about '
+                          'this app, if there was anything interesting to say.',
+                        ),
+                      ),
+                    ],
+                  );
                 },
               ),
               _buildReorderListButton(),
@@ -139,38 +152,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
           ),
         ),
       ),
-      /*BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        color: Theme.of(context).iconTheme.color,
-        child: Container(
-          height: 40,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                color: Colors.white,
-                iconSize: 30.0,
-                padding: const EdgeInsets.only(left: 12.0, top: 12.0),
-                icon: const Icon(Icons.info_outline),
-                onPressed: () {
-                  // TODO(MZ): Add flutter info popup in lower corner (AboutDialog Widget https://www.youtube.com/watch?v=YFCSODyFxbE)
-                  setState(() {});
-                },
-              ),
-              _buildReorderListButton(),
-            ],
-          ),
-        ),
-      ),*/
       body: ListView(
         children: _getCells(_cellStates),
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: _addDailyTask,
-        child: const Icon(Icons.add),
-        mini: true,
-      ),*/
     );
   }
 
