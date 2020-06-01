@@ -54,7 +54,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   Future<void> _dailyUpdateCheck() async {
     print('#### Daily Update Check ####');
-
     if (await _shouldResetHappen()) {
       DataStore.saveNextResetDateTime();
 
@@ -83,7 +82,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   /// Checks if the current time is after the next scheduled daily reset.
   Future<bool> _shouldResetHappen() async {
     DateTime resetTime = await DataStore.getNextResetDateTime();
-    return DateTime.now().isAfter(resetTime);
+    bool shouldReset = DateTime.now().isAfter(resetTime);
+    print('Next Reset at $resetTime, Should Reset: $shouldReset');
+    return shouldReset;
   }
 
   @override
