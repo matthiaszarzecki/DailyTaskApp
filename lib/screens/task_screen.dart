@@ -94,6 +94,9 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    // showFloatingActionButton is used to hide the button when a keyboard appears on-screen
+    final bool showFloatingActionButton = MediaQuery.of(context).viewInsets.bottom == 0.0;
+
     PopupMenu.context = context;
     _dailyUpdateCheck();
 
@@ -105,13 +108,14 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         ],
         centerTitle: false,
       ),
-      // TODO(MZ): Do not show floating button when keyboard is shown
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _addDailyTask,
-        icon: const Icon(Icons.add),
-        label: const Text('Add Task'),
-      ),
+      floatingActionButton: showFloatingActionButton
+          ? FloatingActionButton.extended(
+              onPressed: _addDailyTask,
+              icon: const Icon(Icons.add),
+              label: const Text('Add Task'),
+            )
+          : null,
       bottomNavigationBar: BottomAppBar(
         color: Theme.of(context).iconTheme.color,
         notchMargin: 6.0,
