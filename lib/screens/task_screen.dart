@@ -239,6 +239,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         : Container();
   }
 
+  // TODO(MZ): Sort-Button shows up irregularly
   bool _checkIfListIsSorted() {
     // Copy the current list and sort it. If it equals the current list it is sorted.
     List<CellState> maybeSortedList = <CellState>[];
