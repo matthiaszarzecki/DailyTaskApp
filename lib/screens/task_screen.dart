@@ -26,13 +26,6 @@ class TaskScreen extends StatefulWidget {
 class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   List<CellState> _cellStates = <CellState>[];
 
-  final List<String> intervalStrings = <String>[
-    'Daily',
-    'Mo-Fr',
-    'Weekly',
-    'Monthly',
-  ];
-
   final double iconSize = 25;
   DateTime currentDateTime;
   int dateTimeOffsetInDays = 0;
@@ -239,7 +232,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         : Container();
   }
 
-  // TODO(MZ): Sort-Button shows up irregularly
+  // TODO(MZ): Sort-Button shows up irregularly - Figure out why
   bool _checkIfListIsSorted() {
     // Copy the current list and sort it. If it equals the current list it is sorted.
     List<CellState> maybeSortedList = <CellState>[];
@@ -566,59 +559,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     print("Deleted Task '${currentTask.title}' at index $currentTask");
   }
 
-  /*
-  void _openIntervalMenu() {
-    List<MenuItem> items = intervalStrings.map(
-      (String currentIntervalString) {
-        return MenuItem(
-          title: currentIntervalString,
-          image: Icon(
-            MdiIcons.fromString('unity'),
-            color: Colors.white,
-          ),
-        );
-      },
-    ).toList();
-    PopupMenu menu = PopupMenu(
-      // backgroundColor: Colors.teal,
-      // lineColor: Colors.white,
-      // maxColumn: 2,
-      items: items,
-      onClickMenu: _intervalItemClicked,
-      stateChanged: _intervalStateChanged,
-      onDismiss: _intervalMenuDismissed,
-    );
-    menu.show(widgetKey: keyOpenIntervalMenu);
-  }
-
-  void _intervalStateChanged(bool isShow) {
-    print('menu is ${isShow ? 'showing' : 'closed'}');
-  }
-
-  void _intervalMenuDismissed() {
-    print('Menu is dismissed');
-  }
-
-  void _intervalItemClicked(MenuItemProvider item) {
-    _setNewIntervalForTask(
-      currentlySelectedCellState.task,
-      currentlySelectedIndex,
-      item.menuTitle,
-    );
-  }
-
-  void _setNewIntervalForTask(
-    DailyTask task,
-    int index,
-    String intervalString,
-  ) {
-    setState(() {
-      task.interval = intervalString;
-    });
-    DataStore.updateSingleTask(task, index);
-    print('Updated Icon to ${task.iconString}');
-  }*/
-
   void _openIconMenu() {
     List<MenuItem> items = iconStrings.map(
       (String currentIconString) {
@@ -633,9 +573,6 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     ).toList();
 
     PopupMenu menu = PopupMenu(
-      // backgroundColor: Colors.teal,
-      // lineColor: Colors.white,
-      // maxColumn: 2,
       items: items,
       onClickMenu: _iconItemClicked,
       stateChanged: _iconStateChanged,
