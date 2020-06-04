@@ -233,11 +233,24 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   // TODO(MZ): Sort-Button shows up irregularly - Figure out why
+  // TODO(MZ): Do a DEBUG-Print here of both arrays
   bool _checkIfListIsSorted() {
     // Copy the current list and sort it. If it equals the current list it is sorted.
     List<CellState> maybeSortedList = <CellState>[];
     maybeSortedList.addAll(_cellStates);
     maybeSortedList.sort((CellState a, CellState b) => compareCellStates(a, b));
+
+    print('### Original List:');
+    _cellStates.forEach((CellState cellState) { 
+      print(cellState.task.status);
+    });
+
+    print('### Sorted List:');
+    maybeSortedList.forEach((CellState cellState) { 
+      print(cellState.task.status);
+    });
+
+    // TODO(MZ): Apparently hangs one frame behind
 
     for (int i = 0; i < _cellStates.length; i++) {
       // If status values are not the same, then the lists are not identical.
