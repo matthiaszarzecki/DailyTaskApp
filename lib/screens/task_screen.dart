@@ -80,7 +80,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     currentDateTime = DateTime.now().add(Duration(days: dateTimeOffsetInDays));
     DateTime resetTime = await DataStore.getNextResetDateTime();
     bool shouldReset = currentDateTime.isAfter(resetTime);
-    print('It is $currentDateTime. Next Reset at $resetTime, Should Reset: $shouldReset');
+    print(
+        'It is $currentDateTime. Next Reset at $resetTime, Should Reset: $shouldReset');
     return shouldReset;
   }
 
@@ -92,73 +93,83 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    // showFloatingActionButton is used to hide the button when a keyboard appears on-screen
-    final bool showFloatingActionButton =
+    // showActionButton is used to hide the button when a keyboard appears on-screen
+    final bool showActionButton =
         MediaQuery.of(context).viewInsets.bottom == 0.0;
 
     PopupMenu.context = context;
     _dailyUpdateCheck();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.appBarTitle),
-        actions: <Widget>[
-          _buildCornerMenu(),
-        ],
-        centerTitle: false,
-      ),
+      appBar: _buildAppBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: showFloatingActionButton
-          ? FloatingActionButton.extended(
-              onPressed: _addDailyTask,
-              icon: const Icon(Icons.add),
-              label: const Text('Add Task'),
-            )
-          : null,
-      bottomNavigationBar: BottomAppBar(
-        color: Theme.of(context).iconTheme.color,
-        notchMargin: 6.0,
-        shape: const AutomaticNotchedShape(
-          RoundedRectangleBorder(),
-          StadiumBorder(
-            side: BorderSide(),
-          ),
-        ),
-        child: Container(
-          height: 40,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                color: Colors.white,
-                iconSize: 30.0,
-                padding: const EdgeInsets.only(left: 12.0, top: 12.0),
-                icon: const Icon(Icons.info_outline),
-                onPressed: () {
-                  showAboutDialog(
-                    context: context,
-                    applicationVersion: '0.1.0',
-                    applicationIcon: const FlutterLogo(),
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: Text(
-                          'This is where I\'d put more information about '
-                          'this app, if there was anything interesting to say.',
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-              _buildReorderListButton(),
-            ],
-          ),
+      floatingActionButton: _buildFloatingActionButton(showActionButton),
+      bottomNavigationBar: _buildBottomAppBar(),
+      body: ListView(children: _getCells(_cellStates)),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: Text(widget.appBarTitle),
+      actions: <Widget>[
+        _buildCornerMenu(),
+      ],
+      centerTitle: false,
+    );
+  }
+
+  Widget _buildFloatingActionButton(bool showActionButton) {
+    return showActionButton
+        ? FloatingActionButton.extended(
+            onPressed: _addDailyTask,
+            icon: const Icon(Icons.add),
+            label: const Text('Add Task'),
+          )
+        : null;
+  }
+
+  BottomAppBar _buildBottomAppBar() {
+    return BottomAppBar(
+      color: Theme.of(context).iconTheme.color,
+      notchMargin: 6.0,
+      shape: const AutomaticNotchedShape(
+        RoundedRectangleBorder(),
+        StadiumBorder(
+          side: BorderSide(),
         ),
       ),
-      body: ListView(
-        children: _getCells(_cellStates),
+      child: Container(
+        height: 40,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              color: Colors.white,
+              iconSize: 30.0,
+              padding: const EdgeInsets.only(left: 12.0, top: 12.0),
+              icon: const Icon(Icons.info_outline),
+              onPressed: () {
+                showAboutDialog(
+                  context: context,
+                  applicationVersion: '0.1.0',
+                  applicationIcon: const FlutterLogo(),
+                  children: <Widget>[
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Text(
+                        'This is where I\'d put more information about '
+                        'this app, if there was anything interesting to say.',
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            _buildReorderListButton(),
+          ],
+        ),
       ),
     );
   }
@@ -241,12 +252,12 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     maybeSortedList.sort((CellState a, CellState b) => compareCellStates(a, b));
 
     print('### Original List:');
-    _cellStates.forEach((CellState cellState) { 
+    _cellStates.forEach((CellState cellState) {
       print(cellState.task.status);
     });
 
     print('### Sorted List:');
-    maybeSortedList.forEach((CellState cellState) { 
+    maybeSortedList.forEach((CellState cellState) {
       print(cellState.task.status);
     });
 
