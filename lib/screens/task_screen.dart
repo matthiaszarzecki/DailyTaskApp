@@ -274,6 +274,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
     return true;
   }
 
+  // TODO(MZ): Add debug-info to app itself
+
   Icon _buildIcon(CellState cellState, double size) {
     return Icon(
       cellState.task.getIconData(),
