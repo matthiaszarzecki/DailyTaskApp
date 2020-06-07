@@ -275,6 +275,7 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
   }
 
   // TODO(MZ): Add debug-info to app itself
+  // TODO(MZ): Debug by setting reset-time 2min into the future, closing app, and reopening
 
   Icon _buildIcon(CellState cellState, double size) {
     return Icon(
