@@ -243,6 +243,8 @@ class _TaskScreenState extends State<TaskScreen> with WidgetsBindingObserver {
         : Container();
   }
 
+  // TODO(MZ): Add full debug-log to app itself - open a textfield with button in corner
+
   // TODO(MZ): Sort-Button shows up irregularly - Figure out why
   // TODO(MZ): Do a DEBUG-Print here of both arrays
   bool _checkIfListIsSorted() {
